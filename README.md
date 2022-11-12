@@ -1,7 +1,7 @@
 # Software Engineering Project 2022-2023
 
 Group: softeng2022-12
-Members: el19156, el19955, el19890, el19085, el17514, el15170
+Members: el19955, el19890, el19156, el19085, el17514, el15170
   
   
   
