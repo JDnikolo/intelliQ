@@ -1,1 +1,3 @@
 .gitignore
+/api-backend/.*
+/api-backend/__*

@@ -1,0 +1,7 @@
+##Create a venv here (name must start with .)
+python -m venv .name
+##activate venv
+.name/Scripts/activate
+##install dependencies
+python -m pip install -r venvdependecies.txt
+##ready to go!
