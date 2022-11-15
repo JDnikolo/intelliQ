@@ -1,7 +1,4 @@
-##Create a venv here (name must start with .)
-python -m venv .name
-##activate venv
-.name/Scripts/activate
-##install dependencies
-python -m pip install -r venvdependecies.txt
-##ready to go!
+##run the create_venv.py file:
+python .\create_venv.py
+##start the Flask server using the new venv:
+.\api-backend\.backendvenv\Scripts\flask.exe --app .\api-backend\service.py --debug run
