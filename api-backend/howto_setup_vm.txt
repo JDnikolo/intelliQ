@@ -1,4 +1,0 @@
-##run the create_venv.py file:
-python .\create_venv.py
-##start the Flask server using the new venv:
-.\api-backend\.backendvenv\Scripts\flask.exe --app .\api-backend\service.py --debug run
