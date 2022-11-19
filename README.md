@@ -13,8 +13,8 @@ el19890: Nikolaos Karafyllis
 
 el19156: Christos Psallidas
 
-el19085:
+el19085: Evangelos Myrgiotis
 
 el17514: Nondas Floros
 
-el15170:
+el15170: Ioannis Nikolopoulos
