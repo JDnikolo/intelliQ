@@ -1,3 +1,6 @@
 .gitignore
 /api-backend/.*
 /api-backend/__*
+/api-backend/mysqlconfig.py
+
+

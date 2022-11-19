@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 import mysql.connector
-
+from mysqlconfig import *
 
 app = Flask(__name__)
 # TODO move this to another file
@@ -11,14 +11,16 @@ mydb = mysql.connector.connect(
     database='intelliq',
     port=3306
 )
+
 # sqlcursor.execute(sql_query) to access database
 sqlcursor = mydb.cursor()
 
 
 @app.route("/", methods=["GET"])
 def hello_world():
-
-    return f"<p>Hello World!</p>"
+    sqlcursor.execute("SHOW TABLES")
+    result = sqlcursor.fetchall()
+    return f"<p>{(result)}</p>"
 
 
 # method parameters can be <variables>
