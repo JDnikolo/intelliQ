@@ -3,7 +3,7 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 DROP DATABASE IF EXISTS `intelliq` ;
-CREATE SCHEMA IF NOT EXISTS `intelliq` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+CREATE SCHEMA IF NOT EXISTS `intelliq` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci ;
 
 USE `intelliq` ;
 
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS intelliq.Questionnaire (
   questionnaireID VARCHAR(5) NOT NULL,
   title TINYTEXT NULL,
   created_by VARCHAR(10),
-  INDEX quest_idx (created_by ASC) VISIBLE,
+  INDEX quest_idx (created_by ASC) ,
   CONSTRAINT created_by
     	FOREIGN KEY (created_by)
     	REFERENCES intelliq.Users (username)
@@ -40,7 +40,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS intelliq.Keywords (
   questionnaireID VARCHAR(5) NOT NULL,
   word VARCHAR(30) NOT NULL,
-  INDEX quest_idx (questionnaireID ASC) VISIBLE,
+  INDEX quest_idx (questionnaireID ASC) ,
   CONSTRAINT questionnaireID
     	FOREIGN KEY (questionnaireID)
     	REFERENCES intelliq.Questionnaire (questionnaireID)
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS intelliq.Question (
   required BOOLEAN NOT NULL,
   qtype VARCHAR (8),
   qnrID VARCHAR(5) NOT NULL,
-  INDEX qn_idx (qnrID ASC) VISIBLE,
+  INDEX qn_idx (qnrID ASC) ,
   CONSTRAINT qnrID
     	FOREIGN KEY (qnrID)
     	REFERENCES intelliq.Questionnaire (questionnaireID)
@@ -80,13 +80,13 @@ CREATE TABLE IF NOT EXISTS intelliq.Qoption (
   optionTXT TINYTEXT NOT NULL,
   nextQ  VARCHAR(20),
   questionID VARCHAR(20),
-  INDEX opt_idx1 (questionID ASC) VISIBLE,
+  INDEX opt_idx1 (questionID ASC) ,
   CONSTRAINT questionID
     	FOREIGN KEY (questionID)
     	REFERENCES intelliq.Question (questionID)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE,
-  INDEX opt_idx2 (nextQ ASC) VISIBLE,
+  INDEX opt_idx2 (nextQ ASC) ,
   CONSTRAINT nextQ
     	FOREIGN KEY (nextQ)
     	REFERENCES intelliq.Question (questionID)
@@ -107,14 +107,14 @@ CREATE TABLE IF NOT EXISTS intelliq.Answer (
   sessionID VARCHAR(4) NOT NULL,
   ans_optionID VARCHAR(20) NOT NULL,
   qnrID VARCHAR(5) NOT NULL,
-  INDEX sess_idx (sessionID ASC) VISIBLE,
-  INDEX opt_idx (ans_optionID ASC) VISIBLE,
+  INDEX sess_idx (sessionID ASC) ,
+  INDEX opt_idx (ans_optionID ASC) ,
   CONSTRAINT ans_optionID
     	FOREIGN KEY (ans_optionID)
     	REFERENCES intelliq.Qoption (optionID)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE,
-  INDEX qnr_idx (qnrID ASC) VISIBLE,
+  INDEX qnr_idx (qnrID ASC) ,
   CONSTRAINT ans_qnrID
     	FOREIGN KEY (qnrID)
     	REFERENCES intelliq.Questionnaire (questionnaireID)
@@ -130,13 +130,13 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS intelliq.Ans_opt (
   ansID VARCHAR(11) NOT NULL,
   qoptID VARCHAR(20) NOT NULL,
-  INDEX ans_idx (ansID ASC) VISIBLE,
+  INDEX ans_idx (ansID ASC) ,
   CONSTRAINT ansID
     	FOREIGN KEY (ansID)
     	REFERENCES intelliq.Answer (answerID)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE,
-  INDEX qopt_idx (qoptID ASC) VISIBLE,
+  INDEX qopt_idx (qoptID ASC) ,
   CONSTRAINT qoptID
     	FOREIGN KEY (qoptID)
     	REFERENCES intelliq.Qoption (optionID)
@@ -153,13 +153,13 @@ CREATE TABLE IF NOT EXISTS intelliq.Answer_text (
   ansID VARCHAR(11) NOT NULL,
   sessionID VARCHAR(4) NOT NULL,
   answer_text TEXT,
-  INDEX ans_idx (ansID ASC) VISIBLE,
+  INDEX ans_idx (ansID ASC) ,
   CONSTRAINT txt_ansID
     	FOREIGN KEY (ansID)
     	REFERENCES intelliq.Answer (answerID)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE,
-  INDEX sess_idx (sessionID ASC) VISIBLE,
+  INDEX sess_idx (sessionID ASC) ,
   CONSTRAINT ans_txt_sessionID
     	FOREIGN KEY (sessionID)
     	REFERENCES intelliq.Answer (sessionID)
@@ -176,13 +176,13 @@ CREATE TABLE IF NOT EXISTS intelliq.Answer_mc (
   ansID VARCHAR(11) NOT NULL,
   sessionID VARCHAR(4) NOT NULL,
   choiceID VARCHAR(1),
-  INDEX ans_idx (ansID ASC) VISIBLE,
+  INDEX ans_idx (ansID ASC) ,
   CONSTRAINT mc_ansID
     	FOREIGN KEY (ansID)
     	REFERENCES intelliq.Answer (answerID)
     	ON DELETE CASCADE
     	ON UPDATE CASCADE,
-  INDEX sess_idx (sessionID ASC) VISIBLE,
+  INDEX sess_idx (sessionID ASC) ,
   CONSTRAINT mc_sessionID
     	FOREIGN KEY (sessionID)
     	REFERENCES intelliq.Answer (sessionID)
@@ -201,13 +201,13 @@ ENGINE = InnoDB;
 -- CREATE TABLE IF NOT EXISTS intelliq.Has_questions (
 --  qnrID VARCHAR(5) NOT NULL,
 --  qID VARCHAR(10) NOT NULL,
---  INDEX hq_idx1 (qnrID ASC) VISIBLE,
+--  INDEX hq_idx1 (qnrID ASC) ,
 --  CONSTRAINT qnrID
 --    	FOREIGN KEY (qnrID)
 --    	REFERENCES intelliq.Questionnaire (questionnaireID)
 --    	ON DELETE CASCADE
 --    	ON UPDATE CASCADE,
---  INDEX hq_idx2 (qID ASC) VISIBLE,
+--  INDEX hq_idx2 (qID ASC) ,
 --  CONSTRAINT qID
 --    	FOREIGN KEY (qID)
 --    	REFERENCES intelliq.Question (questionID)
@@ -227,13 +227,13 @@ ENGINE = InnoDB;
 -- CREATE TABLE IF NOT EXISTS intelliq.Has_questions (
 --  qnrID VARCHAR(5) NOT NULL,
 --  qID VARCHAR(10) NOT NULL,
---  INDEX hq_idx1 (qnrID ASC) VISIBLE,
+--  INDEX hq_idx1 (qnrID ASC) ,
 --  CONSTRAINT qnrID
 --    	FOREIGN KEY (qnrID)
 --    	REFERENCES intelliq.Questionnaire (questionnaireID)
 --    	ON DELETE CASCADE
 --    	ON UPDATE CASCADE,
---  INDEX hq_idx2 (qID ASC) VISIBLE,
+--  INDEX hq_idx2 (qID ASC) ,
 --  CONSTRAINT qID
 --    	FOREIGN KEY (qID)
 --    	REFERENCES intelliq.Question (questionID)
