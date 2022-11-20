@@ -23,7 +23,7 @@ sqlcursor = myconnector.cursor()
 # TODO remove testing endpoints when actual endpoints are
 # ready to use
 from Admin.usermod import *
-from Admin.loginout import *
+from Users.loginout import *
 
 
 @app.route("/", methods=["GET"])
