@@ -22,7 +22,8 @@ app.config["JSON_SORT_KEYS"] = False
 sqlcursor = myconnector.cursor()
 # TODO remove testing endpoints when actual endpoints are
 # ready to use
-import Admin.usermod
+from Admin.usermod import *
+from Admin.loginout import *
 
 
 @app.route("/", methods=["GET"])

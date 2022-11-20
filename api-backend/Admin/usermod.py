@@ -37,5 +37,5 @@ def users(username: str):
         # 402 apparently corresponds to "Payment needed???"
         return Response("", status=402)
     else:
-        output = {keys[i]: results[0][i] for i in range(0, 3, 2)}
+        output = {keys[i]: results[0][i] for i in range(0, 3)}
         return jsonify(output)
