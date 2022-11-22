@@ -1,5 +1,6 @@
 from service import app, sqlcursor, myconnector
 from flask import request, Response
+from authentication import authUser
 # uuid module is used to create unique identifiers based
 # uuid4 creates completely random identifiers without any parameters
 from uuid import uuid4
@@ -35,16 +36,8 @@ def login():
 @app.route("/logout", methods=["POST"])
 def logout():
     uid = request.headers.get("X-OBSERVATORY-AUTH")
-    if uid == None:
-        # None -> custom header not included in request
-        return Response("No access token provided.", 400)
-    sqlcursor.execute(
-        "SELECT * from Users WHERE access_token=%s",
-        [uid])
-    results = sqlcursor.fetchall()
-    if len(results) == 0:
-        # access key doesn't exist, return
-        return Response("Invalid access token", 400)
+    if not (authUser()):
+        return Response("Invalid or missing access token.", 400)
     else:
         # log user out by revoking their access token
         sqlcursor.execute(
