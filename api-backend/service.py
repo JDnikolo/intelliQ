@@ -22,9 +22,8 @@ app.config["JSON_SORT_KEYS"] = False
 sqlcursor = myconnector.cursor()
 # TODO remove testing endpoints when actual endpoints are
 # ready to use
-from Admin.usermod import *
 from Users.loginout import *
-
+from Admin.usermod import *
 
 @app.route("/", methods=["GET"])
 def hello_world():
@@ -34,7 +33,7 @@ def hello_world():
 
 
 # method parameters can be <variables>
-@app.route("/<name>", methods=["GET"])
+@app.route("/test/<name>", methods=["GET"])
 # variables must be included as keyword arguements
 def hello_named(name=""):
     return "<p>Hello, {}!</p>".format(name)
