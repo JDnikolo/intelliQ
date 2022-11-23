@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
 # # mysqlconfig.py template
 # import mysql.connector
-# mydb = mysql.connector.connect(
+# myconnector = mysql.connector.connect(
 #    host="localhost",
 #    user="root",
 #    password="",
@@ -24,7 +24,8 @@ sqlcursor = myconnector.cursor()
 # ready to use
 from Admin.usermod import *
 from Users.loginout import *
-
+#uncomment the following  line to add question test endpoint.
+#from Users.question import *
 
 @app.route("/", methods=["GET"])
 def hello_world():
