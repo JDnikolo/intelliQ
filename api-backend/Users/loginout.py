@@ -1,12 +1,15 @@
 from service import app, sqlcursor, myconnector
-from flask import request, Response
+from flask import Blueprint, request, Response
 from authentication import authUser
 # uuid module is used to create unique identifiers based
 # uuid4 creates completely random identifiers without any parameters
 from uuid import uuid4
 
+login = Blueprint("login", __name__)
+logout = Blueprint("logout", __name__)
 
-@app.route("/login", methods=["POST"])
+
+@login.route("/login", methods=["POST"])
 # logs in a user by creating a unique access token
 def login():
     if request.headers.get("Content-Type") != "application/x-www-form-urlencoded":
@@ -33,7 +36,7 @@ def login():
         return Response("Already logged in.", 400)
 
 
-@app.route("/logout", methods=["POST"])
+@logout.route("/logout", methods=["POST"])
 def logout():
     uid = request.headers.get("X-OBSERVATORY-AUTH")
     if not (authUser()):
