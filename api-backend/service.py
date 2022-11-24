@@ -1,9 +1,11 @@
 from Users.loginout import *
 from Users.questionnaireid import *
+from Users.getsessionanswers import *
 from Admin.resetall import *
 from Admin.usermod import *
 from Admin.resetall import resetall
 from Admin.healthcheck import healthcheck
+from Admin.resetq import *
 #uncomment 2 following lines to add questionnaire_upd and question endpoints
 #from Admin.questionnaire_upd import questionnaire_upd
 #from Users.question import question
@@ -16,9 +18,11 @@ app.register_blueprint(resetall, url_prefix="/admin")
 app.register_blueprint(usermod, url_prefix="/admin")
 app.register_blueprint(healthcheck, url_prefix="/admin")
 app.register_blueprint(users, url_prefix="/admin")
+app.register_blueprint(resetq_blueprint, url_prefix="/admin")
 app.register_blueprint(login)
 app.register_blueprint(logout)
 app.register_blueprint(questionnaireid)
+app.register_blueprint(getsessionanswers_blueprint, url_prefix="")
 #uncomment 2 following lines to add questionnaire_upd and question endpoints
 #app.register_blueprint(questionnaire_upd, url_prefix="/admin")
 #app.register_blueprint(question)
