@@ -3,11 +3,12 @@ from Admin.resetall import *
 from Admin.usermod import *
 from Admin.resetall import resetall
 from flask import Flask, jsonify, request, render_template
-import mysql.connector
 from mysqlconfig import *
 
 app = Flask(__name__)
 app.register_blueprint(resetall, url_prefix="/admin")
+app.register_blueprint(usermod, url_prefix="/admin")
+app.register_blueprint(users, url_prefix="/admin")
 # /etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf
 # change base url TODO: uncomment this
 # app.config["APPLICATION_ROOT"] = "/intelliq_api"
@@ -18,7 +19,7 @@ app.config["JSON_SORT_KEYS"] = False
 # myconnector = mysql.connector.connect(
 #    host="localhost",
 #    user="root",
-#    password="",
+#    password="#poupass",
 #    database='intelliq',
 #    port=3306
 # )
