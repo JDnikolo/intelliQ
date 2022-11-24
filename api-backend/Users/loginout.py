@@ -1,4 +1,4 @@
-from service import app, sqlcursor, myconnector
+from service import sqlcursor, myconnector
 from flask import Blueprint, request, Response
 from authentication import authUser
 # uuid module is used to create unique identifiers based
