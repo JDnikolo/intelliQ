@@ -1,7 +1,9 @@
 from Users.loginout import *
+from Users.questionnaireid import *
 from Admin.resetall import *
 from Admin.usermod import *
 from Admin.resetall import resetall
+from Admin.healthcheck import healthcheck
 from flask import Flask, jsonify, request, render_template
 from mysqlconfig import *
 
@@ -9,9 +11,11 @@ app = Flask(__name__)
 
 app.register_blueprint(resetall, url_prefix="/admin")
 app.register_blueprint(usermod, url_prefix="/admin")
+app.register_blueprint(healthcheck, url_prefix="/admin")
 app.register_blueprint(users, url_prefix="/admin")
 app.register_blueprint(login)
 app.register_blueprint(logout)
+app.register_blueprint(questionnaireid)
 # /etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf
 # change base url TODO: uncomment this
 # app.config["APPLICATION_ROOT"] = "/intelliq_api"
