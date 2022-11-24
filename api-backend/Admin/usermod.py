@@ -1,12 +1,18 @@
-from service import app, sqlcursor, myconnector
+from service import Blueprint, sqlcursor, myconnector
 from flask import request, jsonify, Response
+from authentication import authAdmin
 # TODO: ensure that calling user is an admin
 
+usermod = Blueprint("usermod", __name__)
+users = Blueprint("users", __name__)
 
-@app.route("/admin/usermod/<username>/<password>", methods=["POST"])
+
+@usermod.route("/usermod/<username>/<password>", methods=["POST"])
 # Administrative endpoint for creating users and
 # modifying passwords of existing users.
 def usermod(username: str, password: str):
+    if not authAdmin():
+        return Response("Unauthorized.", status=401)
     if (username == "" or password == ""):
         return Response("Empty Required Fields", status=400)
     if (len(username) > 10 or len(password) > 20):  # could be implemented using try-catch
@@ -25,12 +31,14 @@ def usermod(username: str, password: str):
     return Response("", 200)
 
 
-@app.route("/admin/users/<username>", methods=["GET"])
+@users.route("/users/<username>", methods=["GET"])
 # Admin endpoint for retrieving user information.
 def users(username: str):
-    keys = ["username", "password", "access_token"]
+    if not authAdmin:
+        return Response("Unauthorized.", status=401)
     if (username == ""):
         return Response("", status=400)
+    keys = ["username", "password", "access_token"]
     sqlcursor.execute("SELECT * FROM Users WHERE username=%s", [username])
     results = sqlcursor.fetchall()
     if len(results) == 0:
