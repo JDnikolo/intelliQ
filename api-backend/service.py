@@ -4,6 +4,9 @@ from Admin.resetall import *
 from Admin.usermod import *
 from Admin.resetall import resetall
 from Admin.healthcheck import healthcheck
+#uncomment 2 following lines to add questionnaire_upd and question endpoints
+#from Admin.questionnaire_upd import questionnaire_upd
+#from Users.question import question
 from flask import Flask, jsonify, request, render_template
 from mysqlconfig import *
 
@@ -16,6 +19,10 @@ app.register_blueprint(users, url_prefix="/admin")
 app.register_blueprint(login)
 app.register_blueprint(logout)
 app.register_blueprint(questionnaireid)
+#uncomment 2 following lines to add questionnaire_upd and question endpoints
+#app.register_blueprint(questionnaire_upd, url_prefix="/admin")
+#app.register_blueprint(question)
+
 # /etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf
 # change base url TODO: uncomment this
 # app.config["APPLICATION_ROOT"] = "/intelliq_api"
@@ -35,8 +42,6 @@ sqlcursor = myconnector.cursor(buffered=True)
 # buffered was set to true to fetch more than 1 rows https://stackoverflow.com/questions/29772337/python-mysql-connector-unread-result-found-when-using-fetchone
 # TODO remove testing endpoints when actual endpoints are
 # ready to use
-# uncomment the following  line to add question test endpoint.
-#from Users.question import *
 # method parameters can be <variables>
 
 
