@@ -1,11 +1,33 @@
+from Users.loginout import *
+from Users.questionnaireid import *
+from Users.getsessionanswers import *
+from Admin.resetall import *
+from Admin.usermod import *
+from Admin.resetall import resetall
+from Admin.healthcheck import healthcheck
+from Admin.resetq import *
+#uncomment 2 following lines to add questionnaire_upd and question endpoints
+#from Admin.questionnaire_upd import questionnaire_upd
+#from Users.question import question
 from flask import Flask, jsonify, request, render_template
-import mysql.connector
 from mysqlconfig import *
 
 app = Flask(__name__)
-from Admin.resetall import resetall
+
 app.register_blueprint(resetall, url_prefix="/admin")
-# /etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf 
+app.register_blueprint(usermod, url_prefix="/admin")
+app.register_blueprint(healthcheck, url_prefix="/admin")
+app.register_blueprint(users, url_prefix="/admin")
+app.register_blueprint(resetq_blueprint, url_prefix="/admin")
+app.register_blueprint(login)
+app.register_blueprint(logout)
+app.register_blueprint(questionnaireid)
+app.register_blueprint(getsessionanswers_blueprint, url_prefix="")
+#uncomment 2 following lines to add questionnaire_upd and question endpoints
+#app.register_blueprint(questionnaire_upd, url_prefix="/admin")
+#app.register_blueprint(question)
+
+# /etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf
 # change base url TODO: uncomment this
 # app.config["APPLICATION_ROOT"] = "/intelliq_api"
 # TODO: change port to 91003 as specified in project_softeng2022_part2_v01
@@ -15,7 +37,7 @@ app.config["JSON_SORT_KEYS"] = False
 # myconnector = mysql.connector.connect(
 #    host="localhost",
 #    user="root",
-#    password="",
+#    password="#poupass",
 #    database='intelliq',
 #    port=3306
 # )
@@ -24,12 +46,9 @@ sqlcursor = myconnector.cursor(buffered=True)
 # buffered was set to true to fetch more than 1 rows https://stackoverflow.com/questions/29772337/python-mysql-connector-unread-result-found-when-using-fetchone
 # TODO remove testing endpoints when actual endpoints are
 # ready to use
-from Admin.usermod import *
-from Admin.resetall import *
-from Users.loginout import *
-#uncomment the following  line to add question test endpoint.
-#from Users.question import *
 # method parameters can be <variables>
+
+
 @app.route("/", methods=["GET"])
 def hello_world():
     sqlcursor.execute("SHOW TABLES")
@@ -38,10 +57,11 @@ def hello_world():
 
 
 # method parameters can be <variables>
-@app.route("/<name>", methods=["GET"])
+@app.route("/test/<name>", methods=["GET"])
 # variables must be included as keyword arguements
 def hello_named(name=""):
     return "<p>Hello, {}!</p>".format(name)
+
 
 if __name__ == "__main__":
     app.run(port=91003, debug=True)

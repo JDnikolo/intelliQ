@@ -1,14 +1,17 @@
-from service import app, sqlcursor
-from flask import jsonify, Response
+from service import myconnector
+from flask import jsonify, Response, Blueprint
 
 #TODO add authorization
 
-@app.route("/question/<questionnaireID>/<questionID>", methods=["GET"])
-def question(questionnaireID: str, questionID: str):
+question = Blueprint("question", __name__) 
+
+@question.route("/question/<questionnaireID>/<questionID>", methods=["GET"])
+def usr_question(questionnaireID: str, questionID: str):
     try:
+        sqlcursor = myconnector.cursor(buffered=True)
         #if qnrID doesnt have QQxyz format, or qID doesnt have Pxy format, return bad request code
-        if ((len(questionnaireID) != 5) or (len(questionID) != 3)):
-            return Response("Required fields were not given or they are incorrectly formatted", status=400)
+        #if ((len(questionnaireID) != 5) or (len(questionID) != 3)):
+        #    return Response("Required fields were not given or they are incorrectly formatted", status=400)
         #else check if they exist in the database.
         #SQL Query for checking
         sqlcursor.execute(
@@ -34,6 +37,7 @@ def question(questionnaireID: str, questionID: str):
                WHERE question.questionID = %s
                ORDER BY qoption.optionID ASC''',[questionID])
         res2 = sqlcursor.fetchall()
+        sqlcursor.close()
         #save option data in a list
         opt_data = []                       #init list
         for entry in res2:                  #temp will contain current option data 

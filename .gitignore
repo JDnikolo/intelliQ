@@ -2,5 +2,6 @@
 /api-backend/.*
 /api-backend/__*
 /api-backend/mysqlconfig.py
-
-
+# ignore temporary objects made by Flask during debugging
+*.cpython 
+**/__pycache__/
