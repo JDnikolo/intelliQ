@@ -13,18 +13,18 @@ def questionnaireidf(questionnaireID):
         return Response("Required field was not given or is incorrectly formatted", status=400)
     
     sqlcursor = myconnector.cursor()
-    sqlcursor.execute('''SELECT title from questionnaire where questionnaireID =  %s''',str(questionnaireID))
+    sqlcursor.execute('''SELECT title from questionnaire where (questionnaireID =  %s)''',(str(questionnaireID),))
     title = sqlcursor.fetchall()
     
     #Check if given questionnaireID exists in database
     if len(title) == 0:
             return Response("The requested questionnaire is not present in the database", status=400) 
         
-    sqlcursor.execute('''SELECT word from keywords where questionnaireID =  %s''',str(questionnaireID))
+    sqlcursor.execute('''SELECT word from keywords where (questionnaireID =  %s)''',(str(questionnaireID),))
     keywords = sqlcursor.fetchall()
-    sqlcursor.execute('''SELECT questionID as qID, qtext, required, qtype as type from question where (qnrID =  %s) ORDER BY questionID''',str(questionnaireID))
+    sqlcursor.execute('''SELECT questionID as qID, qtext, required, qtype as type from question where (qnrID =  %s) ORDER BY questionID''',(str(questionnaireID),))
     questions = sqlcursor.fetchall()
     sqlcursor.close()
     
-    return jsonify({"questionnaireID": str(questionnaireID),
+    return jsonify({"questionnaireID": (str(questionnaireID),),
         "questionnaireTitle": title, "keywords": keywords, "questions": questions}), 200
