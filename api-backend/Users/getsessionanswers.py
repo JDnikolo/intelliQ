@@ -15,6 +15,8 @@ def getsessionanswers(questionnaireID,session):
         if len(result) == 0:
             return Response("No answers found",status=402)
         sqlcursor.close()
+        for i in range(len(result)):
+            result[i] = dict(qID = result[i][0], ans = result[i][1])
         return jsonify({"questionnaireID": str(questionnaireID),
         "session": str(session), "answers": result}), 200
         
