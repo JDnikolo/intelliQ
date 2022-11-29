@@ -1,5 +1,5 @@
 from flask import Flask,render_template, request, Blueprint, jsonify, Response
-from flask_mysqldb import MySQL
+#from flask_mysqldb import MySQL
 import mysql.connector
 from mysqlconfig import *
 
@@ -12,7 +12,12 @@ def resetq(questionnaireID):
         
     if request.method == 'POST':
         sqlcursor = myconnector.cursor()
+        sqlcursor.execute(''' SELECT * FROM Answer WHERE (qnrID = %s)''',
+        (str(questionnaireID),))
+        result = sqlcursor.fetchall()
+        if len(result) == 0:
+            return jsonify({"status":"failed", "reason":"No answers found"}), 400
         sqlcursor.execute(''' DELETE FROM Answer WHERE (qnrID = %s)''',(str(questionnaireID),))
         sqlcursor.execute(''' COMMIT''')
         sqlcursor.close()
-        return Response(status=402)
+        return jsonify({"status":"OK"})
