@@ -36,7 +36,7 @@ def usermodf(username: str, password: str):
 @users.route("/users/<username>", methods=["GET"])
 # Admin endpoint for retrieving user information.
 def usersf(username: str):
-    if not authAdmin:
+    if not authAdmin():
         return Response("Unauthorized.", status=401)
     if (username == ""):
         return Response("", status=400)

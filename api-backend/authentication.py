@@ -33,7 +33,7 @@ def authAdmin():
         return False
     cursor = myconnector.cursor()
     cursor.execute(
-        "SELECT * from mysql.User WHERE authentication_string=%s",
+        "SELECT * from mysql.User WHERE User=%s",
         [uid])
     results = cursor.fetchall()
     cursor.close()
