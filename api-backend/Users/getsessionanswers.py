@@ -9,7 +9,7 @@ def getsessionanswers(questionnaireID,session):
     if request.method == 'GET':
         sqlcursor = myconnector.cursor()
         sqlcursor.execute(''' SELECT questionID, answerID FROM Answer INNER JOIN qoption
-        WHERE (sessionID = %s AND qnrID = %s)
+        WHERE (optionID = ans_optionID AND sessionID = %s AND qnrID = %s)
         ORDER BY questionID''',(str(session),str(questionnaireID)))
         result = sqlcursor.fetchall()
         if len(result) == 0:
