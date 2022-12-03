@@ -41,7 +41,7 @@ def usersf(username: str):
     if (username == ""):
         return Response("", status=400)
     sqlcursor = myconnector.cursor()
-    keys = ["username", "password", "access_token"]
+    keys = ["username", "password", "user_type", "access_token"]
     sqlcursor.execute("SELECT * FROM Users WHERE username=%s", [username])
     results = sqlcursor.fetchall()
     sqlcursor.close()
@@ -49,5 +49,5 @@ def usersf(username: str):
         # 402 apparently corresponds to "Payment needed???"
         return Response("", status=402)
     else:
-        output = {keys[i]: results[0][i] for i in range(0, 3)}
+        output = {keys[i]: results[0][i] for i in range(0, 4)}
         return jsonify(output)
