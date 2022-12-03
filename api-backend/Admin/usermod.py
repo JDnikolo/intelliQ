@@ -23,7 +23,7 @@ def usermodf(username: str, password: str):
     if len(results) == 0:
         # empty list, no result -> create user
         sqlcursor.execute(
-            "INSERT INTO Users (username,us_password) VALUES (%s,%s)", [username, password])
+            "INSERT INTO Users (username,us_password,us_role) VALUES (%s,%s,%s)", [username, password, 'V'])
     else:
         # user exists, change password
         sqlcursor.execute(

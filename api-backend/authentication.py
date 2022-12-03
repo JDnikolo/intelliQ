@@ -31,7 +31,7 @@ def authAdmin():
     cursor = myconnector.cursor()
     cursor.execute(
         "SELECT * from Users WHERE access_token=%s AND us_role=%s",
-        [uid, 'Admin'])
+        [uid, 'A'])
     results = cursor.fetchall()
     cursor.close()
     if len(results) == 0:
