@@ -14,7 +14,7 @@ USE `intelliq` ;
 CREATE TABLE IF NOT EXISTS intelliq.Users (
   username VARCHAR(10) NOT NULL,
   us_password VARCHAR(20) NOT NULL,
-  us_role VARCHAR(1),
+  us_role ENUM('Admin','Viewer'),
   access_token VARCHAR(30),
   CHECK (us_role = 'A' OR us_role = 'V'),
   PRIMARY KEY (username))
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS intelliq.Question (
   questionID VARCHAR(20) NOT NULL,
   qtext TEXT,
   required BOOLEAN NOT NULL,
-  qtype VARCHAR (8),
+  qtype ENUM('question','profile'),
   qnrID VARCHAR(5) NOT NULL,
   INDEX qn_idx (qnrID ASC) ,
   CONSTRAINT qnrID
@@ -125,123 +125,3 @@ CREATE TABLE IF NOT EXISTS intelliq.Answer (
     	ON UPDATE CASCADE,
   PRIMARY KEY (answerID,sessionID))
 ENGINE = InnoDB;
-/*
--- -----------------------------------------------------
--- Table Ans_opt. Shows the many-to-many relation
--- between Answer and Qoption
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS intelliq.Ans_opt (
-  ansID VARCHAR(11) NOT NULL,
-  qoptID VARCHAR(20) NOT NULL,
-  INDEX ans_idx (ansID ASC) ,
-  CONSTRAINT ansID
-    	FOREIGN KEY (ansID)
-    	REFERENCES intelliq.Answer (answerID)
-    	ON DELETE CASCADE
-    	ON UPDATE CASCADE,
-  INDEX qopt_idx (qoptID ASC) ,
-  CONSTRAINT qoptID
-    	FOREIGN KEY (qoptID)
-    	REFERENCES intelliq.Qoption (optionID)
-    	ON DELETE CASCADE
-    	ON UPDATE CASCADE,
-  PRIMARY KEY (ansID,qoptID))
-ENGINE = InnoDB;
-
--- -----------------------------------------------------
--- Table Answer_text. Expresses the generalisation of 
--- the Answer table to text answers
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS intelliq.Answer_text (
-  ansID VARCHAR(11) NOT NULL,
-  sessionID VARCHAR(4) NOT NULL,
-  answer_text TEXT,
-  INDEX ans_idx (ansID ASC) ,
-  CONSTRAINT txt_ansID
-    	FOREIGN KEY (ansID)
-    	REFERENCES intelliq.Answer (answerID)
-    	ON DELETE CASCADE
-    	ON UPDATE CASCADE,
-  INDEX sess_idx (sessionID ASC) ,
-  CONSTRAINT ans_txt_sessionID
-    	FOREIGN KEY (sessionID)
-    	REFERENCES intelliq.Answer (sessionID)
-    	ON DELETE CASCADE
-    	ON UPDATE CASCADE,
-  PRIMARY KEY (ansID,sessionID))
-ENGINE = InnoDB;
-
--- -----------------------------------------------------
--- Table Answer_text. Expresses the generalisation of 
--- the Answer table to multiple choice answers
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS intelliq.Answer_mc (
-  ansID VARCHAR(11) NOT NULL,
-  sessionID VARCHAR(4) NOT NULL,
-  choiceID VARCHAR(1),
-  INDEX ans_idx (ansID ASC) ,
-  CONSTRAINT mc_ansID
-    	FOREIGN KEY (ansID)
-    	REFERENCES intelliq.Answer (answerID)
-    	ON DELETE CASCADE
-    	ON UPDATE CASCADE,
-  INDEX sess_idx (sessionID ASC) ,
-  CONSTRAINT mc_sessionID
-    	FOREIGN KEY (sessionID)
-    	REFERENCES intelliq.Answer (sessionID)
-    	ON DELETE CASCADE
-    	ON UPDATE CASCADE,
-  PRIMARY KEY (ansID,sessionID))
-ENGINE = InnoDB;
-*/
--- -----------------------------------------------------
--- Table Has_questions. Shows the one-to-many relation
--- between Questionnaire and Question
--- ATTENTION One-to-Many relationships with total 
--- participation on the many side can be modelled 
--- by just adding the dominating entity's 
--- primary key on the dominated entity
--- -----------------------------------------------------
--- CREATE TABLE IF NOT EXISTS intelliq.Has_questions (
---  qnrID VARCHAR(5) NOT NULL,
---  qID VARCHAR(10) NOT NULL,
---  INDEX hq_idx1 (qnrID ASC) ,
---  CONSTRAINT qnrID
---    	FOREIGN KEY (qnrID)
---    	REFERENCES intelliq.Questionnaire (questionnaireID)
---    	ON DELETE CASCADE
---    	ON UPDATE CASCADE,
---  INDEX hq_idx2 (qID ASC) ,
---  CONSTRAINT qID
---    	FOREIGN KEY (qID)
---    	REFERENCES intelliq.Question (questionID)
---    	ON DELETE CASCADE
---    	ON UPDATE CASCADE,
---  PRIMARY KEY (qnrID,qID))
--- ENGINE = InnoDB;
-
--- -----------------------------------------------------
--- Table Has_options. Shows the one-to-many relation
--- between Questionnaire and Question. It is not needed
--- since one-to-one relationships can be modelled with 
--- either side acting as the many side which is 
--- equivalant with a one to many relationship with a
--- one to many relationship with partial cardinality 
--- -----------------------------------------------------
--- CREATE TABLE IF NOT EXISTS intelliq.Has_questions (
---  qnrID VARCHAR(5) NOT NULL,
---  qID VARCHAR(10) NOT NULL,
---  INDEX hq_idx1 (qnrID ASC) ,
---  CONSTRAINT qnrID
---    	FOREIGN KEY (qnrID)
---    	REFERENCES intelliq.Questionnaire (questionnaireID)
---    	ON DELETE CASCADE
---    	ON UPDATE CASCADE,
---  INDEX hq_idx2 (qID ASC) ,
---  CONSTRAINT qID
---    	FOREIGN KEY (qID)
---    	REFERENCES intelliq.Question (questionID)
---    	ON DELETE CASCADE
---    	ON UPDATE CASCADE,
---  PRIMARY KEY (qnrID,qID))
--- ENGINE = InnoDB;
