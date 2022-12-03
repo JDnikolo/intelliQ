@@ -14,7 +14,7 @@ USE `intelliq` ;
 CREATE TABLE IF NOT EXISTS intelliq.Users (
   username VARCHAR(10) NOT NULL,
   us_password VARCHAR(20) NOT NULL,
-  us_role ENUM('Admin','Viewer'),
+  us_role ENUM('A','V'),
   access_token VARCHAR(30),
   CHECK (us_role = 'A' OR us_role = 'V'),
   PRIMARY KEY (username))
