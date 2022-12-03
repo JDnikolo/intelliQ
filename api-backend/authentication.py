@@ -6,7 +6,6 @@ from mysqlconfig import myconnector
 # Returns False otherwise.
 def authUser():
     uid = request.headers.get("X-OBSERVATORY-AUTH")
-    # TODO move user authenticaton here
     if uid == None:
         # None -> custom header not included in request
         return False
@@ -25,16 +24,14 @@ def authUser():
 
 
 def authAdmin():
-    # TODO implement admin authentication here
-    # possibly using authentication strings of mysql.User table
     uid = request.headers.get("X-OBSERVATORY-AUTH")
     if uid == None:
         # None -> custom header not included in request
         return False
     cursor = myconnector.cursor()
     cursor.execute(
-        "SELECT * from mysql.User WHERE User=%s",
-        [uid])
+        "SELECT * from Users WHERE access_token=%s AND us_role=%s",
+        [uid, 'Admin'])
     results = cursor.fetchall()
     cursor.close()
     if len(results) == 0:
