@@ -30,7 +30,7 @@ def authAdmin():
         return False
     cursor = myconnector.cursor()
     cursor.execute(
-        "SELECT * from Users WHERE access_token=%s AND us_role='A'",
+        "SELECT * from Users WHERE access_token=%s AND us_role='Admin'",
         [uid])
     results = cursor.fetchall()
     cursor.close()
