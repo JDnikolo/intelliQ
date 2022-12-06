@@ -8,7 +8,9 @@ getsessionanswers_blueprint = Blueprint("getsessionanswers", __name__)
 def getsessionanswers(questionnaireID,session):
     if request.method == 'GET':
         sqlcursor = myconnector.cursor()
-        sqlcursor.execute(''' SELECT questionID, answerID FROM Answer INNER JOIN qoption
+        sqlcursor.execute(''' SELECT questionID, IF (STRCMP(`optionTXT`,"<open string>") != 0,
+        ans_optionID, answertxt)
+        FROM Answer INNER JOIN qoption
         WHERE (optionID = ans_optionID AND sessionID = %s AND qnrID = %s)
         ORDER BY questionID''',(str(session),str(questionnaireID)))
         result = sqlcursor.fetchall()
