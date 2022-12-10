@@ -1,7 +1,7 @@
 from flask import Blueprint,  jsonify
 import mysql.connector
 from mysqlconfig import *
-# TODO: ensure that calling user is an admin
+from authentication import authAdmin
 
 healthcheck= Blueprint("healthcheck", __name__)
 
@@ -9,10 +9,22 @@ healthcheck= Blueprint("healthcheck", __name__)
 # Administrative endpoint for ensuring end-to-end 
 # connectivity from backend to database.
 def healthcheckf():
-    if myconnector.is_connected():
-        return jsonify({"status":"OK", "dbconnection":"intelliq"}), 200
+    
+    # Verify Admin
+    if authAdmin():
+        if myconnector.is_connected():
+            #myconnector.close() not sure
+            #we use database name : "intelliq" as connection string
+            return jsonify({"status":"OK", "dbconnection":"intelliq"}), 200
+        else:
+            return jsonify({"status":"failed", "dbconnection":"intelliq"}), 200
     else:
-        return jsonify({"status":"failed", "dbconnection":"intelliq"}), 200
+        return jsonify({
+                    "type":"/errors/authentication-error",
+                    "title": "Unauthorized User",
+                    "status": "401",
+                    "detail":"User is unauthorized",
+                    "instance":"/admin/healthcheck"}), 401 
      
 #enallaktika: 
 #def healthcheckf():
@@ -23,7 +35,6 @@ def healthcheckf():
                                                 database='intelliq',
                                                 port=3306
                                             )
-        #TODO: use mysqlconfig.py instead
         if connection.is_connected():
             return ({"status":"OK", "dbconnection":"intelliq"}), 200
         #we use database name : "intelliq" as connection string

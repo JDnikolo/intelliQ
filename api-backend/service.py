@@ -30,7 +30,6 @@ app.register_blueprint(question)
 # /etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf
 # change base url TODO: uncomment this
 # app.config["APPLICATION_ROOT"] = "/intelliq_api"
-# TODO: change port to 91003 as specified in project_softeng2022_part2_v01
 app.config["JSON_SORT_KEYS"] = False
 # # mysqlconfig.py template
 # import mysql.connector
