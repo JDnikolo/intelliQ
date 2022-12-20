@@ -1,6 +1,7 @@
-from flask import Blueprint, jsonify, Response
+from flask import Blueprint, jsonify, Response, request
 from mysqlconfig import *
 from authentication import authUser
+from csvResponse import generateCSVresponse
 
 questionnaireid=Blueprint("questionnaireid", __name__)
 
@@ -9,6 +10,10 @@ questionnaireid=Blueprint("questionnaireid", __name__)
 # questions of questionnaire with <questionnaireID>, ordered by questionID
 def questionnaireidf(questionnaireID):
     
+    form = request.args.get("format", None)
+    if form not in ['json', 'csv']:
+        form = 'json'
+        
     # Verify User
     if authUser():
     
@@ -30,8 +35,14 @@ def questionnaireidf(questionnaireID):
         questions = sqlcursor.fetchall()
         sqlcursor.close()
         
-        return jsonify({"questionnaireID": (str(questionnaireID),),
-            "questionnaireTitle": title, "keywords": keywords, "questions": questions}), 200
+        output = {"questionnaireID": (str(questionnaireID),),
+            "questionnaireTitle": title, "keywords": keywords, "questions": questions}
+        if form == 'json':
+            return jsonify(output), 200
+        if form == 'csv':
+            return generateCSVresponse(output, listKey=None, filename="healthcheck.csv"), 200
+        #return jsonify({"questionnaireID": (str(questionnaireID),),
+            #"questionnaireTitle": title, "keywords": keywords, "questions": questions}), 200
     else:
         return jsonify({
                     "type":"/errors/authentication-error",
