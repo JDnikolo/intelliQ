@@ -1,6 +1,8 @@
+
 from flask import Blueprint, request, jsonify, Response
 from authentication import authAdmin
 from mysqlconfig import myconnector
+from csvResponse import generateCSVresponse
 
 usermod = Blueprint("usermod", __name__)
 users = Blueprint("users", __name__)
@@ -54,6 +56,9 @@ def usermodf(username: str, password: str):
 @users.route("/users/<username>", methods=["GET"])
 # Admin endpoint for retrieving user information.
 def usersf(username: str):
+    form = request.args.get("format", None)
+    if form not in ['json', 'csv']:
+        form = 'json'
     if not authAdmin():
         return jsonify({"type": "/errors/authorization-error",
                         "title": "Unauthorized.",
@@ -80,6 +85,7 @@ def usersf(username: str):
                         "instance": "/admin/users"}), 402
     else:
         # user exists but is an Admin, abort
+        print(results)
         if results[0][2] == 'A':
             return jsonify({"type": "/errors/operation-error",
                             "title": "No retrieving Admin credentials.",
@@ -87,4 +93,7 @@ def usersf(username: str):
                             "detail": "User {} has the Admin role and their credentials cannot be retrieved using this endpoint.".format(username),
                             "instance": "/admin/users"}), 400
         output = {keys[i]: results[0][i] for i in range(0, 4)}
-        return jsonify(output)
+        if form == 'json':
+            return jsonify(output)
+        if form == 'csv':
+            return generateCSVresponse(output, listKey=None, filename="users.csv")
