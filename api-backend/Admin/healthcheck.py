@@ -1,7 +1,8 @@
-from flask import Blueprint,  jsonify
+from flask import Blueprint,  jsonify, request
 import mysql.connector
 from mysqlconfig import *
-# TODO: ensure that calling user is an admin
+from authentication import authAdmin
+from csvResponse import generateCSVresponse
 
 healthcheck= Blueprint("healthcheck", __name__)
 
@@ -9,27 +10,25 @@ healthcheck= Blueprint("healthcheck", __name__)
 # Administrative endpoint for ensuring end-to-end 
 # connectivity from backend to database.
 def healthcheckf():
-    if myconnector.is_connected():
-        return jsonify({"status":"OK", "dbconnection":"intelliq"}), 200
-    else:
-        return jsonify({"status":"failed", "dbconnection":"intelliq"}), 200
-     
-#enallaktika: 
-#def healthcheckf():
-    try:
-        connection = mysql.connector.connect(   host="localhost",
-                                                user="root",
-                                                password="",
-                                                database='intelliq',
-                                                port=3306
-                                            )
-        #TODO: use mysqlconfig.py instead
-        if connection.is_connected():
-            return ({"status":"OK", "dbconnection":"intelliq"}), 200
-        #we use database name : "intelliq" as connection string
+    form = request.args.get("format", None)
+    if form not in ['json', 'csv']:
+        form = 'json'             
+    # Verify Admin
+    if authAdmin():
+        if myconnector.is_connected():
+            #myconnector.close() not sure
+            #we use database name : "intelliq" as connection string
+            output = {"status":"OK", "dbconnection":"intelliq"}
         else:
-            return jsonify({"status":"failed", "dbconnection":"intelliq"}), 200
-        
-    finally:
-        if connection.is_connected():
-            connection.close()        
+            output = {"status":"failed", "dbconnection":"intelliq"}
+        if form == 'json':
+            return jsonify(output), 200
+        if form == 'csv':
+            return generateCSVresponse(output, listKey=None, filename="healthcheck.csv"), 200
+    else:
+        return jsonify({
+                    "type":"/errors/authentication-error",
+                    "title": "Unauthorized User",
+                    "status": "401",
+                    "detail":"User is unauthorized",
+                    "instance":"/admin/healthcheck"}), 401      

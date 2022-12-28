@@ -7,8 +7,8 @@ from Admin.resetall import resetall
 from Admin.healthcheck import healthcheck
 from Admin.resetq import *
 #uncomment 2 following lines to add questionnaire_upd and question endpoints
-#from Admin.questionnaire_upd import questionnaire_upd
-#from Users.question import question
+from Admin.questionnaire_upd import questionnaire_upd
+from Users.question import question
 from flask import Flask, jsonify, request, render_template
 from mysqlconfig import *
 
@@ -24,13 +24,12 @@ app.register_blueprint(logout)
 app.register_blueprint(questionnaireid)
 app.register_blueprint(getsessionanswers_blueprint, url_prefix="")
 #uncomment 2 following lines to add questionnaire_upd and question endpoints
-#app.register_blueprint(questionnaire_upd, url_prefix="/admin")
-#app.register_blueprint(question)
+app.register_blueprint(questionnaire_upd, url_prefix="/admin")
+app.register_blueprint(question)
 
 # /etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf
 # change base url TODO: uncomment this
 # app.config["APPLICATION_ROOT"] = "/intelliq_api"
-# TODO: change port to 91003 as specified in project_softeng2022_part2_v01
 app.config["JSON_SORT_KEYS"] = False
 # # mysqlconfig.py template
 # import mysql.connector
