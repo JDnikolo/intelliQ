@@ -14,4 +14,4 @@ def find_key():
         f = open(home + '/softeng22API.token', 'r')
         content = f.read()
         headers = {'x-observatory-auth': content}
-        return headers
+    return headers

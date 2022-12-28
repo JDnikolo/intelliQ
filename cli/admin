@@ -4,14 +4,7 @@ from imports import *
 def usermod(arg):
   #print(arg)
   url = 'http://localhost:9103/admin/usermod/' + arg.username + '/' + arg.passw
-  #take api key from file saved from login
-  headers = None
-  home = str(Path.home())
-  if os.path.exists(home + '/softeng22API.token'):
-    f = open(home + '/softeng22API.token', 'r')
-    content = f.read()
-    headers = {'x-observatory-auth': content}
-  res = requests.post(url, headers=headers, verify=False)
+  res = requests.post(url, headers=find_key(), verify=False)
   print(res.status_code)
   print(res.json())
   return True
@@ -20,14 +13,7 @@ def usermod(arg):
 def users(arg):
   #print(ar)
   url = 'http://localhost:9103/admin/users/' + arg.username
-  #take api key from file saved from login
-  headers = None
-  home = str(Path.home())
-  if os.path.exists(home + '/softeng22API.token'):
-    f = open(home + '/softeng22API.token', 'r')
-    content = f.read()
-    headers = {'x-observatory-auth': content}
-  res = requests.get(url, headers=headers, verify=False)
+  res = requests.get(url, headers=find_key(), verify=False)
   print(res.status_code)
   print(res.json())
   return True
