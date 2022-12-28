@@ -7,6 +7,7 @@ from Admin.usermod import *
 from Admin.resetall import resetall
 from Admin.healthcheck import healthcheck
 from Admin.resetq import *
+<<<<<<< HEAD
 from Admin.questionnaire_upd import questionnaire_upd
 from Users.question import question
 from Users.doAnswer import doAnswer
@@ -30,6 +31,29 @@ app.register_blueprint(getquestionanswers_blueprint,
 app.register_blueprint(doAnswer, url_prefix="/intelliq_api")
 app.register_blueprint(questionnaire_upd, url_prefix="/intelliq_api/admin")
 app.register_blueprint(question, url_prefix="/intelliq_api")
+=======
+# uncomment 2 following lines to add questionnaire_upd and question endpoints
+from Admin.questionnaire_upd import questionnaire_upd
+from Users.question import question
+from flask import Flask, jsonify, request, render_template
+from mysqlconfig import *
+from flask_cors import CORS
+
+app = Flask(__name__)
+
+app.register_blueprint(resetall, url_prefix="/admin")
+app.register_blueprint(usermod, url_prefix="/admin")
+app.register_blueprint(healthcheck, url_prefix="/admin")
+app.register_blueprint(users, url_prefix="/admin")
+app.register_blueprint(resetq_blueprint, url_prefix="/admin")
+app.register_blueprint(login)
+app.register_blueprint(logout)
+app.register_blueprint(questionnaireid)
+app.register_blueprint(getsessionanswers_blueprint, url_prefix="")
+# uncomment 2 following lines to add questionnaire_upd and question endpoints
+app.register_blueprint(questionnaire_upd, url_prefix="/admin")
+app.register_blueprint(question)
+>>>>>>> 11d0ef5 (CORS functionality added to Flask server to enable)
 
 # /etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf
 # change base url TODO: uncomment this
@@ -43,6 +67,9 @@ app.config["JSON_SORT_KEYS"] = False
 #    database='intelliq',
 #    port=3306
 # )
+
+CORS(app)
+
 # sqlcursor.execute(sql_query) to access database
 sqlcursor = myconnector.cursor(buffered=True)
 # buffered was set to true to fetch more than 1 rows https://stackoverflow.com/questions/29772337/python-mysql-connector-unread-result-found-when-using-fetchone
