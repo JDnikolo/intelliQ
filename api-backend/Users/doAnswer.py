@@ -25,7 +25,7 @@ def answerQS(questionnaireID, questionID, session, optionID):
                     "title": "Database Operation Failure",
                     "status": "500",
                     "detail":"Could not get handle to {}".format(myconnector.database),
-                    "instance":"/{}/{}/{}/{}".format()}), 500
+                    "instance":"/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 500
         # verify that post is conducted on existing data
         sqlcursor.execute('''SELECT `questionID` FROM `Question` WHERE `Question`.`qnrID` = '{}';'''.format(questionnaireID))
 
@@ -36,7 +36,6 @@ def answerQS(questionnaireID, questionID, session, optionID):
                     "status": "400",
                     "detail":"Bad request parameters".format(myconnector.database),
                     "instance":"/user/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
-        print("Past point 1")
         
         insertAns = '''INSERT INTO `intelliq`.`Answer` (`answerID`, `sessionID`, `ans_optionID`, `qnrID`)
         VALUES ('{}', '{}', '{}', '{}')'''.format(get_random_string(11),session,optionID,questionnaireID)
