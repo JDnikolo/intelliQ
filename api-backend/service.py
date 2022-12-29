@@ -1,6 +1,7 @@
 from Users.loginout import *
 from Users.questionnaireid import *
 from Users.getsessionanswers import *
+from Users.doAnswer import *
 from Admin.resetall import *
 from Admin.usermod import *
 from Admin.resetall import resetall
@@ -26,6 +27,7 @@ app.register_blueprint(getsessionanswers_blueprint, url_prefix="")
 #uncomment 2 following lines to add questionnaire_upd and question endpoints
 app.register_blueprint(questionnaire_upd, url_prefix="/admin")
 app.register_blueprint(question)
+app.register_blueprint(doAnswer)
 
 # /etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf
 # change base url TODO: uncomment this
@@ -63,4 +65,4 @@ def hello_named(name=""):
 
 
 if __name__ == "__main__":
-    app.run(port=9000, debug=True)
+    app.run(port=5000, debug=True)
