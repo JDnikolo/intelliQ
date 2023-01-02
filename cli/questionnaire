@@ -2,13 +2,27 @@ from imports import *
 
 
 def questionnaire(arg):
-  url = 'http://localhost:9103/questionnaire/' + arg.questionnaire_id
+  url = 'http://localhost:5000/questionnaire/' + arg.questionnaire_id
   if (arg.format == 'csv'):
     url = url + '?format=csv'
-  res = requests.get(url, find_key(), verify=False)
-  print(res.status_code)
-  print(res.json())
+  res = requests.get(url, headers=find_key(), verify=False)
+  if (arg.format == 'json' and res.status_code == 200):
+        print(res.status_code)
+        print(res.json())
+  elif (arg.format == 'csv' and res.status_code == 200):
+    f = open(f"./csv_files/{arg.questionnaire_id}.csv", 'w+') 
+    f.truncate(0)
+    f.write(res.text)
+    f.seek(0)
+    f.close()
+    #print(res.status_code)
+    print(res.text)
+    print("csv file saved at csv_files directory successfully")
+  else:
+    print(res.status_code)
+    print(res.json())
   return True
+
 
 
 parser = argparse.ArgumentParser()
