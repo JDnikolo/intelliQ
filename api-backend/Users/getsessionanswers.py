@@ -2,6 +2,7 @@ from flask import request, Blueprint, jsonify, Response
 import mysql.connector
 from mysqlconfig import *
 from authentication import authUser
+from csvResponse import generateCSVresponse
 
 getsessionanswers_blueprint = Blueprint("getsessionanswers", __name__)
 
@@ -56,8 +57,13 @@ def getsessionanswers(questionnaireID,session):
             sqlcursor.close()
             for i in range(len(result)):
                 result[i] = dict(qID = result[i][0], ans = result[i][1])
-            return jsonify({"questionnaireID": str(questionnaireID),
-            "session": str(session), "answers": result}), 200
+            if (format == 'json'):
+                return jsonify({"questionnaireID": str(questionnaireID),
+                "session": str(session), "answers": result}), 200
+            else:
+                newDict = dict(questionnaireID = str(questionnaireID),
+                session = str(session), answers = result)
+                return generateCSVresponse(newDict, "answers")
         else:
             return jsonify({
                         "type":"/errors/authentication-error",
