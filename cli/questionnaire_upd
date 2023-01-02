@@ -2,10 +2,14 @@ from imports import *
 
 
 def questionnaire_upd(arg):
-  res = requests.post('http://localhost:9103/admin/questionnaire_upd',
+  url = 'http://localhost:5000/admin/questionnaire_upd'
+
+  res = requests.post(url,
                       headers=find_key(),
-                      files=arg.source,
+                      files={'a': open(arg.source,'rb')},
                       verify=False)
+  print(res)
+  #print(res.json())
   return True
 
 
@@ -13,11 +17,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--source',
                     help='Select a questionnaire .json file to upload',
                     required='TRUE')
-parser.add_argument('--format',
-                    choices=['csv', 'json'],
-                    help='Select json or csv format',
-                    required='TRUE')
 #TODO fix source if needed with JSON
 args = parser.parse_args()
-
 questionnaire_upd(args)
