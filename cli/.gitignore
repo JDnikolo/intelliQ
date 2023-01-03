@@ -1,3 +1,3 @@
 .gitignore
-/flag.txt
+flag.txt
 csv_files/*

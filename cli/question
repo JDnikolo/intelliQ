@@ -2,10 +2,8 @@ from imports import *
 
 
 def question(arg):
-  headers=find_key()
-  headers["Content-Type"] = "application/x-www-form-urlencoded"
   url = 'http://localhost:9103/intelliq_api/question/' + arg.questionnaire_id + '/' + arg.question_id + '?format=' + arg.format
-  res = requests.get(url, headers=headers , verify=False)
+  res = requests.get(url, headers=find_key() , verify=False)
   if (arg.format == 'json' and res.status_code == 200):
         print(res.status_code)
         print(res.json())
@@ -16,9 +14,7 @@ def question(arg):
     f.write(res.text)
     f.seek(0)
     f.close()
-    #print(res.status_code)
-    print(res.encoding)
-    #print(res.text)
+    print(res.text)
     print("csv file saved at csv_files directory successfully!")
   else:
     print(res.status_code)

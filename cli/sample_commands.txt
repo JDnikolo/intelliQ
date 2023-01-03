@@ -7,3 +7,9 @@ se2212 resetq --questionnaire_id asper --format json
 se2212 doAnswer --questionnaire_id asper --question_id cfhx --session_id 1234 --option_id ipvk --format json
 se2212 getsessionanswers --questionnaire_id asper --session_id 1234 --format json
 se2212 getquestionanswers --questionnaire_id asper --question_id cfhx --format json
+se2212 admin --usermod --username mockdata --passw 12345
+se2212 admin --users --username mockdata --format csv
+se2212 question --questionnaire_id QQ000 --question_id Q05 --format json
+se2212 questionnaire --questionnaire_id QQ000 --format json
+//reset all pending
+se2212 resetall

@@ -12,14 +12,23 @@ def usermod(arg):
 
 
 def users(arg):
-  url = 'http://localhost:9103/intelliq_api/admin/users/' + arg.username
+  url = 'http://localhost:9103/intelliq_api/admin/users/' + arg.username + '?format=' + arg.format
   res = requests.get(url, headers=find_key(), verify=False)
   if(res.status_code == 200):
-    print(res.json())
+    if (arg.format == 'json'):
+      print(res.json())
+    else:
+      f = open(f"./csv_files/userinfo_{arg.username}.csv", 'w+') 
+      f.truncate(0)
+      f.write(res.text)
+      f.seek(0)
+      f.close()
+      print(res.text)
+      print(f"[{arg.username} info saved at csv_files directory successfully!")  
   else:
-    print("Specified User does not exist!")
+    error = res.json()
+    print(error['detail'])
   return True
-
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(prefix_chars='/')
@@ -34,6 +43,10 @@ if __name__ == '__main__':
   #users
   users_parser = sub.add_parser('--users')
   users_parser.add_argument('--username', help = 'The username of the user whose information will be shown.', required = 'TRUE')
+  users_parser.add_argument('--format',
+                    choices=['csv', 'json'],
+                    help='Select json or csv format.',
+                    required='TRUE')
   users_parser.set_defaults(func = users)
   
   args = parser.parse_args()
