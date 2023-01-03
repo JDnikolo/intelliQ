@@ -33,7 +33,7 @@ def adminResetall():
 
             uid = request.headers.get("X-OBSERVATORY-AUTH")
             sqlcursor.execute(
-            "SELECT * from Users WHERE access_token=%s AND us_role='Admin'",
+            "SELECT * from Users WHERE access_token=%s AND us_role='A'",
                 [uid])
             username = sqlcursor.fetchone()[0]
             print(username)

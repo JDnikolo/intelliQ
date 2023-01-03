@@ -11,5 +11,4 @@ se2212 admin --usermod --username mockdata --passw 12345
 se2212 admin --users --username mockdata --format csv
 se2212 question --questionnaire_id QQ000 --question_id Q05 --format json
 se2212 questionnaire --questionnaire_id QQ000 --format json
-//reset all pending
 se2212 resetall
