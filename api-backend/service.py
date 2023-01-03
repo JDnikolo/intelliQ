@@ -16,6 +16,7 @@ from Admin.healthcheck import healthcheck
 from Admin.resetq import *
 from flask_cors import CORS
 
+
 app = Flask(__name__)
 
 app.register_blueprint(resetall, url_prefix="/intelliq_api/admin")
