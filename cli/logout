@@ -1,7 +1,7 @@
 from imports import *
 
 def logout():
-  res = requests.post('http://localhost:5000/logout',
+  res = requests.post('http://localhost:9103/intelliq_api/logout',
                       headers=find_key(),
                       verify=False)
   #print(res.status_code)

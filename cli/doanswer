@@ -3,7 +3,7 @@ from imports import *
 
 def doanswer(arg):
   #print(arg)
-  url = 'http://localhost:5000/doanswer/' + arg.questionnaire_id + '/' + arg.question_id + '/' + arg.session_id + '/' + arg.option_id
+  url = 'http://localhost:9103/intelliq_api/doanswer/' + arg.questionnaire_id + '/' + arg.question_id + '/' + arg.session_id + '/' + arg.option_id
   #take api key from file saved from login
   headers = None
   home = str(Path.home())

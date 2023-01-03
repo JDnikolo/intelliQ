@@ -2,7 +2,7 @@ from imports import *
 
 
 def getsessionanswers(arg):
-  url = 'http://localhost:5000/getsessionanswers/' + arg.questionnaire_id + '/' + arg.session_id
+  url = 'http://localhost:9103/intelliq_api/getsessionanswers/' + arg.questionnaire_id + '/' + arg.session_id
   if (arg.format == 'csv'):
     url = url + '?format=csv'
   res = requests.get(url, headers=find_key(), verify=False)

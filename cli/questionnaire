@@ -2,7 +2,7 @@ from imports import *
 
 
 def questionnaire(arg):
-  url = 'http://localhost:5000/questionnaire/' + arg.questionnaire_id
+  url = 'http://localhost:9103/intelliq_api/questionnaire/' + arg.questionnaire_id
   if (arg.format == 'csv'):
     url = url + '?format=csv'
   res = requests.get(url, headers=find_key(), verify=False)

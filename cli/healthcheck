@@ -1,7 +1,7 @@
 from imports import *
 
 def healthcheck(arg):
-  url = 'http://localhost:5000/admin/healthcheck'
+  url = 'http://localhost:9103/intelliq_api/admin/healthcheck'
   if (arg.format == 'csv'):
     url = url + '?format=csv'
   res = requests.get(url, headers=find_key(), verify=False)

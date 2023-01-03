@@ -2,7 +2,7 @@ from imports import *
 
 
 def resetq(arg):
-  url = 'http://localhost:5000/admin/resetq/' + arg.questionnaire_id
+  url = 'http://localhost:9103/intelliq_api/admin/resetq/' + arg.questionnaire_id
   res = requests.post(url, headers=find_key(), verify=False)
   print(res.text)
   return True

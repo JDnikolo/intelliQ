@@ -2,7 +2,7 @@ from imports import *
 
 
 def usermod(arg):
-  url = 'http://localhost:5000/admin/usermod/' + arg.username + '/' + arg.passw
+  url = 'http://localhost:9103/intelliq_api/admin/usermod/' + arg.username + '/' + arg.passw
   res = requests.post(url, headers=find_key(), verify=False)
   if(res.status_code == 401):
     print("You are unauthorized to perform this action!")
@@ -12,7 +12,7 @@ def usermod(arg):
 
 
 def users(arg):
-  url = 'http://localhost:5000/admin/users/' + arg.username
+  url = 'http://localhost:9103/intelliq_api/admin/users/' + arg.username
   res = requests.get(url, headers=find_key(), verify=False)
   if(res.status_code == 200):
     print(res.json())
