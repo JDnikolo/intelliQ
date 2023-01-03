@@ -16,23 +16,23 @@ from mysqlconfig import myconnector
 
 app = Flask(__name__)
 
-app.register_blueprint(resetall, url_prefix="/admin")
-app.register_blueprint(usermod, url_prefix="/admin")
-app.register_blueprint(healthcheck, url_prefix="/admin")
-app.register_blueprint(users, url_prefix="/admin")
-app.register_blueprint(resetq_blueprint, url_prefix="/admin")
-app.register_blueprint(login)
-app.register_blueprint(logout)
-app.register_blueprint(questionnaireid)
-app.register_blueprint(getsessionanswers_blueprint, url_prefix="")
-app.register_blueprint(getquestionanswers_blueprint, url_prefix="")
-app.register_blueprint(doAnswer)
-app.register_blueprint(questionnaire_upd, url_prefix="/admin")
-app.register_blueprint(question)
+app.register_blueprint(resetall, url_prefix="/intelliq_api/admin")
+app.register_blueprint(usermod, url_prefix="/intelliq_api/admin")
+app.register_blueprint(healthcheck, url_prefix="/intelliq_api/admin")
+app.register_blueprint(users, url_prefix="/intelliq_api/admin")
+app.register_blueprint(resetq_blueprint, url_prefix="/intelliq_api/admin")
+app.register_blueprint(login, url_prefix="/intelliq_api")
+app.register_blueprint(logout, url_prefix="/intelliq_api")
+app.register_blueprint(questionnaireid, url_prefix="/intelliq_api")
+app.register_blueprint(getsessionanswers_blueprint, url_prefix="/intelliq_api")
+app.register_blueprint(getquestionanswers_blueprint,
+                       url_prefix="/intelliq_api")
+app.register_blueprint(doAnswer, url_prefix="/intelliq_api")
+app.register_blueprint(questionnaire_upd, url_prefix="/intelliq_api/admin")
+app.register_blueprint(question, url_prefix="/intelliq_api")
 
 # /etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf
 # change base url TODO: uncomment this
-# app.config["APPLICATION_ROOT"] = "/intelliq_api"
 app.config["JSON_SORT_KEYS"] = False
 # # mysqlconfig.py template
 # import mysql.connector
