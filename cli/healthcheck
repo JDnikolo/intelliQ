@@ -16,9 +16,8 @@ def healthcheck(arg):
     f.close()
     #print(res.status_code)
     print(res.text)
-    print("csv file saved at csv_files directory successfully")
+    print("csv file healthcheck.csv saved at csv_files directory successfully")
   else:
-    print(res.status_code)
     print(res.json())
   return True
 

@@ -17,7 +17,7 @@ def questionnaire(arg):
     f.close()
     #print(res.status_code)
     print(res.text)
-    print("csv file saved at csv_files directory successfully")
+    print(f"csv file {arg.questionnaire_id}.csv saved at csv_files directory successfully")
   else:
     print(res.status_code)
     print(res.json())

@@ -11,9 +11,7 @@ def logout():
       os.remove(home + '/softeng22API.token')
     print("You have successfully logged out.")
   else:
-        print(res.status_code)
         print(res.text)
-
   return True
 
 logout()

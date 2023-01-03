@@ -6,10 +6,7 @@ def login(arg):
   res = requests.post('http://localhost:5000/login', data=info, verify=False)
 
   jsonres = res.json()
-  #print(res.status_code)
-  #print(jsonres)
-  
-  #print(home)
+
   if (res.status_code == 200):
     print(jsonres['token'])
     home = str(Path.home())
@@ -19,11 +16,7 @@ def login(arg):
     print(f"Welcome back, {arg.username}! You have successfully logged in.")
     sys.exit(0)
   else:
-        print(res.status_code)
-        # print(res.text())
-        # print(res)
-        #data = res.json()
-        # print(data)
+    print(res.text)
   return True
 
 
