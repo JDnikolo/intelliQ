@@ -1,5 +1,5 @@
-from flask import Blueprint, request, jsonify, Response
-from mysqlconfig import *
+from flask import Blueprint, request, jsonify
+from mysqlconfig import myconnector
 import random
 import string
 
@@ -15,7 +15,12 @@ doAnswer = Blueprint("doanswer", __name__)
 @doAnswer.route('/doanswer/<questionnaireID>/<questionID>/<session>/<optionID>',methods=["GET","POST"])
 def answerQS(questionnaireID, questionID, session, optionID):
     if request.method == "GET":
-        return Response("<h1>Bad Request</h1><body>GET Request not allowed</body>", status= 400)
+        return jsonify({
+                "type":"/errors/method-not-allowed",
+                "title": "Method Not Allowed",
+                "status": "400",
+                "detail":"GET Request not allowed.",
+                "instance":"/doanswer/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
     if request.method == "POST":
         # check parameters validity
         if(len(session) > 4 or len(questionID)  > 20 or len(questionnaireID) > 5 or len(optionID)  > 20):
@@ -24,7 +29,7 @@ def answerQS(questionnaireID, questionID, session, optionID):
                     "title": "Database Operation Failure",
                     "status": "400",
                     "detail":"Bad request parameters",
-                    "instance":"/user/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
+                    "instance":"/doanswer/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
         try:
             sqlcursor = myconnector.cursor(buffered=True)
         except:
@@ -33,7 +38,7 @@ def answerQS(questionnaireID, questionID, session, optionID):
                     "title": "Database Operation Failure",
                     "status": "500",
                     "detail":"Could not get handle to {}".format(myconnector.database),
-                    "instance":"/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 500
+                    "instance":"/doanswer/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 500
         # verify that post is conducted on existing data
         sqlcursor.execute('''SELECT `questionID` FROM `Question` WHERE `Question`.`qnrID` = '{}';'''.format(questionnaireID))
         questionDB = sqlcursor.fetchall()
@@ -43,7 +48,7 @@ def answerQS(questionnaireID, questionID, session, optionID):
                     "title": "Database Operation Failure",
                     "status": "400",
                     "detail":"Bad request parameters",
-                    "instance":"/user/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
+                    "instance":"/doanswer/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
         
 
         # verify that optionID exists for this Question and get details
@@ -56,7 +61,7 @@ def answerQS(questionnaireID, questionID, session, optionID):
                         "title": "Database Operation Failure",
                         "status": "400",
                         "detail":"Bad request parameters, option does not exist for this question",
-                        "instance":"/user/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
+                        "instance":"/doanswer/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
         # Check if it is an open-ended question
         if (optionQuery[0] == "<open string>"):
             #TODO: Get answer text from front-end form
@@ -68,7 +73,7 @@ def answerQS(questionnaireID, questionID, session, optionID):
                         "title": "Database Operation Failure",
                         "status": "400",
                         "detail":"Bad request parameters",
-                        "instance":"/user/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
+                        "instance":"/doanswer/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
             else:
                 sqlcursor.execute('''SELECT `optionTXT` FROM `Qoption` WHERE `Qoption`.`questionID` = %s AND `Qoption`.`optionID` = %s;''', [questionID, optionID])
                 answerTXT = sqlcursor.fetchone()[0]
@@ -79,4 +84,4 @@ VALUES ('{}', '{}', '{}', '{}', '{}')'''.format(get_random_string(11), session, 
         myconnector.commit()
 
         sqlcursor.close()
-    return Response(status=200)
+    return jsonify({}), 200

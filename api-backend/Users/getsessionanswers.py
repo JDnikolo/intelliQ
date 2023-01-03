@@ -1,6 +1,5 @@
-from flask import request, Blueprint, jsonify, Response
-import mysql.connector
-from mysqlconfig import *
+from flask import request, Blueprint, jsonify
+from mysqlconfig import myconnector
 from authentication import authUser
 from csvResponse import generateCSVresponse
 

@@ -1,6 +1,6 @@
-from flask import Blueprint, request, jsonify, Response
+from flask import Blueprint, request, jsonify
 from authentication import authAdmin
-from mysqlconfig import *
+from mysqlconfig import myconnector
 
 resetall = Blueprint("resetall", __name__) 
 # static_folder="static", template_folder="template"
@@ -9,7 +9,12 @@ resetall.before_app_first_request(authAdmin)
 def adminResetall():
     
     if request.method == "GET":
-        return Response("<h1>Bad Request</h1><body>GET Request not allowed</body>"), 400
+        return jsonify({
+                "type":"/errors/method-not-allowed",
+                "title": "Method Not Allowed",
+                "status": "400",
+                "detail":"GET Request not allowed.",
+                "instance":"/admin/resetall"}), 400     #405
 
     if request.method == "POST":
         # Verify Admin
@@ -128,9 +133,11 @@ def adminResetall():
                         "status": "500",
                         "detail":"Entry '{}'.'{}' could not be deleted".format("Questionnaire",questionnaire[0]),
                         "instance":"/admin/resetall"}), 500
+                    # return jsonify({"status":"failed", "reason":"Entry '{}'.'{}' could not be deleted".format("Questionnaire",questionnaire[0])}), 500
                 
             sqlcursor.close()
-            return Response("Reset Successful"), 200
+            return jsonify({"status":"OK"}), 200                
+            #return Response("Reset Successful"), 200
         else:
             return jsonify({
                         "type":"/errors/authentication-error",

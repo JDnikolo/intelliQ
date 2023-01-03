@@ -1,6 +1,5 @@
-from flask import request, Blueprint, jsonify, Response
-import mysql.connector
-from mysqlconfig import *
+from flask import request, Blueprint, jsonify
+from mysqlconfig import myconnector
 
 getquestionanswers_blueprint = Blueprint("getquestionanswers", __name__)
 
@@ -15,7 +14,12 @@ def getquestionanswers(questionnaireID,questionID):
         ORDER BY sessionID''',(str(questionID),str(questionnaireID)))
         result = sqlcursor.fetchall()
         if len(result) == 0:
-            return Response("No answers found",status=402)
+            return jsonify({
+                "type":"/errors/not-found",
+                "title": "Not Found",
+                "status": "402",
+                "detail":"No answers found.",
+                "instance":"/getquestionanswers/{}/{}".format(questionnaireID, questionID)}), 402 #404
         sqlcursor.close()
         for i in range(len(result)):
             result[i] = dict(session = result[i][0], ans = result[i][1])
@@ -23,4 +27,9 @@ def getquestionanswers(questionnaireID,questionID):
         "questionID": str(questionID), "answers": result}), 200
 
     if request.method == 'POST':
-        return jsonify({"status":"failed", "reason":"POST is invalid in getquestionanswers"}), 400
+        return jsonify({
+                        "type":"/errors/method-not-allowed",
+                        "title": "Method Not Allowed",
+                        "status": "400",
+                        "detail":"POST Request not allowed.",
+                        "instance":"/getquestionanswers/{}/{}".format(questionnaireID, questionID)}), 400    #405

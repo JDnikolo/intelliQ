@@ -1,5 +1,5 @@
 from mysqlconfig import myconnector
-from flask import Blueprint, request, Response
+from flask import Blueprint, request, jsonify
 from authentication import authUser
 # uuid module is used to create unique identifiers based
 # uuid4 creates completely random identifiers without any parameters
@@ -14,7 +14,12 @@ logout = Blueprint("logout", __name__)
 def loginf():
     if request.headers.get("Content-Type") != "application/x-www-form-urlencoded":
         # invalid content type for logging in
-        return Response("Credentials must be x-www-form-urlencoded.", 400)
+        return jsonify({
+                "type":"/errors/authentication-error",
+                "title": "Bad Request",
+                "status": "400",
+                "detail":"Credentials must be x-www-form-urlencoded.",
+                "instance":"/login"}), 400
     sqlcursor = myconnector.cursor()
     username = request.form["username"]
     password = request.form["password"]
@@ -24,7 +29,12 @@ def loginf():
     result = sqlcursor.fetchall()
     if len(result) == 0:
         # either password or username was incorrect,
-        return Response("Invalid Credentials", 400)
+        return jsonify({
+                "type":"/errors/authentication-error",
+                "title": "Unauthorized",
+                "status": "401",
+                "detail":"Invalid Credentials",
+                "instance":"/login"}), 401
     if result[0][0] == None or result[0][0] == "":
         uid = uuid4().hex[:30]
         # user isn't already logged in, create access token and return it
@@ -36,13 +46,23 @@ def loginf():
         return {"token": uid}, 200
     else:
         sqlcursor.close()
-        return Response("Already logged in.", 400)
+        return jsonify({
+                "type":"/errors/authentication-error",
+                "title": "Conflict",
+                "status": "400",
+                "detail":"Already logged in.",
+                "instance":"/login"}), 400      # insted of 409:conflict error
 
 
 @logout.route("/logout", methods=["POST"])
 def logoutf():
     if not (authUser()):
-        return Response("Invalid or missing access token.", 400)
+        return jsonify({
+                "type":"/errors/authentication-error",
+                "title": "Unauthorized",
+                "status": "401",
+                "detail":"Invalid or missing access token.",
+                "instance":"/logout"}), 401     # could be 400: Bad request 
     else:
         uid = request.headers.get("X-OBSERVATORY-AUTH")
         sqlcursor = myconnector.cursor()
@@ -51,4 +71,4 @@ def logoutf():
             "UPDATE Users SET access_token=NULL WHERE access_token=%s",
             [uid])
         myconnector.commit()
-        return Response("", 200)
+        return jsonify({}), 200
