@@ -1,5 +1,5 @@
 from service import myconnector
-from flask import jsonify, Response, Blueprint, request
+from flask import jsonify, Blueprint, request
 from authentication import authUser
 from csvResponse import generateCSVresponse
 
@@ -25,7 +25,12 @@ def usr_question(questionnaireID: str, questionID: str):
                    WHERE (questionnaire.questionnaireID = %s AND question.questionID = %s)''',[questionnaireID, questionID])
             res = sqlcursor.fetchall()
             if len(res) == 0:
-                return Response("The requested questionnaire/question is not present in the database ", status=400) 
+                return jsonify({
+                        "type":"/errors/not-found",
+                        "title": "Not Found",
+                        "status": "400",
+                        "detail":"The requested questionnaire/question is not present in the database.",
+                        "instance":"/questionnaire/{}/{}".format(questionnaireID, questionID)}), 400    #404
             #save query data to return object
             for info in res:
                 ret_data = {'questionnaireID' : info[0],
@@ -60,6 +65,11 @@ def usr_question(questionnaireID: str, questionID: str):
                         "title": "Unauthorized User",
                         "status": "401",
                         "detail":"User is unauthorized",
-                        "instance":"/questionnaire/<questionnaireID>"}), 401 
+                        "instance":"/questionnaire/{}/{}".format(questionnaireID, questionID)}), 401 
     except Exception as error:
-        return Response(error, status = 500)
+        return jsonify({
+                    "type":"/errors/unknown",
+                    "title": "Error",
+                    "status": "500",
+                    "detail": error,
+                    "instance":"/questionnaire/{}/{}".format(questionnaireID, questionID)}), 500

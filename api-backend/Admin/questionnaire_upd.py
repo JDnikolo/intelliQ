@@ -1,5 +1,5 @@
 from service import myconnector
-from flask import request, Response, jsonify, Blueprint
+from flask import request, jsonify, Blueprint
 from authentication import authAdmin
 import json
 #TODO: Add remaining bad data checks. 
@@ -14,7 +14,12 @@ def admin_questionnaire_upd():
                 sqlcursor = myconnector.cursor(buffered=True)
                 #Check if a file was uploaded
                 if 'a' not in request.files:            # use postman post request with form-data, 'a' is the key associated with test json file
-                    return Response("No file uploaded.",status = 400)
+                    return jsonify({
+                            "type":"/errors/invalid-input",
+                            "title": "Bad Request",
+                            "status": "400",
+                            "detail":"No file uploaded.",
+                            "instance":"/admin/questionnaire_upd"}), 400
                 temp = request.files['a']
                 q = json.load(temp)                     #parse JSON file
                 if q:                                   #get json data
@@ -26,7 +31,12 @@ def admin_questionnaire_upd():
                     sqlcursor.execute("SELECT questionnaireID FROM questionnaire WHERE questionnaireID=%s", [qnID])
                     q_res = sqlcursor.fetchall()                                                
                     if len(q_res) != 0 :             #if it does, return corresponding error
-                        return Response("Questionnaire ID already exists.", status=400)
+                        return jsonify({
+                                "type":"/errors/conflict",
+                                "title": "Conflict",
+                                "status": "400",
+                                "detail":"Questionnaire ID already exists.",
+                                "instance":"/admin/questionnaire_upd"}), 400    #409
                     sqlcursor.execute(               #else insert data to db, start with questionnaire table  
                     "INSERT INTO questionnaire (questionnaireID,title) VALUES (%s,%s)", [qnID, qTitle])
                     for keyword in keywords:
@@ -60,14 +70,30 @@ def admin_questionnaire_upd():
                     #all done, commit changes and return success message
                     myconnector.commit()
                     sqlcursor.close()
-                    return Response("Questionnaire inserted successfully.",status = 200)
+                    return jsonify({
+                            "type":"/success",
+                            "title": "OK",
+                            "status": "200",
+                            "detail":"Questionnaire inserted successfully.",
+                            "instance":"/admin/questionnaire_upd"}), 200
                 else:
-                    return Response("Bad file.", status = 400)
+                    return jsonify({
+                            "type":"/errors/invalid-input",
+                            "title": "Bad Request",
+                            "status": "400",
+                            "detail":"Bad file.",
+                            "instance":"/admin/questionnaire_upd"}), 400
             else:        
-                return jsonify({"type": "/errors/authorization-error",
-                    "title": "Unauthorized.",
-                    "status": "401",
-                    "detail": "You are not authorized to use this endpoint.",
-                    "instance": "/admin/questionnaire_upd"}), 401
+                return jsonify({
+                        "type": "/errors/authorization-error",
+                        "title": "Unauthorized.",
+                        "status": "401",
+                        "detail": "You are not authorized to use this endpoint.",
+                        "instance": "/admin/questionnaire_upd"}), 401
         except Exception as error:
-            return Response("Error.", status = 500)
+            return jsonify({
+                    "type":"/errors/unknown",
+                    "title": "Error",
+                    "status": "500",
+                    "detail": error,
+                    "instance":"/admin/questionnaire_upd"}), 500

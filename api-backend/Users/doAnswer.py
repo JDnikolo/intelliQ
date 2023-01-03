@@ -1,5 +1,5 @@
-from flask import Blueprint, request, jsonify, Response
-from mysqlconfig import *
+from flask import Blueprint, request, jsonify
+from mysqlconfig import myconnector
 import random
 import string
 from datetime import datetime
@@ -30,7 +30,7 @@ def answerQS(questionnaireID, questionID, session, optionID):
                     "title": "Database Operation Failure",
                     "status": "400",
                     "detail":"Bad request parameters",
-                    "instance":"/user/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
+                    "instance":"/doanswer/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
         try:
             sqlcursor = myconnector.cursor(buffered=True)
         except:
@@ -39,7 +39,7 @@ def answerQS(questionnaireID, questionID, session, optionID):
                     "title": "Database Operation Failure",
                     "status": "500",
                     "detail":"Could not get handle to {}".format(myconnector.database),
-                    "instance":"/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 500
+                    "instance":"/doanswer/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 500
         # verify that post is conducted on existing data
         sqlcursor.execute('''SELECT `questionID` FROM `Question` WHERE `Question`.`qnrID` = '{}';'''.format(questionnaireID))
         questionDB = sqlcursor.fetchall()
@@ -49,7 +49,7 @@ def answerQS(questionnaireID, questionID, session, optionID):
                     "title": "Database Operation Failure",
                     "status": "400",
                     "detail":"Bad request parameters",
-                    "instance":"/user/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
+                    "instance":"/doanswer/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
         
 
         # verify that optionID exists for this Question and get details
@@ -62,7 +62,7 @@ def answerQS(questionnaireID, questionID, session, optionID):
                         "title": "Database Operation Failure",
                         "status": "400",
                         "detail":"Bad request parameters, option does not exist for this question",
-                        "instance":"/user/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
+                        "instance":"/doanswer/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
         # Check if it is an open-ended question
         if (optionQuery[0] == "<open string>"):
             #TODO: Get answer text from front-end form
@@ -74,7 +74,7 @@ def answerQS(questionnaireID, questionID, session, optionID):
                         "title": "Database Operation Failure",
                         "status": "400",
                         "detail":"Bad request parameters",
-                        "instance":"/user/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
+                        "instance":"/doanswer/{}/{}/{}/{}".format(questionnaireID, questionID, session, optionID)}), 400
             else:
                 sqlcursor.execute('''SELECT `optionTXT` FROM `Qoption` WHERE `Qoption`.`questionID` = %s AND `Qoption`.`optionID` = %s;''', [questionID, optionID])
                 answerTXT = sqlcursor.fetchone()[0]

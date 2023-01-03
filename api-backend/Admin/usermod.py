@@ -1,5 +1,4 @@
-
-from flask import Blueprint, request, jsonify, Response
+from flask import Blueprint, request, jsonify
 from authentication import authAdmin
 from mysqlconfig import myconnector
 from csvResponse import generateCSVresponse
@@ -50,7 +49,7 @@ def usermodf(username: str, password: str):
             f"UPDATE Users SET us_password=\"{password}\" WHERE username=\"{username}\"")
     myconnector.commit()
     sqlcursor.close()
-    return Response("", 200)
+    return jsonify({}), 200
 
 
 @users.route("/users/<username>", methods=["GET"])
@@ -94,6 +93,6 @@ def usersf(username: str):
                             "instance": "/admin/users"}), 400
         output = {keys[i]: results[0][i] for i in range(0, 4)}
         if form == 'json':
-            return jsonify(output)
+            return jsonify(output), 200
         if form == 'csv':
-            return generateCSVresponse(output, listKey=None, filename="users.csv")
+            return generateCSVresponse(output, listKey=None, filename="users.csv"), 200
