@@ -1,0 +1,13 @@
+from imports import *
+
+
+def resetall():
+  res = requests.post('http://localhost:5000/admin/resetall',
+                      headers=find_key(),
+                      verify=False)
+  print(res.status_code)
+  print(res.json())
+  return True
+
+
+resetall()
