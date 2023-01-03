@@ -1,17 +1,18 @@
 from Users.loginout import *
 from Users.questionnaireid import *
 from Users.getsessionanswers import *
-from Users.doAnswer import *
+from Users.getquestionanswers import *
 from Admin.resetall import *
 from Admin.usermod import *
 from Admin.resetall import resetall
 from Admin.healthcheck import healthcheck
 from Admin.resetq import *
-#uncomment 2 following lines to add questionnaire_upd and question endpoints
 from Admin.questionnaire_upd import questionnaire_upd
 from Users.question import question
-from flask import Flask, jsonify, request, render_template
-from mysqlconfig import *
+from Users.doAnswer import doAnswer
+
+from flask import Flask
+from mysqlconfig import myconnector
 
 app = Flask(__name__)
 
@@ -24,10 +25,10 @@ app.register_blueprint(login)
 app.register_blueprint(logout)
 app.register_blueprint(questionnaireid)
 app.register_blueprint(getsessionanswers_blueprint, url_prefix="")
-#uncomment 2 following lines to add questionnaire_upd and question endpoints
+app.register_blueprint(getquestionanswers_blueprint, url_prefix="")
+app.register_blueprint(doAnswer)
 app.register_blueprint(questionnaire_upd, url_prefix="/admin")
 app.register_blueprint(question)
-app.register_blueprint(doAnswer)
 
 # /etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf
 # change base url TODO: uncomment this
@@ -65,4 +66,4 @@ def hello_named(name=""):
 
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    app.run(port=9000, debug=True)
