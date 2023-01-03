@@ -1,4 +1,4 @@
-from service import myconnector
+from mysqlconfig import *
 from flask import jsonify, Blueprint, request
 from authentication import authUser
 from csvResponse import generateCSVresponse
