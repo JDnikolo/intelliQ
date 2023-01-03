@@ -75,6 +75,7 @@ def adminResetall():
                             "status": "500",
                             "detail":"Entry '{}'.'{}' could not be deleted".format("Answer",questionnaire[0]),
                             "instance":"/admin/resetall"}), 500
+
                 try:
                     sqlcursor.reset()
                     query = '''SELECT qo.optionID FROM `Question` q INNER JOIN `Qoption` qo ON q.questionID = qo.questionID WHERE q.qnrID = '{}';'''.format(questionnaire[0])
@@ -130,7 +131,7 @@ def adminResetall():
                         "instance":"/admin/resetall"}), 500
                 
             sqlcursor.close()
-            return Response("Reset Successful"), 200
+            return jsonify({"status": "Successful"}), 200
         else:
             return jsonify({
                         "type":"/errors/authentication-error",
