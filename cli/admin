@@ -2,42 +2,40 @@ from imports import *
 
 
 def usermod(arg):
-  #print(arg)
-  url = 'http://localhost:9103/admin/usermod/' + arg.username + '/' + arg.passw
+  url = 'http://localhost:5000/admin/usermod/' + arg.username + '/' + arg.passw
   res = requests.post(url, headers=find_key(), verify=False)
-  print(res.status_code)
-  print(res.json())
+  if(res.status_code == 401):
+    print("You are unauthorized to perform this action!")
+  if(res.status_code == 200):
+    print("User Registered/password updated Successfully!\n")
   return True
 
 
 def users(arg):
-  #print(ar)
-  url = 'http://localhost:9103/admin/users/' + arg.username
+  url = 'http://localhost:5000/admin/users/' + arg.username
   res = requests.get(url, headers=find_key(), verify=False)
-  print(res.status_code)
-  print(res.json())
+  if(res.status_code == 200):
+    print(res.json())
+  else:
+    print("Specified User does not exist!")
   return True
 
 
 if __name__ == '__main__':
-  parser = argparse.ArgumentParser()
+  parser = argparse.ArgumentParser(prefix_chars='/')
 
   sub = parser.add_subparsers()
   #usermod
   usermod_parser = sub.add_parser('--usermod')
-  usermod_parser.add_argument('--username')
-  usermod_parser.add_argument('--passw')
-
-  #username
-  #username_parser = admin_parser.add_parser('--username')
-  #username_parser.add_argument('--passw')
-
-  #passw
-  #passw_parser = admin_parser.add_parser('--passw')
-
+  usermod_parser.add_argument('--username', help = 'The username of the new user or that of an existing user', required = 'TRUE')
+  usermod_parser.add_argument('--passw', help = 'The new users password or the existing user\'s updated password', required = 'TRUE')
+  usermod_parser.set_defaults(func = usermod)
+  
   #users
-  #users_parser = admin_parser.add_parser('--users')
-
+  users_parser = sub.add_parser('--users')
+  users_parser.add_argument('--username', help = 'The username of the user whose information will be shown.', required = 'TRUE')
+  users_parser.set_defaults(func = users)
+  
   args = parser.parse_args()
 
   if hasattr(args, 'func'):
