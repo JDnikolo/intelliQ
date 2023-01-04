@@ -94,7 +94,8 @@ export default {
     async created() {
         //create session ID
         //TODO: randomise session ID
-        this.session = "xxxx"
+        this.session = Math.random().toString(36).slice(2, 6)
+        console.log(this.session)
         //get all questions
         axios.get("http://127.0.0.1:9103/intelliq_api/questionnaire/" + this.qID,
             { headers: { "X-OBSERVATORY-AUTH": "e00f8e21a864de304a6c" } }).then(
