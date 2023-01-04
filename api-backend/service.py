@@ -14,6 +14,9 @@ from Admin.usermod import *
 from Admin.resetall import resetall
 from Admin.healthcheck import healthcheck
 from Admin.resetq import *
+from Admin.questionnaire_upd import questionnaire_upd
+from Users.question import question
+from Users.doAnswer import doAnswer
 from flask_cors import CORS
 
 
@@ -71,5 +74,14 @@ def hello_named(name=""):
     return "<p>Hello, {}!</p>".format(name)
 
 
+@app.route("/getQuestionnaires", methods=["GET"])
+# variables must be included as keyword arguements
+def getQs():
+    sqlcursor.execute("SELECT * from questionnaire")
+    result = sqlcursor.fetchall()
+    return jsonify(result)
+
+
 if __name__ == "__main__":
+    CORS(app)
     app.run(port=9000, debug=True)
