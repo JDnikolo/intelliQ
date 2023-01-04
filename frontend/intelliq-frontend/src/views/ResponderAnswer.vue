@@ -21,8 +21,20 @@
         <button :disabled="currentQuestion.required == 1">Skip</button>
         <button :disabled="hasAnswer" @click="addAnswer()">Answer</button>
     </div>
-    <div>{{ currentAnswer }}</div>
-    <div v-for="ans in answers">{{ ans }}</div>
+    <div v-if="completed">
+        <h2>Thank you for your answers!</h2>
+        <router-link to="/">Go Back</router-link>
+        <table>
+            <th>Question</th>
+            <th>Answer</th>
+            <tr v-for="ans in answers">
+                <td>{{ ans.qtext }}</td>
+                <td>{{ ans.opttxt }}</td>
+            </tr>
+        </table>
+
+    </div>
+
 </template>
 
 <script>
@@ -38,6 +50,7 @@ export default {
             questions: [],
             answers: [],
             session: null,
+            completed: false,
         }
     },
     computed: {
@@ -58,7 +71,8 @@ export default {
                 "questionID": this.currentQuestion.qID,
                 "session": this.session,
                 "optionID": this.currentAnswer.optID,
-                "opttxt": this.currentAnswer.opttxt
+                "opttxt": this.currentAnswer.opttxt,
+                "qtext": this.currentQuestion.qtext,
             })
             if (this.isOpenQuestion) {
                 this.nextQuestion = this.currentQuestion.options[0].nextqID
@@ -77,6 +91,7 @@ export default {
                         })
             } else {
                 this.sendResponses()
+                this.completed = true;
             }
         },
         async sendResponses() {
@@ -87,13 +102,12 @@ export default {
                 ).then((response) => {
                     console.log(response)
                 })
-                await new Promise(r => setTimeout(r, 100));
+                await new Promise(r => setTimeout(r, 10));
             }
         }
     },
     async created() {
         //create session ID
-        //TODO: randomise session ID
         this.session = Math.random().toString(36).slice(2, 6)
         console.log(this.session)
         //get all questions

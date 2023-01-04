@@ -12,14 +12,14 @@ logout = Blueprint("logout", __name__)
 @login.route("/login", methods=["POST"])
 # logs in a user by creating a unique access token
 def loginf():
-    if request.headers.get("Content-Type") != "application/x-www-form-urlencoded":
+    if "application/x-www-form-urlencoded" not in request.headers.get("Content-Type").split(';'):
         # invalid content type for logging in
         return jsonify({
-                "type":"/errors/authentication-error",
-                "title": "Bad Request",
-                "status": "400",
-                "detail":"Credentials must be x-www-form-urlencoded.",
-                "instance":"/login"}), 400
+            "type": "/errors/authentication-error",
+            "title": "Bad Request",
+            "status": "400",
+            "detail": "Credentials must be x-www-form-urlencoded.",
+            "instance": "/login"}), 400
     sqlcursor = myconnector.cursor()
     username = request.form["username"]
     password = request.form["password"]
@@ -30,11 +30,11 @@ def loginf():
     if len(result) == 0:
         # either password or username was incorrect,
         return jsonify({
-                "type":"/errors/authentication-error",
-                "title": "Unauthorized",
-                "status": "401",
-                "detail":"Invalid Credentials",
-                "instance":"/login"}), 401
+            "type": "/errors/authentication-error",
+            "title": "Unauthorized",
+            "status": "401",
+            "detail": "Invalid Credentials",
+            "instance": "/login"}), 401
     if result[0][0] == None or result[0][0] == "":
         uid = uuid4().hex[:30]
         # user isn't already logged in, create access token and return it
@@ -47,22 +47,22 @@ def loginf():
     else:
         sqlcursor.close()
         return jsonify({
-                "type":"/errors/authentication-error",
-                "title": "Conflict",
-                "status": "400",
-                "detail":"Already logged in.",
-                "instance":"/login"}), 400      # insted of 409:conflict error
+            "type": "/errors/authentication-error",
+            "title": "Conflict",
+            "status": "400",
+            "detail": "Already logged in.",
+            "instance": "/login"}), 400      # insted of 409:conflict error
 
 
 @logout.route("/logout", methods=["POST"])
 def logoutf():
     if not (authUser()):
         return jsonify({
-                "type":"/errors/authentication-error",
-                "title": "Unauthorized",
-                "status": "401",
-                "detail":"Invalid or missing access token.",
-                "instance":"/logout"}), 401     # could be 400: Bad request 
+            "type": "/errors/authentication-error",
+            "title": "Unauthorized",
+            "status": "401",
+            "detail": "Invalid or missing access token.",
+            "instance": "/logout"}), 401     # could be 400: Bad request
     else:
         uid = request.headers.get("X-OBSERVATORY-AUTH")
         sqlcursor = myconnector.cursor()
