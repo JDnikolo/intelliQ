@@ -11,9 +11,12 @@ def get_random_string(length):
     return result_str
 
 def ansIdFromTimestamp():
-    rawStamp = datetime.now().strftime("%y%m%d%H%M%S")
-    centuries = chr(64+int(rawStamp[:2]))
-    return centuries + (rawStamp[2:])
+    rawStamp = datetime.now().strftime("%y%m%d%H%M%S%f")
+    yearsHash = chr(64+int(rawStamp[:2]))
+    monthHash = chr(64+int(rawStamp[2:4]))
+    dayHash = chr(64+int(rawStamp[4:6]))
+    hourHash = chr(64+int(rawStamp[6:8]))
+    return (yearsHash + monthHash + dayHash + hourHash + (rawStamp[8:]))[:-3]
 
 doAnswer = Blueprint("doanswer", __name__) 
 # static_folder="static", template_folder="template"
