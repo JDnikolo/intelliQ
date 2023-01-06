@@ -14,7 +14,6 @@
             </div>
             <button @click="tryLogin()">Log in</button>
         </div>
-        <div>{{ username }} {{ password }} {{ token }}</div>
     </div>
 
 </template>

@@ -1,11 +1,36 @@
 <template>
     <header>
-        Viewer Endpoints <span>Welcome, {{ this.store.username }}</span>
-
+        <span>Welcome, {{ this.store.username }}</span>
+        <span>
+            <button @click="logout()">Logout</button>
+        </span>
     </header>
+    <div>Select a questionnaire to view its results.</div>
+    <div>Available questionnaires:
+        <table>
+            <th>QuestionnaireID</th>
+            <th>Questionnaire Name</th>
+            <tr v-for="q in questionnaires" @click="setSelected(q)">
+                <td :class="{ selected: isSelected(q) }">
+                    {{ q[0] }}
+                </td>
+                <td :class="{ selected: isSelected(q) }">{{ q[1] }}</td>
+            </tr>
+        </table>
+        <button :disabled="selected == null" @click=""> <!--TODO: set to router.push("/viewer/whatever") -->
+            Get Session Answers
+        </button>
+        <button :disabled="selected == null">
+            Get Question Answers
+        </button>
+        <button :disabled="selected == null">
+            Get All Answers
+        </button>
+    </div>
 </template>
 <script>
 import { useViewerStore } from '../stores/viewerCreds.js'
+import axios from 'axios'
 export default {
     name: "ViewerEndpoints",
     setup() {
@@ -14,12 +39,49 @@ export default {
     },
     data() {
         return {
+            questionnaires: [],
+            selected: null,
         }
     },
     methods: {
+        logout() {
+            let token = this.store.token
+            axios.post("http://127.0.0.1:9103/intelliq_api/logout", '', { headers: { "X-OBSERVATORY-AUTH": token } }).then((response) => {
+                this.store.clearBoth()
+                this.$router.push("/viewer")
+            }).catch((error) => {
+                console.log(error)
+                if (error.status == 400) {
+                    this.message = "Incorrect Credentials"
+                }
+            })
+        },
+        isSelected(q) {
+            return q === this.selected
+        },
+        setSelected(q) {
+            if (this.selected === q) {
+                this.selected = null;
+            } else {
+                this.selected = q;
+            }
+        }
     },
     created() {
-        console.log(this.store.username)
+        if (this.store.token == null) {
+            this.$router.replace("/viewer")
+        }
+        axios.get("http://127.0.0.1:9103/getQuestionnaires",
+            { headers: { "X-OBSERVATORY-AUTH": "e00f8e21a864de304a6c" } }).then(
+                (response) => {
+                    this.questionnaires = response.data;
+                })
     }
 }
 </script>
+<style scoped>
+.selected {
+    color: green;
+    font-weight: bold;
+}
+</style>
