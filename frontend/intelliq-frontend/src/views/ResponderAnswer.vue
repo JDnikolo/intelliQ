@@ -1,13 +1,5 @@
 <template>
-    <div>TODO</div>
-    <div>
-        {{ qID }}
-    </div>
-
     <div v-if="currentQuestion != null">
-        <div>
-            {{ currentQuestion }}
-        </div>
         <div>
             {{ currentQuestion.qtext }}
         </div>
@@ -38,7 +30,6 @@
 </template>
 
 <script>
-import { createSimpleExpression } from '@vue/compiler-core'
 import axios from 'axios'
 export default {
     name: "ResponderAnswer",
@@ -99,9 +90,7 @@ export default {
             for (let a in this.answers) {
                 let ans = this.answers[a]
                 axios.post(`http://127.0.0.1:9103/intelliq_api/doanswer/${ans.questionnaireID}/${ans.questionID}/${ans.session}/${ans.optionID}`
-                ).then((response) => {
-                    console.log(response)
-                })
+                )
                 await new Promise(r => setTimeout(r, 10));
             }
         }
@@ -109,7 +98,6 @@ export default {
     async created() {
         //create session ID
         this.session = Math.random().toString(36).slice(2, 6)
-        console.log(this.session)
         //get all questions
         axios.get("http://127.0.0.1:9103/intelliq_api/questionnaire/" + this.qID,
             { headers: { "X-OBSERVATORY-AUTH": "e00f8e21a864de304a6c" } }).then(
@@ -127,6 +115,13 @@ export default {
                                 }
                             })
                 })
+    },
+    beforeRouteLeave(to, from) {
+        if (this.answers != [] && !completed) {
+            const leave = confirm("Are you sure you want to leave?\nYour answers will be lost!")
+            if (!leave) return false
+            else return true
+        }
     }
 }
 </script>
