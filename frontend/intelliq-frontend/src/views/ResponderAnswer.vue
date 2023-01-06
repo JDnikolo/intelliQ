@@ -1,7 +1,7 @@
 <template>
     <div v-if="currentQuestion != null">
         <div>
-            {{ currentQuestion.qtext }}
+            {{ parseQuestionText(currentQuestion.qtext) }}
         </div>
         <input v-if="isOpenQuestion" v-model="currentAnswer.opttxt" />
         <div v-if="!(isOpenQuestion)">
@@ -20,13 +20,11 @@
             <th>Question</th>
             <th>Answer</th>
             <tr v-for="ans in answers">
-                <td>{{ ans.qtext }}</td>
+                <td>{{ parseQuestionText(ans.qtext) }}</td>
                 <td>{{ ans.opttxt }}</td>
             </tr>
         </table>
-
     </div>
-
 </template>
 
 <script>
@@ -40,6 +38,8 @@ export default {
             nextQuestion: null,
             questions: [],
             answers: [],
+            previousQuestions: {},
+            previousOptions: {},
             session: null,
             completed: false,
         }
@@ -50,12 +50,32 @@ export default {
         },
         hasAnswer() {
             return (this.currentAnswer.optID == null || this.currentAnswer.opttxt == null || this.currentAnswer.opttxt == "")
-        }
+        },
     },
     props: {
         qID: String,
     },
     methods: {
+        parseQuestionText(text) {
+            const regexp = RegExp(/\[\*.{3,10}\]/, 'g')
+            const items = text.search(regexp)
+            if (items == -1) return text
+            else {
+                let result = text
+                let item = regexp.exec(text)
+                while (item != null) {
+                    const ident = item[0].slice(2, -1)
+                    if (ident in this.previousQuestions) {
+                        result = result.replace(item[0], "\"" + this.previousQuestions[ident] + "\"")
+                    } else if (ident in this.previousOptions) {
+                        result = result.replace(item[0], "\"" + this.previousOptions[ident] + "\"")
+                    }
+                    item = regexp.exec(text)
+                }
+                return result
+
+            }
+        },
         addAnswer() {
             this.answers.push({
                 "questionnaireID": this.qID,
@@ -65,6 +85,10 @@ export default {
                 "opttxt": this.currentAnswer.opttxt,
                 "qtext": this.currentQuestion.qtext,
             })
+
+            this.previousQuestions[this.currentQuestion.qID] = this.currentQuestion.qtext
+            this.previousOptions[this.currentAnswer.optID] = this.currentAnswer.opttxt
+
             if (this.isOpenQuestion) {
                 this.nextQuestion = this.currentQuestion.options[0].nextqID
             } else {
