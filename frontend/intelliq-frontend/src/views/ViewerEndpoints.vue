@@ -17,15 +17,16 @@
                 <td :class="{ selected: isSelected(q) }">{{ q[1] }}</td>
             </tr>
         </table>
-        <button :disabled="selected == null" @click=""> <!--TODO: set to router.push("/viewer/whatever") -->
+        <button :disabled="selected == null" @click="$router.push('/viewer/endpoints/getsessionanswers/'+selected[0])">
             Get Session Answers
         </button>
-        <button :disabled="selected == null">
+        <button :disabled="selected == null" @click="$router.push('/viewer/endpoints/getquestionanswers/'+selected[0])">
             Get Question Answers
         </button>
         <button :disabled="selected == null">
             Get All Answers
         </button>
+		<router-view :key="$route.path"></router-view> <!-- This line shows stuff on same page. Without it, nothing -->
     </div>
 </template>
 <script>

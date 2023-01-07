@@ -80,6 +80,22 @@ def getQs():
     sqlcursor.execute("SELECT * from questionnaire")
     result = sqlcursor.fetchall()
     return jsonify(result)
+    
+@app.route("/getSessions/<questionnaireID>", methods=["GET"])
+def getS(questionnaireID):
+    sqlcursor = myconnector.cursor()
+    sqlcursor.execute(''' USE intelliq; ''')
+    sqlcursor.execute("SELECT DISTINCT SessionID FROM Answer WHERE (qnrID = %s)",(str(questionnaireID),))
+    result = sqlcursor.fetchall()
+    return jsonify(result)
+    
+@app.route("/getQuestions/<questionnaireID>", methods=["GET"])
+def getQ(questionnaireID):
+    sqlcursor = myconnector.cursor()
+    sqlcursor.execute(''' USE intelliq; ''')
+    sqlcursor.execute("SELECT QuestionID FROM Question WHERE (qnrID = %s)",(str(questionnaireID),))
+    result = sqlcursor.fetchall()
+    return jsonify(result)
 
 
 if __name__ == "__main__":
