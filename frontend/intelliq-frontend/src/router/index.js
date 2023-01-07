@@ -5,6 +5,8 @@ import ResponderAnswer from "../views/ResponderAnswer.vue"
 import ResponderQuestionnaires from "../views/ResponderQuestionnaires.vue"
 import ViewerLogin from "../views/ViewerLogin.vue"
 import ViewerEndpoints from "../views/ViewerEndpoints.vue"
+import ViewerGetsession from "../views/ViewerGetsession.vue"
+import ViewerGetquestion from "../views/ViewerGetquestion.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,7 +42,22 @@ const router = createRouter({
         {
           path: 'endpoints',
           name: 'Viewer Endpoints',
-          component: ViewerEndpoints
+          component: ViewerEndpoints,
+		  children: [
+			  {
+				path: 'getsessionanswers/:qnrID',
+				name: 'Session Answers',
+				props: true,
+				component: ViewerGetsession
+			  },
+			  {
+				path: 'getquestionanswers/:qnrID',
+				name: 'Question Answers',
+				props: true,
+				component: ViewerGetquestion
+			  },
+					]
+		  
         }
       ],
 
