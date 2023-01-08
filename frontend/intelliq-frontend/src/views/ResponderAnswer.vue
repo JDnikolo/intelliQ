@@ -84,6 +84,7 @@ export default {
                 "optionID": this.currentAnswer.optID,
                 "opttxt": this.currentAnswer.opttxt,
                 "qtext": this.currentQuestion.qtext,
+                "isOpen": this.isOpenQuestion
             })
 
             this.previousQuestions[this.currentQuestion.qID] = this.currentQuestion.qtext
@@ -113,8 +114,17 @@ export default {
             this.currentQuestion = null
             for (let a in this.answers) {
                 let ans = this.answers[a]
-                axios.post(`http://127.0.0.1:9103/intelliq_api/doanswer/${ans.questionnaireID}/${ans.questionID}/${ans.session}/${ans.optionID}`
-                )
+                if (ans.isOpen) {
+                    var form = new URLSearchParams();
+                    form.append("opttxt", ans.opttxt);
+                } else {
+                    var form = ""
+                }
+
+                axios.post(`http://127.0.0.1:9103/intelliq_api/doanswer/${ans.questionnaireID}/${ans.questionID}/${ans.session}/${ans.optionID}`,
+                    form).catch((error) => {
+                        console.log(error)
+                    })
                 await new Promise(r => setTimeout(r, 10));
             }
         }
@@ -141,7 +151,7 @@ export default {
                 })
     },
     beforeRouteLeave(to, from) {
-        if (this.answers != [] && !completed) {
+        if (this.answers != [] && !this.completed) {
             const leave = confirm("Are you sure you want to leave?\nYour answers will be lost!")
             if (!leave) return false
             else return true
