@@ -60,6 +60,9 @@ export default {
         }
     },
     created() {
+        if (this.store.token != null) {
+            this.$router.replace("/viewer/endpoints")
+        }
     }
 }
 </script>
