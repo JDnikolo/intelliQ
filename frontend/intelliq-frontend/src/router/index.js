@@ -7,6 +7,7 @@ import ViewerLogin from "../views/ViewerLogin.vue"
 import ViewerEndpoints from "../views/ViewerEndpoints.vue"
 import ViewerGetsession from "../views/ViewerGetsession.vue"
 import ViewerGetquestion from "../views/ViewerGetquestion.vue"
+import ViewerGetall from "../views/ViewerGetall.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -55,6 +56,12 @@ const router = createRouter({
 				name: 'Question Answers',
 				props: true,
 				component: ViewerGetquestion
+			  },
+			  {
+				path: 'getallanswers/:qnrID',
+				name: 'All Answers',
+				props: true,
+				component: ViewerGetall
 			  },
 					]
 		  

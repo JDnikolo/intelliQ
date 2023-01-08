@@ -62,8 +62,8 @@ export default {
 </script>
 <template>
     <div style="background-color:#93CAED">
+		<p><u>Available questions for {{this.qnrID}}:</u></p>
 		<table>
-            <th>Available questions:</th>
             <tr v-for="s in questions" @click="setSelected(s)">
                 <td :class="{ selected: isSelected(s) }">
                     {{ s[0] }}
@@ -76,7 +76,7 @@ export default {
             Question answers:
         </button>
 		
-		<table style="border: 1px solid black;">
+		<table style="border: 1px solid black; border-collapse: collapse;">
             <th>Answers of question:</th>
             <tr v-for="i in qanswers.answers.length">
                 <td style="border: 1px solid black;"> {{ qanswers.answers[i - 1].session }} </td>
@@ -90,5 +90,8 @@ export default {
 .selected {
     color: green;
     font-weight: bold;
+}
+th {
+	font-weight: bold;
 }
 </style>

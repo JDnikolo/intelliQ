@@ -62,8 +62,8 @@ export default {
 </script>
 <template>
     <div style="background-color:#93CAED">
+		<p><u>Available sessions for {{this.qnrID}}:</u></p>
 		<table>
-            <th>Available sessions:</th>
             <tr v-for="s in sessions" @click="setSelected(s)">
                 <td :class="{ selected: isSelected(s) }">
                     {{ s[0] }}
@@ -76,7 +76,7 @@ export default {
             Session answers:
         </button>
 		
-		<table style="border: 1px solid black;">
+		<table style="border: 1px solid black; border-collapse: collapse;">
 			<th>Answers of session:</th>
 			<tr v-for="i in sanswers.answers.length">
 				<td style="border: 1px solid black;"> {{ sanswers.answers[i - 1].qID }} </td>
@@ -90,5 +90,8 @@ export default {
 .selected {
     color: green;
     font-weight: bold;
+}
+th {
+	font-weight: bold;
 }
 </style>

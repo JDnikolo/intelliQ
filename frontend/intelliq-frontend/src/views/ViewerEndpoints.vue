@@ -23,7 +23,7 @@
         <button :disabled="selected == null" @click="$router.push('/viewer/endpoints/getquestionanswers/'+selected[0])">
             Get Question Answers
         </button>
-        <button :disabled="selected == null">
+        <button :disabled="selected == null" @click="$router.push('/viewer/endpoints/getallanswers/'+selected[0])">
             Get All Answers
         </button>
 		<router-view :key="$route.path"></router-view> <!-- This line shows stuff on same page. Without it, nothing -->

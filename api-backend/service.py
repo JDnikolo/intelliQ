@@ -17,6 +17,8 @@ from Admin.resetq import *
 from Admin.questionnaire_upd import questionnaire_upd
 from Users.question import question
 from Users.doAnswer import doAnswer
+from Users.getallanswers import *
+
 from flask_cors import CORS
 
 
@@ -36,6 +38,7 @@ app.register_blueprint(getquestionanswers_blueprint,
 app.register_blueprint(doAnswer, url_prefix="/intelliq_api")
 app.register_blueprint(questionnaire_upd, url_prefix="/intelliq_api/admin")
 app.register_blueprint(question, url_prefix="/intelliq_api")
+app.register_blueprint(getallanswers_blueprint, url_prefix="/intelliq_api")
 
 # /etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf
 # change base url TODO: uncomment this
