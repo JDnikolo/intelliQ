@@ -1,4 +1,10 @@
 <template>
+    <h2>Responding to: <span style="font-weight: bold;">{{ title }}</span>
+        <div style="float: right;">
+            <router-link to="/" style="margin:0">Go Back</router-link>
+        </div>
+    </h2>
+    <hr />
     <div v-if="currentQuestion != null">
         <div>
             {{ parseQuestionText(currentQuestion.qtext) }}
@@ -33,6 +39,7 @@ export default {
     name: "ResponderAnswer",
     data() {
         return {
+            title: "",
             currentQuestion: null,
             currentAnswer: null,
             nextQuestion: null,
@@ -136,6 +143,7 @@ export default {
         axios.get("http://127.0.0.1:9103/intelliq_api/questionnaire/" + this.qID,
             { headers: { "X-OBSERVATORY-AUTH": "e00f8e21a864de304a6c" } }).then(
                 (response) => {
+                    this.title = response.data.questionnaireTitle[0][0]
                     for (let q in response.data.questions) {
                         this.questions.push(response.data.questions[q][0])
 
