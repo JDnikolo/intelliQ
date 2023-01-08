@@ -40,7 +40,6 @@ export default {
             var form = new URLSearchParams();
             form.append("username", user);
             form.append("password", pass);
-            console.log(form)
             axios.post("http://127.0.0.1:9103/intelliq_api/login", form).then((response) => {
                 this.token = response.data.token
                 console.log(this.token)
