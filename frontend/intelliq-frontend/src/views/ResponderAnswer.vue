@@ -16,8 +16,8 @@
                 <label :for=opt.opttxt>{{ opt.opttxt }}</label>
             </div>
         </div>
-        <button :disabled="currentQuestion.required == 1">Skip</button>
-        <button :disabled="hasAnswer" @click="addAnswer()">Answer</button>
+        <button :disabled="currentQuestion.required == 1" @click="addAnswer(true)">Skip</button>
+        <button :disabled="hasAnswer" @click="addAnswer(false)">Answer</button>
     </div>
     <div v-if="completed">
         <h2>Thank you for your answers!</h2>
@@ -83,19 +83,20 @@ export default {
 
             }
         },
-        addAnswer() {
-            this.answers.push({
-                "questionnaireID": this.qID,
-                "questionID": this.currentQuestion.qID,
-                "session": this.session,
-                "optionID": this.currentAnswer.optID,
-                "opttxt": this.currentAnswer.opttxt,
-                "qtext": this.currentQuestion.qtext,
-                "isOpen": this.isOpenQuestion
-            })
-
-            this.previousQuestions[this.currentQuestion.qID] = this.currentQuestion.qtext
-            this.previousOptions[this.currentAnswer.optID] = this.currentAnswer.opttxt
+        addAnswer(skip) {
+            if (!skip) {
+                this.answers.push({
+                    "questionnaireID": this.qID,
+                    "questionID": this.currentQuestion.qID,
+                    "session": this.session,
+                    "optionID": this.currentAnswer.optID,
+                    "opttxt": this.currentAnswer.opttxt,
+                    "qtext": this.currentQuestion.qtext,
+                    "isOpen": this.isOpenQuestion
+                })
+                this.previousQuestions[this.currentQuestion.qID] = this.currentQuestion.qtext
+                this.previousOptions[this.currentAnswer.optID] = this.currentAnswer.opttxt
+            }
 
             if (this.isOpenQuestion) {
                 this.nextQuestion = this.currentQuestion.options[0].nextqID
