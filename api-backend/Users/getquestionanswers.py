@@ -44,7 +44,8 @@ def getquestionanswers(questionnaireID,questionID):
             ans_optionID, answertxt)
             FROM Answer INNER JOIN qoption
             WHERE (optionID = ans_optionID AND questionID = %s AND qnrID = %s)
-            ORDER BY sessionID''',(str(questionID),str(questionnaireID)))
+            ORDER BY answerID''',(str(questionID),str(questionnaireID)))
+            #Order by answerID because it is chronologically given, thus 1st answer corresponds to 1st session
             result = sqlcursor.fetchall()
             if len(result) == 0:
                 #ERROR TYPE????????????????????????????

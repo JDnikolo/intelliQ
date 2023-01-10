@@ -36,13 +36,14 @@ export default {
 		isSelected(q) {
             return q === this.selected
         },
-        setSelected(q) {
+        /*setSelected(q) {
             if (this.selected === q) {
                 this.selected = null;
             } else {
                 this.selected = q;
             }
-        },
+        },*/
+		setSelected(q) { this.selected = q; },
 		async getQuestionAnswers(id, questionID) {
 			console.log("Getting question Answers")
 			let token = this.store.token
@@ -63,13 +64,20 @@ export default {
 <template>
     <div style="background-color:#93CAED">
 		<p><u>Available questions for {{this.qnrID}}:</u></p>
-		<table>
+		<!-- <table>
             <tr v-for="s in questions" @click="setSelected(s)">
                 <td :class="{ selected: isSelected(s) }">
                     {{ s[0] }}
                 </td>
             </tr>
-        </table>
+        </table> -->
+		
+		<select name="available" id="ques">
+			<option disabled selected value>--Select a question--</option>
+			<option  v-for="s in questions" @click="setSelected(s)">
+				{{ s[0] }}
+			</option>
+		</select>
 		
 		<button :disabled="selected == null"
 		@click="getQuestionAnswers(this.qnrID, selected[0])">
