@@ -8,10 +8,6 @@ import ViewerEndpoints from "../views/ViewerEndpoints.vue"
 import ViewerGetsession from "../views/ViewerGetsession.vue"
 import ViewerGetquestion from "../views/ViewerGetquestion.vue"
 import ViewerGetall from "../views/ViewerGetall.vue"
-import AdminHome from "../views/AdminHome.vue"
-import AdminLogin from "../views/AdminLogin.vue"
-import AdminEndpoints from "../views/AdminEndpoints.vue"
-import AdminResetq from "../views/AdminResetq.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,7 +37,7 @@ const router = createRouter({
       children: [
         {
           path: '',
-          name: 'vLogin',
+          name: 'Login',
           component: ViewerLogin
         },
         {
@@ -66,33 +62,6 @@ const router = createRouter({
 				name: 'All Answers',
 				props: true,
 				component: ViewerGetall
-			  },
-					]
-		  
-        }
-      ],
-
-    },
-	{
-      path: '/admin',
-      name: 'Admin Home',
-      component: AdminHome,
-      children: [
-        {
-          path: '',
-          name: 'Login',
-          component: AdminLogin
-        },
-        {
-          path: 'endpoints',
-          name: 'Admin Endpoints',
-          component: AdminEndpoints,
-		  children: [
-			  {
-				path: 'resetq/:qnrID',
-				name: 'AdminResetq',
-				props: true,
-				component: AdminResetq
 			  },
 					]
 		  

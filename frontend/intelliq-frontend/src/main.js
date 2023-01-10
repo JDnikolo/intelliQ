@@ -1,7 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia, defineStore } from 'pinia'
 import { useViewerStore } from './stores/viewerCreds.js'
-import { useAdminStore } from './stores/adminCreds.js'
 import App from './App.vue'
 import router from './router'
 
@@ -13,5 +12,4 @@ const app = createApp(App)
 app.use(router)
 app.use(pinia)
 const viewerStore = useViewerStore()
-const adminStore = useAdminStore()
 app.mount('#app')
