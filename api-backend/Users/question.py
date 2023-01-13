@@ -65,11 +65,11 @@ def usr_question(questionnaireID: str, questionID: str):
                         "title": "Unauthorized User",
                         "status": "401",
                         "detail":"User is unauthorized",
-                        "instance":"/questionnaire/{}/{}".format(questionnaireID, questionID)}), 401 
+                        "instance":"/question/{}/{}".format(questionnaireID, questionID)}), 401 
     except Exception as error:
         return jsonify({
                     "type":"/errors/unknown",
                     "title": "Error",
                     "status": "500",
                     "detail": error,
-                    "instance":"/questionnaire/{}/{}".format(questionnaireID, questionID)}), 500
+                    "instance":"/question/{}/{}".format(questionnaireID, questionID)}), 500
