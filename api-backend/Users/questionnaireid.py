@@ -68,7 +68,7 @@ def questionnaireidf(questionnaireID):
             title = sqlcursor.fetchall()
             
             #Check if given questionnaireID exists in database
-            if len(title) == 0:
+            if (len(title) == 0):
                     return jsonify({
                 "type":"/errors/not-found",
                 "title": "Not Found",
