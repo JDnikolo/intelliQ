@@ -1,0 +1,11 @@
+#!/bin/bash
+
+python ./healthcheck --format json
+python ./questionnaire --questionnaire_id QQ000 --format json
+python ./doAnswer --questionnaire_id asper --question_id cfhx --session_id 1234 --option_id ipvk --format json
+python ./getsessionanswers --questionnaire_id asper --session_id 1234 --format json
+python ./resetall
+python ./questionnaire_upd --source "../test/dummy_data_files/fill_data.json"
+python ./questionnaire --questionnaire_id QQ000 --format json
+
+#TODO adjust it to exam questionnaire

@@ -9,3 +9,6 @@ then you can use the cli like this:
 
 example:
 `se2212 healthcheck --format csv`
+
+run exam_script:
+`bash exam_script`
