@@ -13,14 +13,14 @@ def admin_questionnaire_upd():
             if authAdmin():
                 sqlcursor = myconnector.cursor(buffered=True)
                 #Check if a file was uploaded
-                if 'a' not in request.files:            # use postman post request with form-data, 'a' is the key associated with test json file
+                if 'file' not in request.files:            # use postman post request with form-data, 'a' is the key associated with test json file
                     return jsonify({
                             "type":"/errors/invalid-input",
                             "title": "Bad Request",
                             "status": "400",
                             "detail":"No file uploaded.",
                             "instance":"/admin/questionnaire_upd"}), 400
-                temp = request.files['a']
+                temp = request.files['file']
                 try:
                     q = json.load(temp)                     #parse JSON file
                     if q:                                   #get json data
@@ -39,8 +39,15 @@ def admin_questionnaire_upd():
                                         "status": "400",
                                         "detail":"Questionnaire ID already exists.",
                                         "instance":"/admin/questionnaire_upd"}), 400    #409
+                            uid = request.headers.get("X-OBSERVATORY-AUTH")
+                            sqlcursor.execute(
+                                "SELECT username from users WHERE access_token=%s AND us_role='A'",
+                                [uid])
+                            username = sqlcursor.fetchall()
+                            for user in username:
+                                username = user[0]
                             sqlcursor.execute(               #else insert data to db, start with questionnaire table  
-                            "INSERT INTO questionnaire (questionnaireID,title) VALUES (%s,%s)", [qnID, qTitle])
+                            "INSERT INTO questionnaire (questionnaireID,title, created_by) VALUES (%s,%s,%s)", [qnID, qTitle,username])
                             for keyword in keywords:
                                 sqlcursor.execute(          #insert keywords on keywords table  
                                 "INSERT INTO keywords (questionnaireID,word) VALUES (%s,%s)", [qnID, keyword])
