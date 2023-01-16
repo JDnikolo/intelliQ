@@ -80,23 +80,30 @@ def hello_named(name=""):
 @app.route("/getQuestionnaires", methods=["GET"])
 # variables must be included as keyword arguements
 def getQs():
-    sqlcursor.execute("SELECT * from questionnaire")
-    result = sqlcursor.fetchall()
-    return jsonify(result)
-    
+    if authUser():
+        sqlcursor.execute("SELECT * from questionnaire")
+        result = sqlcursor.fetchall()
+        return jsonify(result)
+    else:
+        return(jsonify(""), 400)
+
+
 @app.route("/getSessions/<questionnaireID>", methods=["GET"])
 def getS(questionnaireID):
     sqlcursor = myconnector.cursor()
     sqlcursor.execute(''' USE intelliq; ''')
-    sqlcursor.execute("SELECT DISTINCT SessionID FROM Answer WHERE (qnrID = %s)",(str(questionnaireID),))
+    sqlcursor.execute(
+        "SELECT DISTINCT SessionID FROM Answer WHERE (qnrID = %s)", (str(questionnaireID),))
     result = sqlcursor.fetchall()
     return jsonify(result)
-    
+
+
 @app.route("/getQuestions/<questionnaireID>", methods=["GET"])
 def getQ(questionnaireID):
     sqlcursor = myconnector.cursor()
     sqlcursor.execute(''' USE intelliq; ''')
-    sqlcursor.execute("SELECT QuestionID FROM Question WHERE (qnrID = %s)",(str(questionnaireID),))
+    sqlcursor.execute(
+        "SELECT QuestionID FROM Question WHERE (qnrID = %s)", (str(questionnaireID),))
     result = sqlcursor.fetchall()
     return jsonify(result)
 
