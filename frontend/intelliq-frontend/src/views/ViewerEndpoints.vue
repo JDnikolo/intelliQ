@@ -1,12 +1,13 @@
 <template>
-    <header>
+    <h3>
         <span>Welcome, {{ this.store.username }}</span>
         <span>
             <button @click="logout()">Logout</button>
         </span>
-    </header>
+    </h3>
     <div>Select a questionnaire to view its results.</div>
-    <div>Available questionnaires:
+    <div>
+        <h2>Available questionnaires:</h2>
         <table>
             <th>QuestionnaireID</th>
             <th>Questionnaire Name</th>
@@ -17,16 +18,18 @@
                 <td :class="{ selected: isSelected(q) }">{{ q[1] }}</td>
             </tr>
         </table>
-        <button :disabled="selected == null" @click="$router.push('/viewer/endpoints/getsessionanswers/'+selected[0])">
+        <button :disabled="selected == null"
+            @click="$router.push('/viewer/endpoints/getsessionanswers/' + selected[0])">
             Get Session Answers
         </button>
-        <button :disabled="selected == null" @click="$router.push('/viewer/endpoints/getquestionanswers/'+selected[0])">
+        <button :disabled="selected == null"
+            @click="$router.push('/viewer/endpoints/getquestionanswers/' + selected[0])">
             Get Question Answers
         </button>
-        <button :disabled="selected == null" @click="$router.push('/viewer/endpoints/getallanswers/'+selected[0])">
+        <button :disabled="selected == null" @click="$router.push('/viewer/endpoints/getallanswers/' + selected[0])">
             Get All Answers
         </button>
-		<router-view :key="$route.path"></router-view> <!-- This line shows stuff on same page. Without it, nothing -->
+        <router-view :key="$route.path"></router-view> <!-- This line shows stuff on same page. Without it, nothing -->
     </div>
 </template>
 <script>
