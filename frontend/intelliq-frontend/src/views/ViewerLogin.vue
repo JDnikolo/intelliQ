@@ -10,7 +10,7 @@
             </div>
             <div>
                 <label>Password: </label>
-                <input type="password" v-model="password">
+                <input type="password" v-model="password" v-on:keyup.enter="tryLogin()">
             </div>
             <button @click="tryLogin()">Log in</button>
         </div>
@@ -48,8 +48,8 @@ export default {
                 this.redirect()
             }).catch((error) => {
                 console.log(error)
-                if (error.status == 400) {
-                    this.message = "Incorrect Credentials"
+                if (error.response.status == 401) {
+                    this.message = "Incorrect credentials!"
                 }
             })
         },
