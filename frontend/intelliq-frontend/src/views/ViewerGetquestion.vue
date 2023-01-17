@@ -29,10 +29,20 @@ export default {
         async getQuestions(id) {
             console.log("Getting Questions")
             axios.get("http://127.0.0.1:9103/getQuestions/" + id,
-                { headers: { "X-OBSERVATORY-AUTH": this.adminToken } }).then(
+                { headers: { "X-OBSERVATORY-AUTH": this.store.token } }).then(
                     (response) => {
                         this.questions = response.data;
 
+                    }).catch((error) => {
+                        if (error.response) {
+                            if (error.response.status == 401) {
+                                this.store.clearBoth()
+                                new Promise(r => setTimeout(r, 2000));
+                                this.$router.replace("/viewer")
+                            }
+                        } else {
+                            console.log(error)
+                        }
                     })
         },
         isSelected(q) {
@@ -53,12 +63,20 @@ export default {
                 { headers: { "X-OBSERVATORY-AUTH": token } }).then(
                     (response) => {
                         this.qanswers = response.data;
-
+                    }).catch((error) => {
+                        if (error.response) {
+                            if (error.response.status == 401) {
+                                this.store.clearBoth()
+                                new Promise(r => setTimeout(r, 2000));
+                                this.$router.replace("/viewer")
+                            }
+                        } else {
+                            console.log(error)
+                        }
                     })
         }
     },
     async created() {
-        console.log('mounting');
         this.getQuestions(this.qnrID);
     }
 }

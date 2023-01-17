@@ -33,6 +33,16 @@ export default {
                     (response) => {
                         this.sessions = response.data;
 
+                    }).catch((error) => {
+                        if (error.response) {
+                            if (error.response.status == 401) {
+                                this.store.clearBoth()
+                                new Promise(r => setTimeout(r, 2000));
+                                this.$router.replace("/viewer")
+                            }
+                        } else {
+                            console.log(error)
+                        }
                     })
         },
         isSelected(q) {
@@ -54,11 +64,20 @@ export default {
                     (response) => {
                         this.sanswers = response.data;
 
+                    }).catch((error) => {
+                        if (error.response) {
+                            if (error.response.status == 401) {
+                                this.store.clearBoth()
+                                new Promise(r => setTimeout(r, 2000));
+                                this.$router.replace("/viewer")
+                            }
+                        } else {
+                            console.log(error)
+                        }
                     })
         }
     },
     async created() {
-        console.log('mounting');
         this.getSessions(this.qnrID);
     }
 }

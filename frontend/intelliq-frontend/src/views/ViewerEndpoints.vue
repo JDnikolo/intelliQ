@@ -5,6 +5,7 @@
             <button @click="logout()">Logout</button>
         </span>
     </h3>
+    <div>{{ message }}</div>
     <div>Select a questionnaire to view its results.</div>
     <div>
         <h2>Available questionnaires:</h2>
@@ -43,6 +44,7 @@ export default {
     },
     data() {
         return {
+            message: '',
             questionnaires: [],
             selected: null,
         }
@@ -50,13 +52,18 @@ export default {
     methods: {
         logout() {
             let token = this.store.token
-            axios.post("http://127.0.0.1:9103/intelliq_api/logout", '', { headers: { "X-OBSERVATORY-AUTH": token } }).then((response) => {
+            axios.post("http://127.0.0.1:9103/intelliq_api/logout", '', { headers: { "X-OBSERVATORY-AUTH": this.store.token } }).then((response) => {
                 this.store.clearBoth()
                 this.$router.push("/viewer")
             }).catch((error) => {
-                console.log(error)
-                if (error.status == 400) {
-                    this.message = "Incorrect Credentials"
+                if (error.response) {
+                    if (error.response.status == 401) {
+                        this.message = "Your credentials are no longer valid. Redirecting..."
+                        this.store.clearBoth()
+                        this.redirect()
+                    }
+                } else {
+                    console.log(error)
                 }
             })
         },
@@ -69,6 +76,10 @@ export default {
             } else {
                 this.selected = q;
             }
+        },
+        async redirect() {
+            await new Promise(r => setTimeout(r, 2000));
+            this.$router.replace("/viewer")
         }
     },
     created() {
@@ -76,9 +87,19 @@ export default {
             this.$router.replace("/viewer")
         }
         axios.get("http://127.0.0.1:9103/getQuestionnaires",
-            { headers: { "X-OBSERVATORY-AUTH": this.adminToken } }).then(
+            { headers: { "X-OBSERVATORY-AUTH": this.store.token } }).then(
                 (response) => {
                     this.questionnaires = response.data;
+                }).catch((error) => {
+                    if (error.response) {
+                        if (error.response.status == 401) {
+                            this.message = "Your credentials are no longer valid. Redirecting..."
+                            this.store.clearBoth()
+                            this.redirect()
+                        }
+                    } else {
+                        console.log(error)
+                    }
                 })
     }
 }

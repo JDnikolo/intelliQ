@@ -84,7 +84,7 @@ def getQs():
         result = sqlcursor.fetchall()
         return jsonify(result)
     else:
-        return(jsonify(""), 400)
+        return(jsonify(""), 401)
 
 
 @app.route("/getSessions/<questionnaireID>", methods=["GET"])
