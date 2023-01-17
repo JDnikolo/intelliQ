@@ -28,7 +28,7 @@ export default {
     methods: {
         async getQuestions() {
             axios.get("http://127.0.0.1:9103/getQuestionnaires",
-                { headers: { "X-OBSERVATORY-AUTH": "e00f8e21a864de304a6c" } }).then(
+                { headers: { "X-OBSERVATORY-AUTH": this.adminToken } }).then(
                     (response) => {
                         this.questions = response.data;
 

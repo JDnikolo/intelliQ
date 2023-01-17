@@ -106,7 +106,7 @@ export default {
             this.currentAnswer = { "optID": null, "opttxt": null }
             if (this.nextQuestion != null) {
                 axios.get("http://127.0.0.1:9103/intelliq_api/question/" + this.qID + '/' + this.nextQuestion,
-                    { headers: { "X-OBSERVATORY-AUTH": "e00f8e21a864de304a6c" } }).then(
+                    { headers: { "X-OBSERVATORY-AUTH": this.adminToken } }).then(
                         (response) => {
                             this.currentQuestion = response.data;
                             if (this.currentQuestion.options[0].opttxt == "<open string>") {
@@ -142,7 +142,7 @@ export default {
         this.session = Math.random().toString(36).slice(2, 6)
         //get all questions
         axios.get("http://127.0.0.1:9103/intelliq_api/questionnaire/" + this.qID,
-            { headers: { "X-OBSERVATORY-AUTH": "e00f8e21a864de304a6c" } }).then(
+            { headers: { "X-OBSERVATORY-AUTH": this.adminToken } }).then(
                 (response) => {
                     this.title = response.data.questionnaireTitle[0][0]
                     for (let q in response.data.questions) {
@@ -150,7 +150,7 @@ export default {
 
                     }
                     axios.get("http://127.0.0.1:9103/intelliq_api/question/" + this.qID + '/' + this.questions[0],
-                        { headers: { "X-OBSERVATORY-AUTH": "e00f8e21a864de304a6c" } }).then(
+                        { headers: { "X-OBSERVATORY-AUTH": this.adminToken } }).then(
                             (response) => {
                                 this.currentQuestion = response.data;
                                 if (this.currentQuestion.options[0].opttxt == "<open string>") {

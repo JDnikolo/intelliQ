@@ -5,35 +5,37 @@ import axios from 'axios';
 
 export default {
     name: "ViewerGetquestion",
-	setup() {
+    setup() {
         const store = useViewerStore()
         return { store, }
     },
     data() {
         return {
             questions: [],
-			qanswers: {"answers":
-			{
-				"session": "",
-				"ans": ""
-			}},
-			selected: null,
+            qanswers: {
+                "answers":
+                {
+                    "session": "",
+                    "ans": ""
+                }
+            },
+            selected: null,
         }
     },
-	props: {
-		qnrID: String,
-	},
+    props: {
+        qnrID: String,
+    },
     methods: {
         async getQuestions(id) {
             console.log("Getting Questions")
             axios.get("http://127.0.0.1:9103/getQuestions/" + id,
-                { headers: { "X-OBSERVATORY-AUTH": "e00f8e21a864de304a6c" } }).then(
+                { headers: { "X-OBSERVATORY-AUTH": this.adminToken } }).then(
                     (response) => {
                         this.questions = response.data;
 
                     })
         },
-		isSelected(q) {
+        isSelected(q) {
             return q === this.selected
         },
         /*setSelected(q) {
@@ -43,17 +45,17 @@ export default {
                 this.selected = q;
             }
         },*/
-		setSelected(q) { this.selected = q; },
-		async getQuestionAnswers(id, questionID) {
-			console.log("Getting question Answers")
-			let token = this.store.token
+        setSelected(q) { this.selected = q; console.log(q); },
+        async getQuestionAnswers(id, questionID) {
+            console.log("Getting question Answers")
+            let token = this.store.token
             axios.get("http://127.0.0.1:9103/intelliq_api/getquestionanswers/" + id + "/" + questionID,
                 { headers: { "X-OBSERVATORY-AUTH": token } }).then(
                     (response) => {
-						this.qanswers = response.data;
+                        this.qanswers = response.data;
 
                     })
-		}
+        }
     },
     async created() {
         console.log('mounting');
@@ -63,32 +65,31 @@ export default {
 </script>
 <template>
     <div style="background-color:#93CAED">
-		<p><u>Available questions for {{this.qnrID}}:</u></p>
-		<!-- <table>
+        <p><u>Available questions for {{ this.qnrID }}:</u></p>
+        <!-- <table>
             <tr v-for="s in questions" @click="setSelected(s)">
                 <td :class="{ selected: isSelected(s) }">
                     {{ s[0] }}
                 </td>
             </tr>
         </table> -->
-		
-		<select name="available" id="ques">
-			<option disabled selected value>--Select a question--</option>
-			<option  v-for="s in questions" @click="setSelected(s)">
-				{{ s[0] }}
-			</option>
-		</select>
-		
-		<button :disabled="selected == null"
-		@click="getQuestionAnswers(this.qnrID, selected[0])">
+
+        <select name="available" id="ques" v-model="selected">
+            <option disabled selected value>--Select a question--</option>
+            <option v-for="s in questions" :value="s">
+                {{ s[0] }}
+            </option>
+        </select>
+
+        <button :disabled="selected == null" @click="getQuestionAnswers(this.qnrID, selected[0])">
             Question answers:
         </button>
-		
-		<table style="border: 1px solid black; border-collapse: collapse;">
+
+        <table style="border: 1px solid black; border-collapse: collapse;">
             <th>Answers of question:</th>
             <tr v-for="i in qanswers.answers.length">
                 <td style="border: 1px solid black;"> {{ qanswers.answers[i - 1].session }} </td>
-				<td style="border: 1px solid black;"> {{ qanswers.answers[i - 1].ans }} </td>
+                <td style="border: 1px solid black;"> {{ qanswers.answers[i - 1].ans }} </td>
             </tr>
         </table>
     </div>
@@ -99,7 +100,8 @@ export default {
     color: green;
     font-weight: bold;
 }
+
 th {
-	font-weight: bold;
+    font-weight: bold;
 }
 </style>

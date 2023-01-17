@@ -5,35 +5,37 @@ import axios from 'axios';
 
 export default {
     name: "ViewerGetsession",
-	setup() {
+    setup() {
         const store = useViewerStore()
         return { store, }
     },
     data() {
         return {
             sessions: [],
-			sanswers: {"answers":
-        {
-            "qID": "",
-            "ans": ""
-        }},
-			selected: null,
+            sanswers: {
+                "answers":
+                {
+                    "qID": "",
+                    "ans": ""
+                }
+            },
+            selected: null,
         }
     },
-	props: {
-		qnrID: String,
-	},
+    props: {
+        qnrID: String,
+    },
     methods: {
         async getSessions(id) {
             console.log("Getting Sessions")
             axios.get("http://127.0.0.1:9103/getSessions/" + id,
-                { headers: { "X-OBSERVATORY-AUTH": "e00f8e21a864de304a6c" } }).then(
+                { headers: { "X-OBSERVATORY-AUTH": this.adminToken } }).then(
                     (response) => {
                         this.sessions = response.data;
 
                     })
         },
-		isSelected(q) {
+        isSelected(q) {
             return q === this.selected
         },
         /*setSelected(q) {
@@ -43,17 +45,17 @@ export default {
                 this.selected = q;
             }
         },*/
-		setSelected(q) { this.selected = q; },
-		async getSessionAnswers(id, sessionID) {
-			console.log("Getting Session Answers")
-			let token = this.store.token
+        setSelected(q) { this.selected = q; },
+        async getSessionAnswers(id, sessionID) {
+            console.log("Getting Session Answers")
+            let token = this.store.token
             axios.get("http://127.0.0.1:9103/intelliq_api/getsessionanswers/" + id + "/" + sessionID,
                 { headers: { "X-OBSERVATORY-AUTH": token } }).then(
                     (response) => {
-						this.sanswers = response.data;
+                        this.sanswers = response.data;
 
                     })
-		}
+        }
     },
     async created() {
         console.log('mounting');
@@ -63,34 +65,33 @@ export default {
 </script>
 <template>
     <div style="background-color:#93CAED">
-		<p><u>Available sessions for {{this.qnrID}}:</u></p>
-		<!-- <table>
+        <p><u>Available sessions for {{ this.qnrID }}:</u></p>
+        <!-- <table>
             <tr v-for="s in sessions" @click="setSelected(s)">
                 <td :class="{ selected: isSelected(s) }">
                     {{ s[0] }}
                 </td>
             </tr>
         </table> -->
-		
-		<select name="available" id="sess">
-			<option disabled selected value>--Select a session--</option>
-			<option  v-for="s in sessions" @click="setSelected(s)">
-				{{ s[0] }}
-			</option>
-		</select>
-		
-		<button :disabled="selected == null"
-		@click="getSessionAnswers(this.qnrID, selected[0])">
+
+        <select name="available" id="sess" v-model="selected">
+            <option disabled selected value>--Select a session--</option>
+            <option v-for="s in sessions" :value="s">
+                {{ s[0] }}
+            </option>
+        </select>
+
+        <button :disabled="selected == null" @click="getSessionAnswers(this.qnrID, selected[0])">
             Session answers:
         </button>
-		
-		<table style="border: 1px solid black; border-collapse: collapse;">
-			<th>Answers of session:</th>
-			<tr v-for="i in sanswers.answers.length">
-				<td style="border: 1px solid black;"> {{ sanswers.answers[i - 1].qID }} </td>
-				<td style="border: 1px solid black;"> {{ sanswers.answers[i - 1].ans }} </td>
-			</tr>
-		</table>
+
+        <table style="border: 1px solid black; border-collapse: collapse;">
+            <th>Answers of session:</th>
+            <tr v-for="i in sanswers.answers.length">
+                <td style="border: 1px solid black;"> {{ sanswers.answers[i - 1].qID }} </td>
+                <td style="border: 1px solid black;"> {{ sanswers.answers[i - 1].ans }} </td>
+            </tr>
+        </table>
     </div>
 </template>
 
@@ -99,7 +100,8 @@ export default {
     color: green;
     font-weight: bold;
 }
+
 th {
-	font-weight: bold;
+    font-weight: bold;
 }
 </style>
