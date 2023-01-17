@@ -45,15 +45,11 @@ def loginf():
         sqlcursor.close()
         return {"token": uid}, 200
     else:
-        # user is already logged in
-        # TODO: consider changing behavior here
+        # user was logged in, return previously generated uuid
+        # TODO: change this
+        uid = result[0][0]
         sqlcursor.close()
-        return jsonify({
-            "type": "/errors/authentication-error",
-            "title": "Conflict",
-            "status": "400",
-            "detail": "Already logged in.",
-            "instance": "/login"}), 400      # insted of 409:conflict error
+        return {"token": uid}, 200
 
 
 @logout.route("/logout", methods=["POST"])
