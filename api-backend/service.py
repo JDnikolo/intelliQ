@@ -53,7 +53,7 @@ app.config["JSON_SORT_KEYS"] = False
 #    port=3306
 # )
 
-CORS(app)
+cors = CORS(app)
 
 # sqlcursor.execute(sql_query) to access database
 sqlcursor = myconnector.cursor(buffered=True)
@@ -78,7 +78,6 @@ def hello_named(name=""):
 
 
 @app.route("/getQuestionnaires", methods=["GET"])
-# variables must be included as keyword arguements
 def getQs():
     if authUser():
         sqlcursor.execute("SELECT * from questionnaire")
