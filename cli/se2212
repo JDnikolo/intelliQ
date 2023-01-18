@@ -1,10 +1,10 @@
 #!/bin/bash
 
-flag_file="./cli/flag.txt"
+flag_file="./flag.txt"
 
 if [ ! -e "$flag_file" ]; then
-    python ./cli/art
+    python ./art
     touch "$flag_file"
 fi
 
-python ./cli/$@
+python ./$@
