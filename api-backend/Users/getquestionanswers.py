@@ -42,9 +42,10 @@ def getquestionanswers(questionnaireID,questionID):
             sqlcursor = myconnector.cursor()
             sqlcursor.execute(''' SELECT sessionID, IF (STRCMP(`optionTXT`,"<open string>") != 0,
             ans_optionID, answertxt)
-            FROM Answer INNER JOIN qoption
+            FROM Answer INNER JOIN Qoption
             WHERE (optionID = ans_optionID AND questionID = %s AND qnrID = %s)
-            ORDER BY sessionID''',(str(questionID),str(questionnaireID)))
+            ORDER BY answerID''',(str(questionID),str(questionnaireID)))
+            #Order by answerID because it is chronologically given, thus 1st answer corresponds to 1st session
             result = sqlcursor.fetchall()
             if len(result) == 0:
                 #ERROR TYPE????????????????????????????
