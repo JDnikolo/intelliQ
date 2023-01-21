@@ -37,7 +37,7 @@ def questionnaireidf(questionnaireID):
                 "instance":"/questionnaire/{}".format(questionnaireID)}), 400
             
             sqlcursor = myconnector.cursor()
-            sqlcursor.execute('''SELECT title from questionnaire where (questionnaireID =  %s)''',(str(questionnaireID),))
+            sqlcursor.execute('''SELECT title from Questionnaire where (questionnaireID =  %s)''',(str(questionnaireID),))
             title = sqlcursor.fetchall()
             
             #Check if given questionnaireID exists in database
@@ -49,9 +49,9 @@ def questionnaireidf(questionnaireID):
                 "detail":"The requested questionnaire is not present in the database.",
                 "instance":"/questionnaire/{}".format(questionnaireID)}), 400    #404
                 
-            sqlcursor.execute('''SELECT word from keywords where (questionnaireID =  %s)''',(str(questionnaireID),))
+            sqlcursor.execute('''SELECT word from Keywords where (questionnaireID =  %s)''',(str(questionnaireID),))
             keywords = sqlcursor.fetchall()
-            sqlcursor.execute('''SELECT questionID as qID, qtext, required, qtype as type from question where (qnrID =  %s) ORDER BY questionID''',(str(questionnaireID),))
+            sqlcursor.execute('''SELECT questionID as qID, qtext, required, qtype as type from Question where (qnrID =  %s) ORDER BY questionID''',(str(questionnaireID),))
             questions = sqlcursor.fetchall()
             sqlcursor.close()
             
