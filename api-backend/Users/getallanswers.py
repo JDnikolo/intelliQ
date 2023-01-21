@@ -43,7 +43,7 @@ def getallanswers(questionnaireID):
             sqlcursor.execute(''' SELECT questionID, sessionID,
             IF (STRCMP(`optionTXT`,"<open string>") != 0,
             ans_optionID, answertxt)
-            FROM Answer INNER JOIN qoption
+            FROM Answer INNER JOIN Qoption
             WHERE (optionID = ans_optionID AND qnrID = %s)
             ORDER BY questionID''',(str(questionnaireID),))
             result = sqlcursor.fetchall()
