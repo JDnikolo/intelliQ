@@ -80,7 +80,7 @@ def hello_named(name=""):
 @app.route("/getQuestionnaires", methods=["GET"])
 def getQs():
     if authUser():
-        sqlcursor.execute("SELECT * from questionnaire")
+        sqlcursor.execute("SELECT * from Questionnaire")
         result = sqlcursor.fetchall()
         return jsonify(result)
     else:
