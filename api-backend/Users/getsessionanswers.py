@@ -42,7 +42,7 @@ def getsessionanswers(questionnaireID,session):
             sqlcursor = myconnector.cursor()
             sqlcursor.execute(''' SELECT questionID, IF (STRCMP(`optionTXT`,"<open string>") != 0,
             ans_optionID, answertxt)
-            FROM Answer INNER JOIN qoption
+            FROM Answer INNER JOIN Qoption
             WHERE (optionID = ans_optionID AND sessionID = %s AND qnrID = %s)
             ORDER BY questionID''',(str(session),str(questionnaireID)))
             result = sqlcursor.fetchall()
