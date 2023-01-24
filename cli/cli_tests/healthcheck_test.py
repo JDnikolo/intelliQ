@@ -23,6 +23,7 @@ class TestHealthCheck:
             output, errors = process.communicate()
             print(errors)
             assert output == b"{'type': '/errors/authentication-error', 'title': 'Unauthorized User', 'status': '401', 'detail': 'User is unauthorized', 'instance': '/admin/healthcheck'}\r\n"
+    
 
     
     
