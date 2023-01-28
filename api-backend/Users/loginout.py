@@ -12,7 +12,7 @@ logout = Blueprint("logout", __name__)
 @login.route("/login", methods=["POST"])
 # logs in a user by creating a unique access token
 def loginf():
-    if request.headers.get("Content-Type") != "application/x-www-form-urlencoded":
+    if "application/x-www-form-urlencoded" not in request.headers.get("Content-Type").split(';'):
         # invalid content type for logging in
         return jsonify({
             "type": "/errors/authentication-error",
