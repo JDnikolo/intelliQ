@@ -92,7 +92,7 @@ def getS(questionnaireID):
     sqlcursor = myconnector.cursor()
     sqlcursor.execute(''' USE intelliq; ''')
     sqlcursor.execute(
-        "SELECT DISTINCT SessionID FROM Answer WHERE (qnrID = %s)", (str(questionnaireID),))
+        "SELECT DISTINCT sessionID FROM Answer WHERE (qnrID = %s)", (str(questionnaireID),))
     result = sqlcursor.fetchall()
     return jsonify(result)
 
@@ -102,7 +102,7 @@ def getQ(questionnaireID):
     sqlcursor = myconnector.cursor()
     sqlcursor.execute(''' USE intelliq; ''')
     sqlcursor.execute(
-        "SELECT QuestionID FROM Question WHERE (qnrID = %s)", (str(questionnaireID),))
+        "SELECT questionID FROM Question WHERE (qnrID = %s)", (str(questionnaireID),))
     result = sqlcursor.fetchall()
     return jsonify(result)
 
