@@ -6,7 +6,7 @@ def questionnaire_upd(arg):
 
   res = requests.post(url,
                       headers=find_key(),
-                      files={'a': open(arg.source,'rb')},
+                      files={'file': open(arg.source,'rb')},
                       verify=False)
   print(res.status_code)
   print(res.json())

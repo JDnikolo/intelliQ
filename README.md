@@ -38,11 +38,11 @@ The environments running the api-backend server and the CLI have their respectiv
 
 ### api-backend
 
-### cli
+### [cli](https://github.com/ntua/SoftEng22-12/tree/main/cli#readme)
 
-### data
+### [data](https://github.com/ntua/SoftEng22-12/tree/main/data#readme)
 
-### frontend
+### [frontend](https://github.com/ntua/SoftEng22-12/tree/main/frontend#readme)
 
 ### test
 
