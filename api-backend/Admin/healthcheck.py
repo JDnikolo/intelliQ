@@ -15,11 +15,39 @@ def healthcheckf():
                         "title": "Method Not Allowed",
                         "status": "400",
                         "detail":"POST Request not allowed.",
-                        "instance":"/healthcheck"}), 400    #405
+                        "instance":"/admin/healthcheck"}), 400    #405
     if request.method == "GET":
-        form = request.args.get("format", None)
-        if form not in ['json', 'csv']:
-            form = 'json'             
+        args = request.args
+        if (len(args) == 0):
+                format = "json"
+        elif (len(args) > 1):
+            return jsonify({"type": "/errors/operation-error",
+                        "title": "Invalid query parameters.",
+                        "status": "400",
+                        "detail": "Only format is acceptable query parameter.",
+                        "instance": "/admin/healthcheck"}), 400
+        elif (len(args) == 1):
+            temp = args.to_dict()
+            temp = temp.keys()
+            temp = list(temp)
+            temp = temp[0]
+            if (temp != "format"):
+                return jsonify({"type": "/errors/operation-error",
+                        "title": "Invalid query parameters.",
+                        "status": "400",
+                        "detail": "Only format is acceptable query parameter.",
+                        "instance": "/admin/healthcheck"}), 400
+            elif (args.get("format") == "json"):
+                format = "json"
+            elif (args.get("format") == "csv"):
+                format = "csv"
+            else:
+                return jsonify({"type": "/errors/operation-error",
+                        "title": "Invalid format type.",
+                        "status": "400",
+                        "detail": "Only json and csv are acceptable formats.",
+                        "instance": "/admin/healthcheck"}), 400
+            
         # Verify Admin
         if authAdmin():
             if myconnector.is_connected():
@@ -28,9 +56,9 @@ def healthcheckf():
                 output = {"status":"OK", "dbconnection":"intelliq"}
             else:
                 output = {"status":"failed", "dbconnection":"intelliq"}
-            if form == 'json':
+            if format == 'json':
                 return jsonify(output), 200
-            if form == 'csv':
+            if format == 'csv':
                 return generateCSVresponse(output, listKey=None, filename="healthcheck.csv"), 200
         else:
             return jsonify({
