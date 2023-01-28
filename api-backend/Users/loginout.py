@@ -36,8 +36,8 @@ def loginf():
             "detail": "Invalid Credentials",
             "instance": "/login"}), 401
     if result[0][0] == None or result[0][0] == "":
-        uid = uuid4().hex[:30]
         # user isn't already logged in, create access token and return it
+        uid = uuid4().hex[:30]
         sqlcursor.execute(
             "UPDATE Users SET access_token=%s WHERE username=%s AND us_password=%s",
             [uid, username, password])
@@ -45,13 +45,11 @@ def loginf():
         sqlcursor.close()
         return {"token": uid}, 200
     else:
+        # user was logged in, return previously generated uuid
+        # TODO: change this
+        uid = result[0][0]
         sqlcursor.close()
-        return jsonify({
-            "type": "/errors/authentication-error",
-            "title": "Conflict",
-            "status": "400",
-            "detail": "Already logged in.",
-            "instance": "/login"}), 400      # insted of 409:conflict error
+        return {"token": uid}, 200
 
 
 @logout.route("/logout", methods=["POST"])

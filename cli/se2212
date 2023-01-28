@@ -1,0 +1,10 @@
+#!/bin/bash
+
+flag_file="./flag.txt"
+
+if [ ! -e "$flag_file" ]; then
+    python ./art
+    touch "$flag_file"
+fi
+
+python ./$@
