@@ -1,0 +1,45 @@
+import subprocess
+
+class Questionnaire:
+    #Test 1
+    def test_200(self):
+        process = subprocess.run(["python", "login", "--username", "andreane82", "--passw", "e00f8e21a864de304a6c"])
+        process = subprocess.Popen(["python", "questionnaire", "--questionnaire_id", "QQ000", "--format","json"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, errors = process.communicate()
+        print(errors)
+        assert b"200" in output
+    
+    #Test 2
+    def test_bad_questionnaire(self):
+        process = subprocess.Popen(["python", "questionnaire", "--questionnaire_id", "QK700", "--format","json"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, errors = process.communicate()
+        print(errors)
+        assert b"400" in output
+        assert b"The requested questionnaire is not present in the database." in output
+   
+    #Test 3
+    def test_bad_questionnaireid_format(self):
+        process = subprocess.Popen(["python", "questionnaire", "--questionnaire_id", "Q00", "--format","json"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, errors = process.communicate()
+        print(errors)
+        assert b"400" in output
+        assert b"Required field was not given or is incorrectly formatted." in output 
+    
+    #Test 4
+    def test_wrong_format(self):
+        process = subprocess.Popen(["python", "questionnaire", "--questionnaire_id", "QQ000", "--format","jsonnaire"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, errors = process.communicate()
+        print(errors)
+        assert b"invalid choice: 'jsonnaire' (choose from 'csv', 'json')" in errors
+    #Test 5
+    def test_csv_format_reply(self):
+        process = subprocess.Popen(["python", "questionnaire", "--questionnaire_id", "QQ000", "--format","csv"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, errors = process.communicate()
+        print(errors)
+        assert b"csv file QQ000.csv saved at csv_files directory successfully" in output
+    #Test 6
+    def test_unauthorized(self):
+        process = subprocess.run(["python", "logout"])
+        process = subprocess.Popen(["python", "questionnaire", "--questionnaire_id", "QQ000","--format","json"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, errors = process.communicate()
+        print(errors)
