@@ -36,7 +36,7 @@ The environments running the api-backend server and the CLI have their respectiv
 
 ## Component Descriptions
 
-### api-backend
+### [api-backend](https://github.com/ntua/SoftEng22-12/tree/main/api-backend#readme)
 
 ### [cli](https://github.com/ntua/SoftEng22-12/tree/main/cli#readme)
 
