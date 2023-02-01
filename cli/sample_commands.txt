@@ -1,14 +1,14 @@
 export PATH="$PATH:C:\Users\nicka\Desktop\SoftEng22-12\cli"
-se2212 healthcheck --format json
 se2212 login --username andreane82 --passw e00f8e21a864de304a6c
-se2212 logout
-se2212 questionnaire_upd --source "../test/dummy_data_files/fill_data.json"
-se2212 resetq --questionnaire_id asper --format json
-se2212 doAnswer --questionnaire_id asper --question_id cfhx --session_id 1234 --option_id ipvk --format json
-se2212 getsessionanswers --questionnaire_id asper --session_id 1234 --format json
-se2212 getquestionanswers --questionnaire_id asper --question_id cfhx --format json
-se2212 admin --usermod --username mockdata --passw 12345
-se2212 admin --users --username mockdata --format csv
-se2212 question --questionnaire_id QQ000 --question_id Q05 --format json
+se2212 healthcheck --format json
+se2212 questionnaire_upd --source "../test/dummy_data_files/TrekkingClubQuestionnaire.json"
+se2212 resetq --questionnaire_id QQ000 --format json
+se2212 doAnswer --questionnaire_id QQ000 --question_id P01 --session_id 1234 --option_id P01A1 --format json
+se2212 getsessionanswers --questionnaire_id QQ000 --session_id 1234 --format json
+se2212 getquestionanswers --questionnaire_id QQ000 --question_id P01 --format json
+se2212 admin --usermod --username user66 --passw 12345
+se2212 admin --users --username user66 --format csv
+se2212 question --questionnaire_id QQ000 --question_id P01 --format json
 se2212 questionnaire --questionnaire_id QQ000 --format json
 se2212 resetall
+se2212 logout
