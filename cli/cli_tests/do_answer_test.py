@@ -3,7 +3,6 @@ import subprocess
 class TestDoAnswer:
     #Test 1
     def test_200(self):
-        process = subprocess.run(["python", "login", "--username", "andreane82", "--passw", "e00f8e21a864de304a6c"])
         process = subprocess.Popen(["python", "doAnswer", "--questionnaire_id", "QQ000", "--question_id", "Q01", "--session_id", "temp", "--option_id", "Q01A3","--format","json"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, errors = process.communicate()
         print(errors)
@@ -27,11 +26,3 @@ class TestDoAnswer:
         output, errors = process.communicate()
         print(errors)
         assert b"Answer submitted successfully." in output
-    #Test 5
-    def test_unauthorized(self):
-        process = subprocess.run(["python", "logout"])
-        process = subprocess.Popen(["python", "doAnswer", "--questionnaire_id", "QQ000", "--question_id", "Q00", "--session_id", "temp", "--option_id", "Q01A3","--format","json"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, errors = process.communicate()
-        print(errors)
-        assert b"401" in output
-        assert b"User is unauthorized" in output

@@ -17,7 +17,7 @@ class TestHealthCheck:
             assert  b"csv file healthcheck.csv saved at csv_files directory successfully" in output
             assert b"intelliq" in output 
     #Test 3
-    def test_anauthorized(self):
+    def test_unauthorized(self):
             process = subprocess.run(["python", "logout"])
             process = subprocess.Popen(["python", "healthcheck", "--format", "json"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             output, errors = process.communicate()

@@ -1,3 +1,4 @@
+# Intelliq Frontend
 * Install Node.js (including NPM)
 * cd intelliq-frontend
 * npm install
