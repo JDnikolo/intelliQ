@@ -18,7 +18,7 @@ def users(arg):
   url = 'http://localhost:9103/intelliq_api/admin/users/' + arg.username + '?format=' + arg.format
   res = requests.get(url, headers=find_key(), verify=False)
   if(res.status_code == 200):
-    print("User data :/n")
+    print("User data :")
     if (arg.format == 'json'):
       print(res.json())
     else:
@@ -28,7 +28,7 @@ def users(arg):
       f.seek(0)
       f.close()
       print(res.text)
-      print(f"[{arg.username} info saved at csv_files directory successfully!")  
+      print(f"{arg.username} info saved at csv_files directory successfully!")  
   else:
     error = res.json()
     print(error['detail'])

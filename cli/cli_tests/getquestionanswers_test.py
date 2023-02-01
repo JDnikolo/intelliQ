@@ -1,13 +1,13 @@
 import subprocess
 
-class GetQuestionAnswers:
+class TestGetQuestionAnswers:
     #Test 1
     def test_200(self):
-        process = subprocess.run(["python", "login", "--username", "andreane82", "--passw", "e00f8e21a864de304a6c"])
+        subprocess.run(["python", "login", "--username", "andreane82", "--passw", "e00f8e21a864de304a6c"])
         process = subprocess.Popen(["python", "getquestionanswers", "--questionnaire_id", "QQ000", "--question_id", "Q01", "--format","json"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, errors = process.communicate()
         print(errors)
-        assert b"402" in output    
+        assert b"200" in output    
         
    #Test 2
     def test_test_no_answers(self):
@@ -31,7 +31,8 @@ class GetQuestionAnswers:
         assert b"csv file Q01.csv saved at csv_files directory successfully" in output
     #Test 5
     def test_unauthorized(self):
-        process = subprocess.run(["python", "logout"])
+        subprocess.run(["python", "logout"])
         process = subprocess.Popen(["python", "getquestionanswers", "--questionnaire_id", "QQ000", "--question_id", "Q00","--format","json"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, errors = process.communicate()
         print(errors)
+        assert b"User is unauthorized" in output

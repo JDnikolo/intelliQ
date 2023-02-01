@@ -10,7 +10,7 @@ def getsessionanswers(arg):
         print(res.status_code)
         print(res.json())
   elif (arg.format == 'csv' and res.status_code == 200):
-    f = open(f"./csv_files/{arg.session_id}.csv", 'w+') 
+    f = open(f"./csv_files/{arg.session_id}.csv", 'w+', encoding="utf-8") 
     f.truncate(0)
     f.write(res.text)
     f.seek(0)

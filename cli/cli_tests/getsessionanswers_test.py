@@ -1,10 +1,10 @@
 import subprocess
 
-class GetSessionAnswers:
+class TestGetSessionAnswers:
     #Test 1
     def test_200(self):
         process = subprocess.run(["python", "login", "--username", "andreane82", "--passw", "e00f8e21a864de304a6c"])
-        process = subprocess.Popen(["python", "getsessionanswers", "--questionnaire_id", "QQ000", "--question_id", "Q01", "--format","json"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.Popen(["python", "getsessionanswers", "--questionnaire_id", "QQ000", "--session_id", "temp", "--format","json"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, errors = process.communicate()
         print(errors)
         assert b"200" in output
