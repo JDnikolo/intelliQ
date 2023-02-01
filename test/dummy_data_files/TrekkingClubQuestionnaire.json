@@ -1,0 +1,198 @@
+{
+    "questionnaireID": "QQ000",
+    "questionnaireTitle": "Ερωτηματολόγιο Προορισμού Εκδρομής Trekking Club",
+    "keywords": [
+        "trekking",
+        "vacation",
+        "poll"
+    ],
+    "questions": [
+        {
+            "qID": "P00",
+            "qtext": "Ποιο είναι το mail σας;",
+            "required": "FALSE",
+            "type": "profile",
+            "options": [
+                {
+                    "optID": "P00TXT",
+                    "opttxt": "<open string>",
+                    "nextqID": "P01"
+                }
+            ]
+        },
+        {
+            "qID": "P01",
+            "qtext": "Ποια είναι η ηλικία σας;",
+            "required": "TRUE",
+            "type": "profile",
+            "options": [
+                {
+                    "optID": "P01A1",
+                    "opttxt": "<30",
+                    "nextqID": "Q01"
+                },
+                {
+                    "optID": "P01A2",
+                    "opttxt": "30-50",
+                    "nextqID": "Q01"
+                },
+                {
+                    "optID": "P01A3",
+                    "opttxt": "50-70",
+                    "nextqID": "Q01"
+                },
+                {
+                    "optID": "P01A4",
+                    "opttxt": ">70",
+                    "nextqID": "Q01"
+                }
+            ]
+        },
+        {
+            "qID": "Q01",
+            "qtext": "Ποιον προορισμό προτιμάτε για αυτό το ΣΚ;",
+            "required": "TRUE",
+            "type": "question",
+            "options": [
+                {
+                    "optID": "Q01A1",
+                    "opttxt": "Βουνό",
+                    "nextqID": "Q02"
+                },
+                {
+                    "optID": "Q01A2",
+                    "opttxt": "Θάλασσα",
+                    "nextqID": "Q04"
+                },
+                {
+                    "optID": "Q01A3",
+                    "opttxt": "Πεδιάδα",
+                    "nextqID": "Q04"
+                }
+            ]
+        },
+        {
+            "qID": "Q02",
+            "qtext": "Εφόσον απαντήσατε [*Q101A1] στην προηγούμενη ερώτηση, τι θα προτιμούσατε;",
+            "required": "TRUE",
+            "type": "question",
+            "options": [
+                {
+                    "optID": "Q02A1",
+                    "opttxt": "Αναρρίχηση",
+                    "nextqID": "Q04"
+                },
+                {
+                    "optID": "Q02A2",
+                    "opttxt": "Πεζοπορία",
+                    "nextqID": "Q04"
+                },
+                {
+                    "optID": "Q02A3",
+                    "opttxt": "Άλλο",
+                    "nextqID": "Q03"
+                }
+            ]
+        },
+        {
+            "qID": "Q03",
+            "qtext": "Εφόσον διαλέξατε [*Q102A3], πληκτρολογήστε την προτίμησή σας:",
+            "required": "TRUE",
+            "type": "question",
+            "options": [
+                {
+                    "optID": "Q03TXT",
+                    "opttxt": "<open string>",
+                    "nextqID": "Q04"
+                }
+            ]
+        },
+        {
+            "qID": "Q04",
+            "qtext": "Τι διάρκεια θα θέλατε να έχει η εκδρομή;",
+            "required": "TRUE",
+            "type": "question",
+            "options": [
+                {
+                    "optID": "Q04A1",
+                    "opttxt": "Διήμερη",
+                    "nextqID": "Q05"
+                },
+                {
+                    "optID": "Q04A2",
+                    "opttxt": "Μονοήμερη",
+                    "nextqID": "Q05"
+                },
+                {
+                    "optID": "Q04A3",
+                    "opttxt": "Ολιγόωρη",
+                    "nextqID": "Q05"
+                }
+            ]
+        },
+        {
+            "qID": "Q05",
+            "qtext": "Τι ποσό θα θέλατε να διαθέσετε;",
+            "required": "TRUE",
+            "type": "question",
+            "options": [
+                {
+                    "optID": "Q05A1",
+                    "opttxt": ">200€",
+                    "nextqID": "Q06"
+                },
+                {
+                    "optID": "Q05A2",
+                    "opttxt": "100-200€",
+                    "nextqID": "Q07"
+                },
+                {
+                    "optID": "Q05A3",
+                    "opttxt": "50-100€",
+                    "nextqID": "Q07"
+                },
+                {
+                    "optID": "Q05A4",
+                    "opttxt": "<50€",
+                    "nextqID": "Q07"
+                }
+            ]
+        },
+        {
+            "qID": "Q06",
+            "qtext": "Εφόσον απαντήσατε [*Q105A1] στην ερώτηση [*Q105], θα θέλατε να συνεισφέρετε στο κοινό ταμείο της οργάνωσης για την εκδρομή;",
+            "required": "FALSE",
+            "type": "question",
+            "options": [
+                {
+                    "optID": "Q06A1",
+                    "opttxt": "Ναι",
+                    "nextqID": "Q07"
+                },
+                {
+                    "optID": "Q06A2",
+                    "opttxt": "Οχι",
+                    "nextqID": "Q07"
+                }
+            ]
+        },
+        {
+            "qID": "Q07",
+            "qtext": "Θα είστε με παρέα ή χωρίς;",
+            "required": "FALSE",
+            "type": "question",
+            "options": [
+                {
+                    "optID": "Q07A1",
+                    "opttxt": "Με παρέα",
+                    "nextqID": "-"
+                },
+                {
+                    "optID": "Q07A2",
+                    "opttxt": "Χωρίς παρέα",
+                    "nextqID": "-"
+                }
+            ]
+        }
+    ]
+}
