@@ -6,7 +6,7 @@ file_path = "../test/dummy_data_files/TrekkingClubQuestionnaire.json"
 class TestQuestionnaireUpd:
     #Test 1
     def test_200(self):
-        login = subprocess.run(["python", "login.py", "--username", "andreane82", "--passw", "e00f8e21a864de304a6c"])
+        login = subprocess.Popen(["python", "login.py", "--username", "andreane82", "--passw", "e00f8e21a864de304a6c"])
         login.wait()
         process = subprocess.Popen(["python", "questionnaire_upd.py", "--source", file_path],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, errors = process.communicate()

@@ -18,12 +18,15 @@ class TestResetQ:
         
     #Test 3
     def test_unauthorized(self):
-        subprocess.run(["python", "logout"])
+        logout = subprocess.Popen(["python", "logout.py"])
+        logout.wait()
         process = subprocess.Popen(["python", "resetq.py", "--questionnaire_id", "QQ876","--format", "json"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, errors = process.communicate()
         print(errors)
         assert b"User is unauthorized" in output
-        subprocess.run(["python", "login.py", "--username", "user55", "--passw", "12345"])
+        login = subprocess.Popen(["python", "login.py", "--username", "user55", "--passw", "12345"])
+        #wait for user login
+        login.wait()
         process = subprocess.Popen(["python", "resetq.py", "--questionnaire_id", "QQ876","--format", "json"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, errors = process.communicate()
         print(errors)

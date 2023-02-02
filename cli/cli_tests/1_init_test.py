@@ -8,4 +8,5 @@ class TestInit:
         process.wait()
         output, errors = process.communicate()
         print(errors)
-        subprocess.Popen(["python", "logout.py"])
+        logout = subprocess.Popen(["python", "logout.py"])
+        logout.wait()
