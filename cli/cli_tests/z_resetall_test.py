@@ -6,12 +6,13 @@ file_path = "../test/dummy_data_files/fill_data.json"
 class TestResetAll:
     #Test 1
     def test_OK(self):
-        subprocess.run(["python", "login", "--username", "andreane82", "--passw", "e00f8e21a864de304a6c"])
-        subprocess.Popen(["python", "questionnaire_upd", "--source", file_path],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        login = subprocess.Popen(["python", "login", "--username", "andreane82", "--passw", "e00f8e21a864de304a6c"]).wait()
+        upload = subprocess.Popen(["python", "questionnaire_upd", "--source", file_path],stdout=subprocess.PIPE, stderr=subprocess.PIPE).wait()
         process = subprocess.Popen(["python", "resetall"],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process.wait()
         output, errors = process.communicate()
         print(errors)
-        assert b"status\": \"OK" in output
+        assert b"OK" in output
         
     #Test 2
     def test_no_available_questionnaires(self):
