@@ -1,0 +1,239 @@
+{
+	"info": {
+		"_postman_id": "570ddb18-c09a-4b46-8037-eb333f7ab1e2",
+		"name": "Other",
+		"description": "## This folder contains the testing scripts for the alternative data format a user can receive the question and/or questionnaire details\n\nIntelliq provides the capability of receiving the details concerning the questions and/or questionnaires in CSV, except the standard JSON format. This functionality is tested in this folder.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16293360"
+	},
+	"item": [
+		{
+			"name": "correct Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.have.jsonBody()\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e00f8e21a864de304a6c",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-OBSERVATORY-AUTH",
+						"value": "e800a56846d2430ba797e2fbd67603",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/admin/resetq/:questionnaireID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"resetq",
+						":questionnaireID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ010"
+						}
+					]
+				},
+				"description": "### An admin send resets all answers to a questionnaire\n\nAn admin POSTs a request to reset all answers to a questionnaire."
+			},
+			"response": []
+		},
+		{
+			"name": "test CSV format",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e00f8e21a864de304a6c",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/admin/users/SpaceUser?format=csv",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"users",
+						"SpaceUser"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "csv"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "test CSV format - /questionnaire",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e00f8e21a864de304a6c",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/questionnaire/QQ000?format=csv",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"questionnaire",
+						"QQ000"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "csv"
+						}
+					]
+				},
+				"description": "### A test to get answers of questionnaire to CSV\n\nAn admin or viewer can make a GET request to get the a csv file of all the responses of a certain questionnaire."
+			},
+			"response": []
+		},
+		{
+			"name": "test CSV format - /question",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e00f8e21a864de304a6c",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/question/QQ000/Q01?format=csv",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question",
+						"QQ000",
+						"Q01"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "csv"
+						}
+					]
+				},
+				"description": "### A test to get answers of question to CSV\n\nAn admin or viewer can make a GET request to get a csv file of all the responses of a certain question of a questionnaire."
+			},
+			"response": []
+		},
+		{
+			"name": "Upload new questionnaire",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "e00f8e21a864de304a6c",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "a",
+							"type": "file",
+							"src": "TrekkingClubTest.json"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/admin/questionnaire_upd",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"questionnaire_upd"
+					]
+				},
+				"description": "### Upload a new questionnaire\n\nAn admin uploads a new questionnaire by POSTing a questionnaire_upd request with a JSON object in its body. The JSON object has the appropriate format to get accepted by the API."
+			},
+			"response": []
+		}
+	]
+}

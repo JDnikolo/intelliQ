@@ -1,0 +1,2332 @@
+{
+	"info": {
+		"_postman_id": "328fcfa2-a77d-41af-9cc7-9a292030890d",
+		"name": "User Endpoints",
+		"description": "## Folder contains Testing script for the endpoints of Users\n\n### Show Available Questionnaires\n\n#### GET /questionnaire/:questionnaireID\n\nhttp GET request that returns an object containing the general elements and questions of the questionnaire with identifier questionnaireID, sorted by question ID.\n\n### Show Question\n\n#### GET /question/:questionnaireID/:questionID\n\nhttp GET request that returns an object containing the full details of the questionID of the questionnaireID. The question options (answers) are sorted by answer ID.\n\n### Answer a Question\n\n#### POST /doanswer/:questionnaireID/:questionID/:session/:optionID\n\nhttp POST request that registers the optionID response given in the session response event to the questionID question of the questionnaireID. It does not return an object. The session identifier is a string of 4 random characters that correspond to the event of the questionnaire (note: not the question) being answered by a user.\n\n### Answers of single Session\n\n#### /getsessionanswers/:questionnaireID/:session\n\nhttp GET request that returns an object containing the responses given to all questionnaire during the session response event. Answers are sorted by question ID.\n\n### Answers of single Question\n\n#### /getquestionanswers/:questionnaireID/:questionID\n\nhttp GET request that returns an object containing the answers given to all the answer events in the question questionID. Answers are sorted by the order in which they were given.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16293360"
+	},
+	"item": [
+		{
+			"name": "getsessionanswers",
+			"item": [
+				{
+					"name": "correct (json)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.jsonBody()\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getsessionanswers/:questionnaireID/:session?format=json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getsessionanswers",
+								":questionnaireID",
+								":session"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "json"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "session",
+									"value": "ATBP"
+								}
+							]
+						},
+						"description": "### Get the answers of a session\n\nAn admin or viewer tries to GET the answers of a single session of a responder. The request is successful and returns a JSON object with the answers and a 200 status OK response."
+					},
+					"response": []
+				},
+				{
+					"name": "correct (csv)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    //var csvData = pm.response.csv();\r",
+									"    pm.response.to.have.status(200);\r",
+									"    //pm.response.to.have.jsonBody()\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/getsessionanswers/:questionnaireID/:session?format=csv",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getsessionanswers",
+								":questionnaireID",
+								":session"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "csv"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "session",
+									"value": "ATBP"
+								}
+							]
+						},
+						"description": "### Get the answers of a session\n\nAn admin or viewer tries to GET the answers of a single session of a responder. The request is successful and returns a CSV object with the answers and a 200 status OK response."
+					},
+					"response": []
+				},
+				{
+					"name": "invalid format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.have.jsonBody()\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/getsessionanswers/:questionnaireID/:session?format=fdsfjmd",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getsessionanswers",
+								":questionnaireID",
+								":session"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "fdsfjmd"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": null
+								},
+								{
+									"key": "session",
+									"value": null
+								}
+							]
+						},
+						"description": "### Get the answers of a session failure\n\nAn admin or viewer tries to GET the answers of a single session of a responder. The request is unsuccessful because the parameters of the request are invalid (could be either \"json\" or \"csv\". The response returns a 400 status code."
+					},
+					"response": []
+				},
+				{
+					"name": "invalid session",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 402\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(402);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/getsessionanswers/:questionnaireID/:session",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getsessionanswers",
+								":questionnaireID",
+								":session"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "session",
+									"value": "ATBPk"
+								}
+							]
+						},
+						"description": "### Get the answers of a session failure (invalid session)\n\nAn admin or viewer tries to GET the answers of a single session of a responder. The request is unsuccessful because the session parameter is non-existant in the database. A 402 status response is returned"
+					},
+					"response": []
+				},
+				{
+					"name": "invalid questionnaireID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 402\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(402);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/getsessionanswers/:questionnaireID/:session",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getsessionanswers",
+								":questionnaireID",
+								":session"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "WRONG"
+								},
+								{
+									"key": "session",
+									"value": "ABCD"
+								}
+							]
+						},
+						"description": "### Get the answers of a session failure (invalid questionnaire)\n\nAn admin or viewer tries to GET the answers of a single session of a responder. The request is unsuccessful because the questionnaire parameter is non-existant in the database. A 402 status response is returned"
+					},
+					"response": []
+				},
+				{
+					"name": "unauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "random1234",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/getsessionanswers/:questionnaireID/:session",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getsessionanswers",
+								":questionnaireID",
+								":session"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "session",
+									"value": "ATBP"
+								}
+							]
+						},
+						"description": "### Get the answers of a session failure (unauthorized)\n\nA user tries to GET the responses of a session of a responder. The user is unauthorized (neither an admin or a viewer) so the request is denied and a 401 status response is returned."
+					},
+					"response": []
+				},
+				{
+					"name": "getsessionanswers invalid method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(405);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/getsessionanswers/:questionnaireID/:session",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getsessionanswers",
+								":questionnaireID",
+								":session"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "session",
+									"value": "ATBP"
+								}
+							]
+						},
+						"description": "### Get the answers of a session failure (invalid request)\n\nAn admin or viewer tries to POST the answers of a single session of a responder. The request is unsuccessful because the getsessionanswers is a GET request. A 405 status response is returned"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "getquestionanswers",
+			"item": [
+				{
+					"name": "correct (json)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.jsonBody()\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getquestionanswers/:questionnaireID/:questionID?format=json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getquestionanswers",
+								":questionnaireID",
+								":questionID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "json"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "questionID",
+									"value": "Q01"
+								}
+							]
+						},
+						"description": "### Get the answers of an answer\n\nAn admin or viewer tries to GET the answers of a single answer for all responders. The request is successful and returns a JSON object with the answers and a 200 status OK response."
+					},
+					"response": []
+				},
+				{
+					"name": "correct (csv)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    //var csvData = pm.response.csv();\r",
+									"    pm.response.to.have.status(200);\r",
+									"    //pm.response.to.have.jsonBody()\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/getquestionanswers/:questionnaireID/:questionID?format=csv",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getquestionanswers",
+								":questionnaireID",
+								":questionID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "csv"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "questionID",
+									"value": "Q01"
+								}
+							]
+						},
+						"description": "### Get the answers of an answer\n\nAn admin or viewer tries to GET the answers of a single answer for all responders. The request is successful and returns a CSV object with the answers and a 200 status OK response."
+					},
+					"response": []
+				},
+				{
+					"name": "invalid format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.have.jsonBody()\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/getquestionanswers/:questionnaireID/:question?format=fdsfjmd",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getquestionanswers",
+								":questionnaireID",
+								":question"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "fdsfjmd"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": null
+								},
+								{
+									"key": "question",
+									"value": null
+								}
+							]
+						},
+						"description": "### Get the answers of an answer failure\n\nAn admin or viewer tries to GET the answers of a single question for all responders. The request is unsuccessful because the parameters of the request are invalid (could be either \"json\" or \"csv\"). The response returns a 400 status code."
+					},
+					"response": []
+				},
+				{
+					"name": "invalid questionID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 402\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(402);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/getquestionanswers/:questionnaireID/:question",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getquestionanswers",
+								":questionnaireID",
+								":question"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "question",
+									"value": "wrong"
+								}
+							]
+						},
+						"description": "### Get the answers of a question failure (invalid question)\n\nAn admin or viewer tries to GET the answers of a single question of all responders. The request is unsuccessful because the questionID parameter is non-existant in the database. A 402 status response is returned"
+					},
+					"response": []
+				},
+				{
+					"name": "invalid questionnaireID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 402\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(402);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/getquestionanswers/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getquestionanswers",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "WRONG"
+								},
+								{
+									"key": "questionID",
+									"value": "Q01"
+								}
+							]
+						},
+						"description": "### Get the answers of a question failure (invalid question)\n\nAn admin or viewer tries to GET the answers of a single question of all responders. The request is unsuccessful because the questionnaireID parameter is non-existant in the database. A 402 status response is returned"
+					},
+					"response": []
+				},
+				{
+					"name": "unauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "random1234",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/getquestionanswers/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getquestionanswers",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "questionID",
+									"value": "Q01"
+								}
+							]
+						},
+						"description": "### Get the answers of a question failure (unauthorized)\n\nA user tries to GET the responses of a question of all responders. The user is unauthorized (neither an admin or a viewer) so the request is denied and a 401 status response is returned."
+					},
+					"response": []
+				},
+				{
+					"name": "invalid method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(405);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/getquestionanswers/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getquestionanswers",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "questionID",
+									"value": "Q01"
+								}
+							]
+						},
+						"description": "### Get the answers of a question failure (invalid request)\n\nAn admin or viewer tries to POST the answers of a single question for all responders. The request is unsuccessful because the getsessionanswers is a GET request. A 405 status response is returned"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Answer a question",
+			"item": [
+				{
+					"name": "Answer succesfully",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Normal Insertion of answer test\",function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}doanswer"
+							],
+							"path": [
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "asper"
+								},
+								{
+									"key": "questionID",
+									"value": "ipac"
+								},
+								{
+									"key": "sessionID",
+									"value": "coke"
+								},
+								{
+									"key": "optionID",
+									"value": "aevl"
+								}
+							]
+						},
+						"description": "### Successful Answer\n\nThis request demonstrates the successful POST-ing of an answer to the database when all request params are valid.\n\n**CAUTION**\n\nIf a question has already been answered in the same session, then both answers are logged to the database and the answer ID is actually a hash of the date and time of the answer. So, to get most recent answer lexicographically compare answers with same session ID (sessionID), option ID (ans_optionID), questionnaire ID (qnrID), and different answer ID (answerID)"
+					},
+					"response": []
+				},
+				{
+					"name": "Answer and questionnaire does not exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "WRONG"
+								},
+								{
+									"key": "questionID",
+									"value": "ipac"
+								},
+								{
+									"key": "sessionID",
+									"value": "coke"
+								},
+								{
+									"key": "optionID",
+									"value": "aevl"
+								}
+							]
+						},
+						"description": "### Bad Questionnaire Request\n\nThis request demonstrates the failure of POST-ing of an answer to the database when questionnaire parameter is invalid (the questionnaire does not exist)."
+					},
+					"response": []
+				},
+				{
+					"name": "Answer and option does not exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "asper"
+								},
+								{
+									"key": "questionID",
+									"value": "ipac"
+								},
+								{
+									"key": "sessionID",
+									"value": "rm52jy73nu"
+								},
+								{
+									"key": "optionID",
+									"value": "WRONG"
+								}
+							]
+						},
+						"description": "### Bad Option Request\n\nThis request demonstrates the failure of POST-ing of an answer to the database when option parameter is invalid (question does not have this answer option)."
+					},
+					"response": []
+				},
+				{
+					"name": "Answer and Question does not exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "asper"
+								},
+								{
+									"key": "questionID",
+									"value": "WRONG"
+								},
+								{
+									"key": "sessionID",
+									"value": "rm52jy73nu"
+								},
+								{
+									"key": "optionID",
+									"value": "aevl"
+								}
+							]
+						},
+						"description": "### Bad Question ID Request\n\nThis request demonstrates the failure of POST-ing of an answer to the database when question parameter is invalid (question ID does not exist)."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "getallanswers-Experimental",
+			"item": [
+				{
+					"name": "correct (json)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.jsonBody()\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getallanswers/:questionnaireID?format=json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getallanswers",
+								":questionnaireID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "json"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ111"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "correct (csv)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "{{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getallanswers/:questionnaireID?format=csv",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getallanswers",
+								":questionnaireID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "csv"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "question",
+			"item": [
+				{
+					"name": "Check_200+fast_response",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "07e5e8465dbb4b829985fe745604ba",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID?format=json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "json"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000",
+									"description": "Questionnaire ID of questionnaire that the desired question belongs to."
+								},
+								{
+									"key": "questionID",
+									"value": "Q01",
+									"description": "ID of the desired question."
+								}
+							]
+						},
+						"description": "### Get a question from a questionnaire\n\nA viewer or admin sends a GET request to retrieve a question from a certain questionnaire. The admin/user has the correct credentials and authorization succeeds. The request is given the JSON value in the query string and the question details are returned in a JSON object along in a 200 status response."
+					},
+					"response": []
+				},
+				{
+					"name": "Check_Unauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID?format=json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "json"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "questionID",
+									"value": "Q01"
+								}
+							]
+						},
+						"description": "### Get a question from a questionnaire, unauthorized\n\nAn unauthorized entity sends a GET request to retrieve question details from a certain questionnaire. The entity has incorrect credentials and authorization fails. A 401 status response is returned."
+					},
+					"response": []
+				},
+				{
+					"name": "Check_validQID_invalidQNRID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"pm.test(\"Expected error message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.detail).to.eql(\"The requested questionnaire/question is not present in the database.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "07e5e8465dbb4b829985fe745604ba",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID?format=json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "json"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ10101"
+								},
+								{
+									"key": "questionID",
+									"value": "Q00"
+								}
+							]
+						},
+						"description": "### Get a question from a questionnaire, invalid questionnaire\n\nA viewer or admin sends a GET request to retrieve a question from a certain questionnaire. The admin/user has the correct credentials and authorization succeeds. The request fails because the query parameter for the questionnaire ID is set to a non-existant value. A 400 status response along with a JSON object with an appropriate message are returned."
+					},
+					"response": []
+				},
+				{
+					"name": "Check_invalidQID_validQNRID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"pm.test(\"Expected error message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.detail).to.eql(\"The requested questionnaire/question is not present in the database.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "07e5e8465dbb4b829985fe745604ba",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID?format=json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "json"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "questionID",
+									"value": "Q101010"
+								}
+							]
+						},
+						"description": "### Get a question from a questionnaire, invalid question\n\nA viewer or admin sends a GET request to retrieve a question from a certain questionnaire. The admin/user has the correct credentials and authorization succeeds. The request fails because the query parameter for the question ID is set to a non-existant value. A 400 status response along with a JSON object with an appropriate message are returned."
+					},
+					"response": []
+				},
+				{
+					"name": "Check_empty_parameters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "07e5e8465dbb4b829985fe745604ba",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID?format=json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "json"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": null
+								},
+								{
+									"key": "questionID",
+									"value": null
+								}
+							]
+						},
+						"description": "### Get a question from a questionnaire, empty parameters\n\nA viewer or admin sends a GET request to retrieve a question from a certain questionnaire. The admin/user has the correct credentials and authorization succeeds. The request fails because the query parameters are empty. A 400 status response is returned."
+					},
+					"response": []
+				},
+				{
+					"name": "Check_csv_format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"pm.test(\"Content-Type is text/csv\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('text/csv; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "07e5e8465dbb4b829985fe745604ba",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID?format=csv",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "csv"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "questionID",
+									"value": "Q01"
+								}
+							]
+						},
+						"description": "### Get a question from a questionnaire in CSV\n\nA viewer or admin sends a GET request to retrieve a question from a certain questionnaire. The admin/user has the correct credentials and authorization succeeds. The request is given the CSV value in the query string and the question details are returned in a CSV object along in a 200 status response."
+					},
+					"response": []
+				},
+				{
+					"name": "Check_json_format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "07e5e8465dbb4b829985fe745604ba",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID?format=json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "json"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "questionID",
+									"value": "Q01"
+								}
+							]
+						},
+						"description": "### \\[Duplicate\\] Get a question from a questionnaire\n\nA viewer or admin sends a GET request to retrieve a question from a certain questionnaire. The admin/user has the correct credentials and authorization succeeds. The request is given the JSON value in the query string and the question details are returned in a JSON object along in a 200 status response."
+					},
+					"response": []
+				},
+				{
+					"name": "Check_json_default",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "07e5e8465dbb4b829985fe745604ba",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID?format=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": ""
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "questionID",
+									"value": "Q01"
+								}
+							]
+						},
+						"description": "### Get a question from a questionnaire, default format request\n\nA viewer or admin sends a GET request to retrieve a question from a certain questionnaire. The admin/user has the correct credentials and authorization succeeds. The request is given without a value in the \"format\" field query string. That means that the \"format\" query string is automatically defaulted in the JSON values and the question details are returned in a JSON object along in a 200 status response."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "questionnaire_id",
+			"item": [
+				{
+					"name": "invalid method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "e00f8e21a864de304a6c",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/questionnaire/:questionnaireID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questionnaire",
+								":questionnaireID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": null
+								}
+							]
+						},
+						"description": "### Get questionnaire details, request method is wrong\n\nAn authorized user tries to GET a questionnaire's details, but the request is sent with a POST method. The response returned is a 400 status response because of the faulty request method."
+					},
+					"response": []
+				},
+				{
+					"name": "check_Unauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/questionnaire/:questionnaireID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questionnaire",
+								":questionnaireID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": null
+								}
+							]
+						},
+						"description": "### Get questionnaire details, unauthorized party\n\nAn authorized user tries to GET a questionnaire's details. Naturally, the request fails and the response returned is a 401 status response."
+					},
+					"response": []
+				},
+				{
+					"name": "Check_200+fast_response",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "e00f8e21a864de304a6c",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/questionnaire/:questionnaireID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questionnaire",
+								":questionnaireID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000",
+									"description": "Questionnaire ID of questionnaire whose info we need."
+								}
+							]
+						},
+						"description": "### Get questionnaire's details, no query string\n\nA viewer or admin sends a GET request to retrieve a certain's questionnaire details. The admin/user has the correct credentials and authorization succeeds. The request isnot given any query string values and returns a JSON object with the questionnaire's details and a 200 status response."
+					},
+					"response": []
+				},
+				{
+					"name": "Check_json_default",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "e00f8e21a864de304a6c",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/questionnaire/:questionnaireID?format=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questionnaire",
+								":questionnaireID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": ""
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								}
+							]
+						},
+						"description": "### Get questionnaire's details, empty query string\n\nA viewer or admin sends a GET request to retrieve a certain's questionnaire details. The admin/user has the correct credentials and authorization succeeds. The request is given the \"format\" query string, but its value is left empty and the response body format is defaulted as a JSON object with the questionnaire's details and a 200 status response."
+					},
+					"response": []
+				},
+				{
+					"name": "Check_csv_format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"pm.test(\"Content-Type is text/csv\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('text/csv; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "e00f8e21a864de304a6c",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/questionnaire/:questionnaireID?format=csv",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questionnaire",
+								":questionnaireID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "csv"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								}
+							]
+						},
+						"description": "### Get questionnaire's details, CSV format\n\nA viewer or admin sends a GET request to retrieve a certain's questionnaire details. The admin/user has the correct credentials and authorization succeeds. The request is given the \"format\" query string with the value set to CSV.The response is a CSV object with the questionnaire's details and a 200 status response."
+					},
+					"response": []
+				},
+				{
+					"name": "Check_json_format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "e00f8e21a864de304a6c",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/questionnaire/:questionnaireID?format=json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questionnaire",
+								":questionnaireID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "json"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								}
+							]
+						},
+						"description": "### Get questionnaire's details, JSON format\n\nA viewer or admin sends a GET request to retrieve a certain's questionnaire details. The admin/user has the correct credentials and authorization succeeds. The request is given the \"format\" query string with the value set to JSON.The response is a JSON object with the questionnaire's details and a 200 status response."
+					},
+					"response": []
+				},
+				{
+					"name": "invalid format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.have.jsonBody()\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Expected error message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.detail).to.eql(\"Only json and csv are acceptable formats.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "e00f8e21a864de304a6c",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/questionnaire/:questionnaireID?format=setcghfyt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questionnaire",
+								":questionnaireID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "setcghfyt"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": null
+								}
+							]
+						},
+						"description": "### Get questionnaire's details, invalid format\n\nA viewer or admin sends a GET request to retrieve a certain's questionnaire details. The admin/user has the correct credentials and authorization succeeds. The request is given the \"format\" query string with an invalid value. The response is a JSON object with the message for faulty query string format and a 400 status response."
+					},
+					"response": []
+				},
+				{
+					"name": "Check_invalidQNRID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"pm.test(\"Expected error message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.detail).to.eql(\"The requested questionnaire is not present in the database.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "e00f8e21a864de304a6c",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/questionnaire/:questionnaireID?format=json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questionnaire",
+								":questionnaireID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "json"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ101"
+								}
+							]
+						},
+						"description": "### Get questionnaire's details, invalid questionnaire\n\nA viewer or admin sends a GET request to retrieve a certain's questionnaire details. The admin/user has the correct credentials and authorization succeeds. The quesitonnaire ID given as a request parameter does not exist in the database and a 400 response is returned with a JSON object with the message to state this fact."
+					},
+					"response": []
+				},
+				{
+					"name": "Check_QNRID_format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"pm.test(\"Expected error message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.detail).to.eql(\"Required field was not given or is incorrectly formatted.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "e00f8e21a864de304a6c",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/questionnaire/:questionnaireID?format=json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questionnaire",
+								":questionnaireID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "json"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "abc"
+								}
+							]
+						},
+						"description": "### Get questionnaire's details, questionnaire ID is badly formatted\n\nA viewer or admin sends a GET request to retrieve a certain's questionnaire details. The admin/user has the correct credentials and authorization succeeds. The backend makes the necessary checks to see if the questionnaire ID is meeting the standards for the ID format and the concludes that it does not. A 400 status response is returned, along with a JSON object stating the reason the request failed."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "key",
+				"value": "X-OBSERVATORY-AUTH",
+				"type": "string"
+			},
+			{
+				"key": "value",
+				"value": "e00f8e21a864de304a6c",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "user_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

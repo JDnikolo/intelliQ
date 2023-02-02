@@ -1,0 +1,1426 @@
+{
+	"info": {
+		"_postman_id": "c8d8f537-98a3-4fa7-984c-9ab8a231acc5",
+		"name": "Admin Endpoints",
+		"description": "## This folder contains Testing scripts for the endpoints of Admin\n\nIntelliq API supports multiple functionalities to administer and manage questionnaires and users. Admin endpoints allow the following actions\n\n### Status\n\n#### GET /admin/healthcheck\n\nIt supports the GET method and confirms end-to-end connectivity between the user and the database.\n\nIn case of successful connection json object is returned: {\"status\":\"OK\", \"dbconnection\":\\[connection string\\]}, otherwise {\"status\":\"failed\", \"dbconnection\":\\[connection string\\]} is returned. The connection string contains everything needed for the NW of your choice.\n\n## Upload Questionnaire\n\n#### POST admin/questionnaire_upd\n\nIt supports http POST method to upload JSON file with data of a new questionnaire. In the http call the file must be encoded as a \"file\" field in multipart/form-data encoding.\n\n## Reset all questionnare and actions\n\n#### POST admin/resetall\n\nIt supports the POST method and initializes all system data, i.e. questionnaires, responses and users, if any).\n\nReturn the json object: {\"status\":\"OK\"}, if successful, otherwise {\"status\":\"failed\", \"reason\":\"<...>} with information about the failure is returned\n\n## Reset question\n\n#### POST admin/resetq/:questionnaireID\n\nSupports the POST method and deletes all questionnaire responses identified by uestionnaireID.\n\nReturn the json object: {\"status\":\"OK\"}, if successful, otherwise {\"status\":\"failed\", \"reason\":\"<...>} with information about the failure is returned\n\n## Modify user list\n\n#### POST admin/usermod/:username/:password\n\nIt supports http POST method to add new user or change password if the user already exists\n\n## User Data\n\n#### GET admin/users/:username\n\nIt supports the http GET method to read a user's information",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16293360"
+	},
+	"item": [
+		{
+			"name": "Admin/Usermod&User",
+			"item": [
+				{
+					"name": "/usermod create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successfully create/modify user.\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/usermod/:user/:password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"usermod",
+								":user",
+								":password"
+							],
+							"variable": [
+								{
+									"key": "user",
+									"value": "SpaceUser"
+								},
+								{
+									"key": "password",
+									"value": "SpacePass"
+								}
+							]
+						},
+						"description": "### Admin creates new Viewer\n\nAn admin POSTs a request to add a Viewer in the database. The request is successful and 200 OK answer is returned."
+					},
+					"response": []
+				},
+				{
+					"name": "/users show credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var password = pm.collectionVariables.get(\"password\")\r",
+									"pm.test(\"Successful password change.\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.password).to.eql(password);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/users/:user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								":user"
+							],
+							"variable": [
+								{
+									"key": "user",
+									"value": "SpaceUser"
+								}
+							]
+						},
+						"description": "### Admin can see credentials of Viewer or Admin\n\nAn Admin issues a GET request to see credentials of a certain Viewer or Admin. The credentials of the account are passed as request parameters and a JSON object with the credentials is returned."
+					},
+					"response": []
+				},
+				{
+					"name": "/usermod change credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successfully create/modify user.\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/usermod/:user/:password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"usermod",
+								":user",
+								":password"
+							],
+							"variable": [
+								{
+									"key": "user",
+									"value": "SpaceUser"
+								},
+								{
+									"key": "password",
+									"value": "EarthPassword"
+								}
+							]
+						},
+						"description": "### Admin changes user's credentials\n\nAn Admin issues a POST request to change the credentials of a user (Viewer only). The request is successful and a 200 OK answer is returned."
+					},
+					"response": []
+				},
+				{
+					"name": "/users show new credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var new_password = pm.collectionVariables.get(\"new_password\")\r",
+									"pm.test(\"Successful password change.\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.password).to.eql(new_password);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/users/:user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								":user"
+							],
+							"variable": [
+								{
+									"key": "user",
+									"value": "SpaceUser"
+								}
+							]
+						},
+						"description": "### Show user's credentials, User just changed credentials\n\nThe Admin issues a GET request to get user's credentials whilst the credentials were just changed in a previous request. The request is successful if the credentials returned from the request are equal to the new credentials."
+					},
+					"response": []
+				},
+				{
+					"name": "/users incorrect credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 402\", function () {\r",
+									"    pm.response.to.have.status(402);\r",
+									"});\r",
+									"pm.test(\"Error title is correct.\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.title).to.eql(\"No user found.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/users/:user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								":user"
+							],
+							"variable": [
+								{
+									"key": "user",
+									"value": "EarthUser"
+								}
+							]
+						},
+						"description": "### Admin fetches non-existant user\n\nAdmin issues a GET request to see user's credentials but the user does not exist in the database. A 402 response and JSON object with \"No user found\" message."
+					},
+					"response": []
+				},
+				{
+					"name": "/usermod change Admin credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Stop Admin credential modification.\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"pm.test(\"Error title is correct.\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.title).to.eql(\"No modifying Admin credentials.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/usermod/:admin/:password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"usermod",
+								":admin",
+								":password"
+							],
+							"variable": [
+								{
+									"key": "admin",
+									"value": "andreane82"
+								},
+								{
+									"key": "password",
+									"value": "EarthPassword"
+								}
+							]
+						},
+						"description": "### Admin tries to change Admin's credentials\n\nAn Admin tries to change another admin's credentials. The POST request gets denied and a 400 response is returned along with a JSON object with the message \"No modyfying Admin credentials.\""
+					},
+					"response": []
+				},
+				{
+					"name": "/users get Admin credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Stop retrieval of Admin credentials\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"pm.test(\"Error title is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.title).to.eql(\"No retrieving Admin credentials.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/users/:admin",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								":admin"
+							],
+							"variable": [
+								{
+									"key": "admin",
+									"value": "andreane82"
+								}
+							]
+						},
+						"description": "### An Admin tries to get another Admin's credentials\n\nAn Admin issues a GET request to see another admin's credentials. The request is denied and a 400 response is returned along with a JSON object with the message \"No retrieving Admin credentials.\"\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "/usermod invalid credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Stop Admin credential modification.\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"pm.test(\"Error title is correct.\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.title).to.eql(\"Incorrect credential length.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/usermod/:user/:password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"usermod",
+								":user",
+								":password"
+							],
+							"variable": [
+								{
+									"key": "user",
+									"value": "TooLongUsernameSirYesIndeed"
+								},
+								{
+									"key": "password",
+									"value": "VeryLongButQuiteSecurePasswordThatWillNotPass"
+								}
+							]
+						},
+						"description": "### Admin tries to create user without respecting DB table length constraints\n\nThe Admin POSTs a request to create a user with name and password that exceed the database's length for those fields. A 400 response is returned and a JSON object with the message \"Incorrect credential length.\"\n\nEndFragment"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "resetq",
+			"item": [
+				{
+					"name": "no answers found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.have.jsonBody()\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "e00f8e21a864de304a6c",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/resetq/:questionnaireID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"resetq",
+								":questionnaireID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "TEMP"
+								}
+							]
+						},
+						"description": "### Admin resets empty Questionnaire\n\nAn Admin POSTs a resetq request to reset all answers to a questionnaire. The questionnaire is empty and no answers are found, so the response is 400."
+					},
+					"response": []
+				},
+				{
+					"name": "unauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(401);\r",
+									"    pm.response.to.have.jsonBody()\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "random1234",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/resetq/:questionnaireID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"resetq",
+								":questionnaireID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "TEMP"
+								}
+							]
+						},
+						"description": "StartFragment\n\n### User or unauthorized entity tries to reset Questionnaire\n\nAn entity POSTs a resetq request to reset all answers to a questionnaire. The entity is unauthorized and the request is denied. The response returned is 401.\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "invalid method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.have.jsonBody()\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "4ddf3814e7f648aeb32a3b346339de",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/resetq/:questionnaireID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"resetq",
+								":questionnaireID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "TEMP"
+								}
+							]
+						},
+						"description": "### Admin tries to reset non-existent Questionnaire\n\nStartFragment\n\nAn Admin POSTs a resetq request to reset all answers to a questionnaire. The questionnaire does not exist. The response returned is 400.\n\nEndFragment"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "resetall",
+			"item": [
+				{
+					"name": "Admin resetall 401",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Resetall Deletion Failed - Wrong token\",function(){\r",
+									"    pm.response.to.have.status(401);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "WRONG",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}admin/resetall",
+							"host": [
+								"{{baseUrl}}admin"
+							],
+							"path": [
+								"resetall"
+							]
+						},
+						"description": "### Database Deletion Unauthorized User\n\nA user (not an Admin or Viewer) trying to POST a resetall request. The request returns a 401 error code since user authorization fails"
+					},
+					"response": []
+				},
+				{
+					"name": "viewer trying to resetall",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Viewer trying to resetall\",function(){\r",
+									"    pm.response.to.have.status(401);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "jnj;hjlkL",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}admin/resetall",
+							"host": [
+								"{{baseUrl}}admin"
+							],
+							"path": [
+								"resetall"
+							]
+						},
+						"description": "### Database Deletion Viewer\n\nA Viewer trying to POST a resetall request. The viewer is verified and is trying to send a resetall, but only admins have authority to do so. The requestrequest returns a 401 error code since viewer authentication is not equivalent to admin authorization."
+					},
+					"response": []
+				},
+				{
+					"name": "Admin resetall success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Normal Questionnaire Deletion\",function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "correct",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}admin/resetall",
+							"host": [
+								"{{baseUrl}}admin"
+							],
+							"path": [
+								"resetall"
+							]
+						},
+						"description": "### Database Deletion Admin\n\nAn admin POSTs a resetall request. The database is deleted and a 200 OK message is returned."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "questionnaire_upd",
+			"item": [
+				{
+					"name": "Check-200+Fast_Response",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "07e5e8465dbb4b829985fe745604ba",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"description": "Json file that contains the new questionnaire's information.",
+									"type": "file",
+									"src": "fill_ok_file.json"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/questionnaire_upd",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"questionnaire_upd"
+							]
+						},
+						"description": "### Upload questionnaire successfully\n\nAn admin uploads a questionnaire successfully. The questionnaire is a JSON object attached to the body of the request. The application responds with a 200 OK status response."
+					},
+					"response": []
+				},
+				{
+					"name": "Check-Insert_Existing",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Insert Duplicate Questionnaire Error Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.detail).to.eql(\"Questionnaire ID already exists.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "07e5e8465dbb4b829985fe745604ba",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "a",
+									"type": "file",
+									"src": "fill_ok_file.json"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/questionnaire_upd",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"questionnaire_upd"
+							]
+						},
+						"description": "### Upload existing questionnaire\n\nAn admin tries to re-upload questionnaire that is already uploaded in the database. The response is a JSON object with the message \"Questionnaire ID already exists.\"\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "Check-no_file_uploaded",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"No file Uploaded Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.detail).to.eql(\"No file uploaded.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "07e5e8465dbb4b829985fe745604ba",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/questionnaire_upd",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"questionnaire_upd"
+							]
+						},
+						"description": "### Attempt to upload file but request body is empty\n\nAn admin tries to upload a questionnaire but the request body is left empty. A response message \"No file uploaded.\" is returned."
+					},
+					"response": []
+				},
+				{
+					"name": "Check-Unauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401.\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "07e5e8465dbb4b829985fe74560",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/questionnaire_upd",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"questionnaire_upd"
+							]
+						},
+						"description": "### Upload Questionnaire from unknown user\n\nAn unauthorized user tries to upload a questionnaire but is unauthorized to do so. A status 401 response is returned and the questionnaire is not uploaded."
+					},
+					"response": []
+				},
+				{
+					"name": "Check-bad file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.detail).to.eql(\"Badly formatted json parameters.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "07e5e8465dbb4b829985fe745604ba",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "a",
+									"type": "file",
+									"src": "fill_bad_file.json"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/questionnaire_upd",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"questionnaire_upd"
+							]
+						},
+						"description": "### Upload unformatted questionnaire\n\nA badly formatted questionnaire is attempted to be uploaded into the database. After checking the JSON object parameters the questionnaire is rejected and a JSON object with the response message \"Badly formatted json parameters.\" is returned.\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "Check-File_is_not_json",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.detail).to.eql(\"Bad file.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "07e5e8465dbb4b829985fe745604ba",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "a",
+									"type": "file",
+									"src": "wrong_format_file.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/questionnaire_upd",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"questionnaire_upd"
+							]
+						},
+						"description": "### Upload random file\n\nA file of unknown format is attempted to be uploaded to the database. The object is examined and after found out that its type is not JSON it is rejected and a JSON object with the response \"Bad file.\" is returned.\n\nEndFragment"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "healthcheck",
+			"item": [
+				{
+					"name": "Check-Unauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/healthcheck",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"healthcheck"
+							]
+						},
+						"description": "### Unauthorized entity tries to check connection\n\nAn unauthorized entity tries to check the health of the connection. The GET request is denied and a 401 Unauthorized response is returned."
+					},
+					"response": []
+				},
+				{
+					"name": "invalid method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "e00f8e21a864de304a6c",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/healthcheck",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"healthcheck"
+							]
+						},
+						"description": "### POST request to check connection\n\nAn admin tries to check the health of the connection by making a POST request. The POST method is invalid and the request is denied and a 400 Invalid request response is returned."
+					},
+					"response": []
+				},
+				{
+					"name": "Check-200+Fast_Response",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "e00f8e21a864de304a6c",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/healthcheck",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"healthcheck"
+							]
+						},
+						"description": "### Admin checks connection successfully\n\nAn admin tries to check the connection to the server. The admin is authorized and the request has the proper format and the server is running. The application responds with a 200 OK status response."
+					},
+					"response": []
+				},
+				{
+					"name": "correct (json)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "e00f8e21a864de304a6c",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/healthcheck?format=json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"healthcheck"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "json"
+								}
+							]
+						},
+						"description": "### Admin checks connection successfully, gets the results in json format\n\nAn admin tries to check the connection to the server and wants to get the results in a JSON object. The admin is authorized and the request has the proper format, the URL parameters are correct and the server is running. The application responds with a 200 OK status response and a JSON file with the response is returned."
+					},
+					"response": []
+				},
+				{
+					"name": "correct (csv)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"pm.test(\"Content-Type is text/csv\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('text/csv; charset=utf-8');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "e00f8e21a864de304a6c",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/healthcheck?format=csv",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"healthcheck"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "csv"
+								}
+							]
+						},
+						"description": "### Admin checks connection successfully, gets the results in csv format\n\nAn admin tries to check the connection to the server and wants to get the results in a CSV object. The admin is authorized and the request has the proper format, the URL parameters are correct and the server is running. The application responds with a 200 OK status response and a CSV file with the response is returned."
+					},
+					"response": []
+				},
+				{
+					"name": "invalid format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.have.jsonBody()\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "e00f8e21a864de304a6c",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/healthcheck?format=fdsfjmd",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"healthcheck"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "fdsfjmd"
+								}
+							]
+						},
+						"description": "### Admin tries to check connection, expects response in unknown format\n\nAn admin tries to check the connection to the server and wants to get the results in an unknown object. The admin is authorized and the request has the proper format, however, the URL parameters are wrong, although, the server is running. The application responds with a 400 Bad request status response and a JSON object with the response is returned."
+					},
+					"response": []
+				},
+				{
+					"name": "Check_json_default",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "e00f8e21a864de304a6c",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "X-OBSERVATORY-AUTH",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/healthcheck?format=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"healthcheck"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": ""
+								}
+							]
+						},
+						"description": "### Admin checks connection but leaves format parameter empty, gets the results in json format\n\nAn admin tries to check the connection to the server the request parameter format is left empty. When left empty the format parameter is returning a JSON object as a catch-all property. The admin is authorized and the request has the proper format and the server is running. The application responds with a 200 OK status response and a JSON file with the response is returned."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "e00f8e21a864de304a6c",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "X-OBSERVATORY-AUTH",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "existing_user",
+			"value": "SpaceUser"
+		},
+		{
+			"key": "new_password",
+			"value": "EarthPassword"
+		},
+		{
+			"key": "password",
+			"value": "SpacePass"
+		},
+		{
+			"key": "nonexistent_user",
+			"value": "EarthUser"
+		}
+	]
+}
