@@ -1,0 +1,2 @@
+questionnaireID,qID,qtext,required,type,options
+QQ000,Q01,Ποιον προορισμό προτιμάτε για αυτό το ΣΚ;,1,question,"[{'optID': 'Q01A1', 'opttxt': 'Βουνό', 'nextqID': 'Q02'}, {'optID': 'Q01A2', 'opttxt': 'Θάλασσα', 'nextqID': 'Q04'}, {'optID': 'Q01A3', 'opttxt': 'Πεδιάδα', 'nextqID': 'Q04'}]"

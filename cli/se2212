@@ -7,4 +7,4 @@ if [ ! -e "$flag_file" ]; then
     touch "$flag_file"
 fi
 
-python ./$@.py
+python ./$1.py ${@:2}
