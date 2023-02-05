@@ -33,7 +33,7 @@ class Questionnaire:
             f.close()
             #print(res.status_code)
             print(res.text)
-            print(f"csv file QQ000.csv saved at csv_files directory successfully")
+            print(f"csv file {arg.questionnaire_id}.csv saved at csv_files directory successfully")
         else:
             print(res.status_code)
             print(res.json())
@@ -60,7 +60,7 @@ def mocked_requests_get(*args, **kwargs):
     return MockResponse(None, 404)
 
 class TestQuestionnaire(unittest.TestCase):
-    def setUp(self):
+    def setUp(self): 
         self.args = argparse.Namespace(questionnaire_id = "QQ000", format='json')
 
     @patch('requests.get', side_effect=mocked_requests_get)
@@ -79,7 +79,7 @@ class TestQuestionnaire(unittest.TestCase):
         temp_stdout2 = StringIO()
         with contextlib.redirect_stdout(temp_stdout2):
             temp.questionnaire(self.args)
-        with open('QQ000.csv', 'r',encoding="utf-8") as f1, open('./model_csv_files/QQ000.csv', 'r', encoding="utf-8") as f2:
+        with open('QQ000.csv', 'r', encoding="utf-8") as f1, open('./model_csv_files/QQ000.csv', 'r', encoding="utf-8") as f2:
             fileone = f1.readlines()
             filetwo = f2.readlines()
         #Check that the csv that is returned is identical to the model one 
@@ -90,7 +90,7 @@ class TestQuestionnaire(unittest.TestCase):
                     isSame = False
                     outFile.write(line)                    
         os.remove("temp.csv")           #remove temp csv files used for comparison with the model csv file
-        os.remove("{arg.questionnaire_id}.csv")
+        os.remove("QQ000.csv")
         self.assertTrue(isSame)
 
 
