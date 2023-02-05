@@ -1,4 +1,4 @@
-export PATH="$PATH:C:\Users\nicka\Desktop\SoftEng22-12\cli"
+export PATH="$PATH:."
 se2212 login --username andreane82 --passw e00f8e21a864de304a6c
 se2212 healthcheck --format json
 se2212 questionnaire_upd --source "../test/dummy_data_files/TrekkingClubQuestionnaire.json"

@@ -8,7 +8,7 @@
 
 ## Using the CLI
 * First open a git bash terminal in the cli directory and run:  
-`export PATH="$PATH:path/ending/with/SoftEng22-12/cli"`  
+`export PATH="$PATH:."`  
 
 * Then you can use the cli with commands of the following format:  
 `se2212 scope [--argument1] [--argument2] ... --format csv/json` 
