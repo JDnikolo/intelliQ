@@ -87,7 +87,7 @@ def questionnaireidf(questionnaireID):
             if format == 'json':
                 return jsonify(output), 200
             if format == 'csv':
-                return generateCSVresponse(output, listKey=None, filename="healthcheck.csv"), 200
+                return generateCSVresponse(output, listKey=None, filename="{}".format(questionnaireID)), 200
             #return jsonify({"questionnaireID": (str(questionnaireID),),
                 #"questionnaireTitle": title, "keywords": keywords, "questions": questions}), 200
         else:

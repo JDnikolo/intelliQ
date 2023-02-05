@@ -57,13 +57,12 @@ def getquestionanswers(questionnaireID,questionID):
             sqlcursor.close()
             for i in range(len(result)):
                 result[i] = dict(session = result[i][0], ans = result[i][1])
+            output = {"questionnaireID": str(questionnaireID),
+                "questionID": str(questionID), "answers": result}
             if (format == 'json'):
-                return jsonify({"questionnaireID": str(questionnaireID),
-                "questionID": str(questionID), "answers": result}), 200
+                return jsonify(output), 200
             else:
-                newDict = dict(questionnaireID = str(questionnaireID),
-                session = str(questionID), answers = result)
-                return generateCSVresponse(newDict, "answers")
+                return generateCSVresponse(output, listKey=None, filename="{}".format(questionID))
         else:
             return jsonify({
                         "type":"/errors/authentication-error",
