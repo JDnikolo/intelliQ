@@ -27,27 +27,39 @@ The environments running the api-backend server and the CLI have their respectiv
 `pip install -r ./cli/requirements.txt`
 * Set up the database:  
 `mysql < ./data/schema.sql`
+* Add main admin to the database, using the credentials provided by our staff.   
 * Add DB user credentials to `./api-backend/mysqlconfig_template.py` and rename it to `mysqltemplate.py`.
 * Setup the Vue frontend:  
 `cd ./frontend/intelliq-frontend`   
 `npm install`
+* Add ./cli to PATH on the appropriate environment if you intend to use access the service via the CLI. (platform specific)
 
-## Server Start
+## Starting the Service  
+* Ensure the MySQL server is up and running.  
+* Start the Flask backend:  
+`flask --app service.py -p 9103`  
+You can now access the service using the CLI.
+* Start the Vue frontend server:  
+`cd ./frontend/intelliq-frontend`   
+`npm run dev`  
+You can now access the service via web browser on [https://localhost:5173/](https://localhost:5173/).  
 
-## Component Descriptions
-
-### [api-backend](https://github.com/ntua/SoftEng22-12/tree/main/api-backend#readme)
-
+## Component Descriptions  
+  
+You can find detailed descriptions of each component on their respective folders:    
+  
+### [api-backend](https://github.com/ntua/SoftEng22-12/tree/main/api-backend#readme)  
+The service's REST API backend.    
 ### [cli](https://github.com/ntua/SoftEng22-12/tree/main/cli#readme)
-
+The service's Command Line Interface. Includes Pytest scripts for unit and functional testing of the CLI.  
 ### [data](https://github.com/ntua/SoftEng22-12/tree/main/data#readme)
-
+DDL and DML scripts for configuring the service's MySQL database.  
 ### [frontend](https://github.com/ntua/SoftEng22-12/tree/main/frontend#readme)
-
+The service's frontend server, implemented using Vue.  
 ### test
-
-### vpp
+Postman scripts for running tests on the API endpoints.  
+### vpp  
+The updated Visual Paradigm project file(s) describing the service, written in Greek.  
 
 ## TODOs:
 * join API-CLI dependencies into a single file?
-* change to final DB schema name  
