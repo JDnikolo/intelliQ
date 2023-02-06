@@ -57,7 +57,7 @@ DDL and DML scripts for configuring the service's MySQL database.
 ### [frontend](https://github.com/ntua/SoftEng22-12/tree/main/frontend#readme)
 The service's frontend server, implemented using Vue.  
 ### test
-Postman scripts for running tests on the API endpoints.  
+Postman scripts for running tests on the API endpoints and dummy questionnaire files used for testing.
 ### vpp  
 The updated Visual Paradigm project file(s) describing the service, written in Greek.  
 
