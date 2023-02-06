@@ -2,20 +2,12 @@ from imports import *
 
 
 def doanswer(arg):
-  #print(arg)
   url = 'http://localhost:9103/intelliq_api/doanswer/' + arg.questionnaire_id + '/' + arg.question_id + '/' + arg.session_id + '/' + arg.option_id
-  #take api key from file saved from login
-  headers = None
-  home = str(Path.home())
-  if os.path.exists(home + '/softeng22API.token'):
-    f = open(home + '/softeng22API.token', 'r')
-    content = f.read()
-    headers = {'x-observatory-auth': content}
-  res = requests.post(url, headers=headers, verify=False)
+  res = requests.post(url, headers=find_key(), verify=False)
   if(res.status_code==200):
-        print("Answer submitted successfully.")
+      print("Answer submitted successfully.")
   else:
-    print(res.text)
+      print(res.text)
   return True
 
 

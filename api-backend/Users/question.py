@@ -19,10 +19,10 @@ def usr_question(questionnaireID: str, questionID: str):
             #else check if they exist in the database.
             #SQL Query for checking
             sqlcursor.execute(
-                '''SELECT questionnaire.questionnaireID ,question.questionID, question.qtext,question.required,question.qtype
-                   FROM (questionnaire
-                   INNER JOIN question ON questionnaire.questionnaireID = question.qnrID)
-                   WHERE (questionnaire.questionnaireID = %s AND question.questionID = %s)''',[questionnaireID, questionID])
+                '''SELECT Questionnaire.questionnaireID ,Question.questionID, Question.qtext,Question.required,Question.qtype
+                   FROM (Questionnaire
+                   INNER JOIN Question ON Questionnaire.questionnaireID = Question.qnrID)
+                   WHERE (Questionnaire.questionnaireID = %s AND Question.questionID = %s)''',[questionnaireID, questionID])
             res = sqlcursor.fetchall()
             if len(res) == 0:
                 return jsonify({
@@ -40,11 +40,11 @@ def usr_question(questionnaireID: str, questionID: str):
                             'type' : info[4]}            
             #fetch options sorted by optID keys.
             sqlcursor.execute(
-                '''SELECT qoption.optionID , qoption.optionTXT, qoption.nextQ
-                   FROM (qoption
-                   INNER JOIN question ON qoption.questionID = question.questionID)
-                   WHERE question.questionID = %s
-                   ORDER BY qoption.optionID ASC''',[questionID])
+                '''SELECT Qoption.optionID , Qoption.optionTXT, Qoption.nextQ
+                   FROM (Qoption
+                   INNER JOIN Question ON Qoption.questionID = Question.questionID)
+                   WHERE Question.questionID = %s
+                   ORDER BY Qoption.optionID ASC''',[questionID])
             res2 = sqlcursor.fetchall()
             sqlcursor.close()
             #save option data in a list

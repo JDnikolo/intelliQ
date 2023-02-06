@@ -30,7 +30,7 @@ def admin_questionnaire_upd():
                             keywords = q['keywords']
                             questions = q['questions']
                             #Check if questionnaireID already exists
-                            sqlcursor.execute("SELECT questionnaireID FROM questionnaire WHERE questionnaireID=%s", [qnID])
+                            sqlcursor.execute("SELECT questionnaireID FROM Questionnaire WHERE questionnaireID=%s", [qnID])
                             q_res = sqlcursor.fetchall()                                                
                             if len(q_res) != 0 :             #if it does, return corresponding error
                                 return jsonify({
@@ -41,16 +41,16 @@ def admin_questionnaire_upd():
                                         "instance":"/admin/questionnaire_upd"}), 400    #409
                             uid = request.headers.get("X-OBSERVATORY-AUTH")
                             sqlcursor.execute(
-                                "SELECT username from users WHERE access_token=%s AND us_role='A'",
+                                "SELECT username from Users WHERE access_token=%s AND us_role='A'",
                                 [uid])
                             username = sqlcursor.fetchall()
                             for user in username:
                                 username = user[0]
                             sqlcursor.execute(               #else insert data to db, start with questionnaire table  
-                            "INSERT INTO questionnaire (questionnaireID,title, created_by) VALUES (%s,%s,%s)", [qnID, qTitle,username])
+                            "INSERT INTO Questionnaire (questionnaireID,title, created_by) VALUES (%s,%s,%s)", [qnID, qTitle,username])
                             for keyword in keywords:
                                 sqlcursor.execute(          #insert keywords on keywords table  
-                                "INSERT INTO keywords (questionnaireID,word) VALUES (%s,%s)", [qnID, keyword])
+                                "INSERT INTO Keywords (questionnaireID,word) VALUES (%s,%s)", [qnID, keyword])
                             #insert questionnaire questions into the database 
                             for question in questions:    
                                 #TODO Check if there are any badly written strings in current question dictionary
@@ -62,7 +62,7 @@ def admin_questionnaire_upd():
                                     required = int(0)
                                 qtype = question['type']
                                 sqlcursor.execute(      #insert current question on questions table  
-                                    "INSERT INTO question (questionID,qtext,required,qtype,qnrID) VALUES (%s,%s,%s,%s,%s)", [qID, qtext, required, qtype, qnID])
+                                    "INSERT INTO Question (questionID,qtext,required,qtype,qnrID) VALUES (%s,%s,%s,%s,%s)", [qID, qtext, required, qtype, qnID])
                             for question in questions:
                                 qID = question['qID']
                                 #insert options of current question into the database
@@ -72,10 +72,10 @@ def admin_questionnaire_upd():
                                         nextq = option['nextqID']
                                         if nextq == "-" :           #if nextq is "-" (null) adjust query appropriately
                                             sqlcursor.execute(      #inserts current option on option table  
-                                                "INSERT INTO qoption (optionID,optionTXT,questionID) VALUES (%s,%s,%s)", [optID, text, qID])
+                                                "INSERT INTO Qoption (optionID,optionTXT,questionID) VALUES (%s,%s,%s)", [optID, text, qID])
                                         else:                       
                                             sqlcursor.execute(      #inserts current option on option table  
-                                                "INSERT INTO qoption (optionID,optionTXT,nextQ,questionID) VALUES (%s,%s,%s,%s)", [optID, text, nextq, qID])
+                                                "INSERT INTO Qoption (optionID,optionTXT,nextQ,questionID) VALUES (%s,%s,%s,%s)", [optID, text, nextq, qID])
                             #all done, commit changes and return success message
                             myconnector.commit()
                             sqlcursor.close()
