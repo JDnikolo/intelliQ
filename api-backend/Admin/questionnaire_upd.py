@@ -33,7 +33,7 @@ def admin_questionnaire_upd():
                             sqlcursor.execute("SELECT questionnaireID FROM Questionnaire WHERE questionnaireID=%s", [qnID])
                             q_res = sqlcursor.fetchall()                                                
                             if len(q_res) != 0 :             #if it does, return corresponding error
-                                sqlcursor.close()
+                                myconnector.rollback()
                                 return jsonify({
                                         "type":"/errors/conflict",
                                         "title": "Conflict",
@@ -86,7 +86,7 @@ def admin_questionnaire_upd():
                                     "detail":"Questionnaire inserted successfully.",
                                     "instance":"/admin/questionnaire_upd"}), 200
                         except Exception as error:
-                            sqlcursor.close()
+                            myconnector.rollback()
                             return jsonify({
                                 "type":"/errors/invalid-input",
                                 "title": "Bad Request",
