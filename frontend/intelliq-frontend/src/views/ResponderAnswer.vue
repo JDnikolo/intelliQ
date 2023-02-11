@@ -5,7 +5,7 @@
         </div>
     </h2>
     <hr />
-    <div v-if="currentQuestion != null">
+    <div v-if="currentQuestion != null && !error">
         <div>
             {{ parseQuestionText(currentQuestion.qtext) }}
         </div>
@@ -19,7 +19,7 @@
         <button :disabled="currentQuestion.required == 1" @click="addAnswer(true)">Skip</button>
         <button :disabled="hasAnswer" @click="addAnswer(false)">Answer</button>
     </div>
-    <div v-if="completed">
+    <div v-if="completed && sent">
         <h2>Thank you for your answers!</h2>
         <router-link to="/">Go Back</router-link>
         <table>
@@ -30,6 +30,13 @@
                 <td>{{ ans.opttxt }}</td>
             </tr>
         </table>
+    </div>
+    <div v-if="completed && !sent">
+        <h2>Sending answers...</h2>
+    </div>
+    <div v-if="error">
+        <h2>Looks like an error occurred! Try again later?</h2>
+        <router-link to="/">Go Back</router-link>
     </div>
 </template>
 
@@ -49,6 +56,8 @@ export default {
             previousOptions: {},
             session: null,
             completed: false,
+            sent:false,
+            error:false,
         }
     },
     computed: {
@@ -112,10 +121,13 @@ export default {
                             if (this.currentQuestion.options[0].opttxt == "<open string>") {
                                 this.currentAnswer = { "optID": this.currentQuestion.options[0].optID, "opttxt": '' }
                             }
+                        }).catch((error)=>{
+                            console.log(error);
+                            this.error=true;
                         })
             } else {
-                this.sendResponses()
                 this.completed = true;
+                this.sendResponses()
             }
         },
         async sendResponses() {
@@ -129,12 +141,13 @@ export default {
                     var form = ""
                 }
 
-                axios.post(`http://127.0.0.1:9103/intelliq_api/doanswer/${ans.questionnaireID}/${ans.questionID}/${ans.session}/${ans.optionID}`,
+                await axios.post(`http://127.0.0.1:9103/intelliq_api/doanswer/${ans.questionnaireID}/${ans.questionID}/${ans.session}/${ans.optionID}`,
                     form).catch((error) => {
-                        console.log(error)
+                        console.log(error);
+                        this.error=true;
                     })
-                await new Promise(r => setTimeout(r, 10));
             }
+            this.sent=true;
         }
     },
     async created() {
@@ -157,7 +170,10 @@ export default {
                                     this.currentAnswer = { "optID": this.currentQuestion.options[0].optID, "opttxt": '' }
                                 }
                             })
-                })
+                }).catch((error=>{
+                    console.log(error);
+                    this.error=true;
+                }))
     },
     beforeRouteLeave(to, from) {
         if (this.answers != [] && !this.completed) {
