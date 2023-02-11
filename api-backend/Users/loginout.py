@@ -63,10 +63,12 @@ def logoutf():
             "instance": "/logout"}), 401     # could be 400: Bad request
     else:
         uid = request.headers.get("X-OBSERVATORY-AUTH")
-        sqlcursor = myconnector.cursor()
-        # log user out by revoking their access token
-        sqlcursor.execute(
-            "UPDATE Users SET access_token=NULL WHERE access_token=%s",
-            [uid])
-        myconnector.commit()
+        # skip revoking token if it matches permanent admin's token
+        if (uid!="e00f8e21a864de304a6c"):
+            sqlcursor = myconnector.cursor()
+            # log user out by revoking their access token
+            sqlcursor.execute(
+                "UPDATE Users SET access_token=NULL WHERE access_token=%s",
+                [uid])
+            myconnector.commit()
         return jsonify({}), 200
