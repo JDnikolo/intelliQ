@@ -25,6 +25,7 @@ The environments running the api-backend server and the CLI have their respectiv
 `pip install -r ./api-backend/venvdependencies.txt`
 * Install CLI dependencies:   
 `pip install -r ./cli/requirements.txt`
+* Add cli directory to PATH (see CLI README).
 * Set up the database:  
 `mysql < ./data/schema.sql`
 * Add main admin to the database, using the credentials provided by our staff.   
@@ -46,7 +47,7 @@ You can now access the service via web browser on [https://localhost:5173/](http
 
 ## Component Descriptions  
   
-You can find detailed descriptions of each component on their respective folders:    
+You can find detailed descriptions of each component in their respective folders:    
   
 ### [api-backend](https://github.com/ntua/SoftEng22-12/tree/main/api-backend#readme)  
 The service's REST API backend.    
@@ -56,10 +57,7 @@ The service's Command Line Interface. Includes Pytest scripts for unit and funct
 DDL and DML scripts for configuring the service's MySQL database.  
 ### [frontend](https://github.com/ntua/SoftEng22-12/tree/main/frontend#readme)
 The service's frontend server, implemented using Vue.  
-### test
+### [test](https://github.com/ntua/SoftEng22-12/tree/main/test)
 Postman scripts for running tests on the API endpoints and dummy questionnaire files used for testing.
-### vpp  
+### [vpp](https://github.com/ntua/SoftEng22-12/tree/main/vpp)  
 The updated Visual Paradigm project file(s) describing the service, written in Greek.  
-
-## TODOs:
-* join API-CLI dependencies into a single file?
