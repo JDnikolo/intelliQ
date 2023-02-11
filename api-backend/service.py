@@ -106,6 +106,19 @@ def getQ(questionnaireID):
     result = sqlcursor.fetchall()
     return jsonify(result)
 
+# The next route is used for frontend general review
+@app.route("/getQuestionsInfo/<questionnaireID>", methods=["GET"])
+def getQI(questionnaireID):
+    sqlcursor = myconnector.cursor()
+    sqlcursor.execute(''' USE intelliq; ''')
+    sqlcursor.execute(
+            '''SELECT Qoption.questionID, Question.qtext, required, qtype, Qoption.optionID, optionTXT, nextQ
+               FROM (Qoption
+               INNER JOIN Question ON Qoption.questionID = Question.questionID)
+               WHERE Question.qnrID = %s
+               ORDER BY Qoption.optionID ASC''',(str(questionnaireID),))
+    result = sqlcursor.fetchall()
+    return jsonify(result)
 
 if __name__ == "__main__":
     CORS(app)

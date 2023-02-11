@@ -19,6 +19,10 @@
                 <td :class="{ selected: isSelected(q) }">{{ q[1] }}</td>
             </tr>
         </table>
+		<button :disabled="selected == null"
+            @click="$router.push('/viewer/endpoints/generalreview/' + selected[0])">
+            General Review
+        </button>
         <button :disabled="selected == null"
             @click="$router.push('/viewer/endpoints/getsessionanswers/' + selected[0])">
             Get Session Answers
