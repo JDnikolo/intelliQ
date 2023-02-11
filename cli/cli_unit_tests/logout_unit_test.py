@@ -19,7 +19,7 @@ class Logout:
         if (res.status_code == 200):
             home = str(Path.home())
             if os.path.exists(home + '/softeng22API.token'):
-            os.remove(home + '/softeng22API.token')
+                os.remove(home + '/softeng22API.token')
             print("You have successfully logged out.")
         else:
                 print(res.text)
@@ -45,12 +45,12 @@ class TestLogout(unittest.TestCase):
         self.args = argparse.Namespace()
 
     @patch('requests.post', side_effect=mocked_requests_post)
-    def test_login_success(self,mock_post):
+    def test_logout_success(self,mock_post):
         #Test call
         temp = Logout()
         temp_stdout = StringIO()
         with contextlib.redirect_stdout(temp_stdout):
-            temp.login(self.args)
+            temp.logout()
         output = temp_stdout.getvalue().strip()
         self.assertIn("You have successfully logged out.", output)
 

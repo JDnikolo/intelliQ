@@ -24,7 +24,7 @@ class Login:
             f = open(home + '/softeng22API.token', 'w')
             f.write(jsonres['token'])
             f.close()
-            print(f"Welcome back, {arg.username}! You have successfully logged in.")
+            print(f"Welcome back, andreane82! You have successfully logged in.")
             sys.exit(0)
         else:
             print(res.text)
@@ -57,7 +57,7 @@ class TestLogin(unittest.TestCase):
         with contextlib.redirect_stdout(temp_stdout):
             temp.login(self.args)
         output = temp_stdout.getvalue().strip()
-        self.assertIn("Welcome back, {arg.username}! You have successfully logged in.", output)
+        self.assertIn("Welcome back, andreane82! You have successfully logged in.", output)
 
 
 if __name__ == '__main__':
