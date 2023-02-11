@@ -60,6 +60,11 @@ def getallanswers(questionnaireID):
                             "detail": "No answers were found.",
                             "instance": "/Users/getallanswers"}), 402
             sqlcursor.close()
+            # Increase result to its final size (it will grow up anyway, why not now?)
+            temp_size = len(result)
+            while (temp_size < len(questions)*len(sessions)):
+                result.append(("a","a","a"))
+                temp_size = len(result)
             # Change result so that it has all questions and no answers, even with NO ANSWER
             p = 0 # pointer
             i = 0
@@ -71,11 +76,13 @@ def getallanswers(questionnaireID):
                         # Question Session does not exist, add it with NO ANSWER
                         result.insert(p, (questions[i][0], sessions[j][0], "NO ANSWER"))
                     p = p + 1
+                    
+            # The next commented section is obsolete
             # If p <= len(sessions)*len(questions), some NO ANSWER must be appended
-            if (p <= len(sessions)*len(questions)):
+            '''if (p <= len(sessions)*len(questions)):
                 for ii in range(i, len(questions)):
                     for jj in range(j, len(sessions)):
-                        result.append((questions[ii][0], sessions[jj][0], "NO ANSWER"))
+                        result.append((questions[ii][0], sessions[jj][0], "NO ANSWER"))'''
             
             temp_result = [] #Initialize list to store answers of each question
             for i in range(len(questions)):
@@ -89,9 +96,9 @@ def getallanswers(questionnaireID):
             # Correct way to make dictionairies
             for i in range(len(questions)):
                 for j in range(len(sessions)):
-                    print("pointer = ", pointer)
-                    print("q = ", questions[i][0])
-                    print("s = ", sessions[j][0])
+                    #print("pointer = ", pointer)
+                    #print("q = ", questions[i][0])
+                    #print("s = ", sessions[j][0])
                     temp_result[i].append(dict(session = sessions[j][0], ans = result[pointer][2]))
                     pointer = pointer + 1
                 total_result.append(dict(questionID = questions[i][0], answers = temp_result[i]))
