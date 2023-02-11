@@ -7,15 +7,15 @@
 
 # Declare an array to store the names of the  scripts
 scripts=(
-"./login --username andreane82 --passw e00f8e21a864de304a6c" 
-"./healthcheck --format json" 
-"./questionnaire --questionnaire_id QQ000 --format json"  
-"./doAnswer --questionnaire_id QQ000 --question_id P01 --session_id 1234 --option_id P01A1 --format json"  
-"./getsessionanswers --questionnaire_id QQ000 --session_id 1234 --format json"  
-"./resetall"  
-"./questionnaire_upd --source "../test/dummy_data_files/TrekkingClubQuestionnaire.json""  
-"./questionnaire --questionnaire_id QQ000 --format json"
-"./logout" 
+"./login.py --username andreane82 --passw e00f8e21a864de304a6c" 
+"./healthcheck.py --format json" 
+"./questionnaire.py --questionnaire_id QQ000 --format json"  
+"./doAnswer.py --questionnaire_id QQ000 --question_id P01 --session_id 1234 --option_id P01A1 --format json"  
+"./getquestionanswers.py --questionnaire_id QQ000 --question_id P01 --format json"  
+"./resetall.py"  
+"./questionnaire_upd.py --source "../test/dummy_data_files/TrekkingClubQuestionnaire.json""  
+"./questionnaire.py --questionnaire_id QQ000 --format json"
+"./logout.py" 
 )
 
 # Loop through the array and execute each script
