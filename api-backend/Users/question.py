@@ -13,11 +13,7 @@ def usr_question(questionnaireID: str, questionID: str):
             form = 'json'
         if authUser():
             sqlcursor = myconnector.cursor(buffered=True)
-            #if qnrID doesnt have QQxyz format, or qID doesnt have Pxy format, return bad request code
-            #if ((len(questionnaireID) != 5) or (len(questionID) != 3)):
-            #    return Response("Required fields were not given or they are incorrectly formatted", status=400)
-            #else check if they exist in the database.
-            #SQL Query for checking
+            #SQL Query that fetches the data related with the requested qnr_ID and q_ID
             sqlcursor.execute(
                 '''SELECT Questionnaire.questionnaireID ,Question.questionID, Question.qtext,Question.required,Question.qtype
                    FROM (Questionnaire
@@ -36,7 +32,7 @@ def usr_question(questionnaireID: str, questionID: str):
                 ret_data = {'questionnaireID' : info[0],
                             'qID' : info[1],
                             'qtext' : info[2],
-                            'required' : str(info[3]),   #potentially need to convert 0/1 to false/true string here
+                            'required' : str(info[3]),   
                             'type' : info[4]}            
             #fetch options sorted by optID keys.
             sqlcursor.execute(
@@ -58,7 +54,7 @@ def usr_question(questionnaireID: str, questionID: str):
             if form == 'csv':
                 return generateCSVresponse(ret_data, listKey=None, filename=("%s.csv",[questionID])), 200
             else:
-                return jsonify(ret_data), 200  #TODO: Check that the json file is returned 
+                return jsonify(ret_data), 200   
         else:
             return jsonify({
                         "type":"/errors/authentication-error",

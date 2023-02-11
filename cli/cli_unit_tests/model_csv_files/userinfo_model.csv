@@ -1,0 +1,4 @@
+username,password,user_type,access_token
+
+user123456,123456,V,token_value
+

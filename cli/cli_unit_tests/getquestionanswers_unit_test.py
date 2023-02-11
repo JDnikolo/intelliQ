@@ -28,7 +28,7 @@ class Getquestionanswers:
         elif (arg.format == 'csv' and res.status_code == 200):
             f = open(f"P01.csv", 'w+', encoding="utf-8") 
             f.truncate(0)
-            f.write(res.text)
+            f.write(res.text())
             f.seek(0)
             f.close()
             print(res.text)
@@ -54,7 +54,7 @@ def mocked_requests_get(*args, **kwargs):
             return self.text_data
     if args[0] == 'http://localhost:9103/intelliq_api/getquestionanswers/QQ000/P01':
         return MockResponse(response_json, 200)
-    if args[0] == 'http://localhost:9103/intelliq_api/getquestionanswers/QQ000/P01/?format=csv':
+    if args[0] == 'http://localhost:9103/intelliq_api/getquestionanswers/QQ000/P01?format=csv':
         return MockResponseCsv(response_csv, 200)    
     return MockResponse(None, 404)
 

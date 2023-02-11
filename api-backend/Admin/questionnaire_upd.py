@@ -2,7 +2,7 @@ from mysqlconfig import *
 from flask import request, jsonify, Blueprint
 from authentication import authAdmin
 import json
-#TODO: Add remaining bad data checks. 
+
 
 questionnaire_upd = Blueprint("questionnaire_upd", __name__) 
 
@@ -13,7 +13,7 @@ def admin_questionnaire_upd():
             if authAdmin():
                 sqlcursor = myconnector.cursor(buffered=True)
                 #Check if a file was uploaded
-                if 'file' not in request.files:            # use postman post request with form-data, 'a' is the key associated with test json file
+                if 'file' not in request.files:            # use postman post request with form-data, 'file' is the key associated with test json file
                     return jsonify({
                             "type":"/errors/invalid-input",
                             "title": "Bad Request",
@@ -38,7 +38,7 @@ def admin_questionnaire_upd():
                                         "title": "Conflict",
                                         "status": "400",
                                         "detail":"Questionnaire ID already exists.",
-                                        "instance":"/admin/questionnaire_upd"}), 400    #409
+                                        "instance":"/admin/questionnaire_upd"}), 400
                             uid = request.headers.get("X-OBSERVATORY-AUTH")
                             sqlcursor.execute(
                                 "SELECT username from Users WHERE access_token=%s AND us_role='A'",
@@ -53,7 +53,6 @@ def admin_questionnaire_upd():
                                 "INSERT INTO Keywords (questionnaireID,word) VALUES (%s,%s)", [qnID, keyword])
                             #insert questionnaire questions into the database 
                             for question in questions:    
-                                #TODO Check if there are any badly written strings in current question dictionary
                                 qID = question['qID']
                                 qtext = str(question['qtext'])
                                 if(question['required'] == 'TRUE'):

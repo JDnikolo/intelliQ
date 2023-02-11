@@ -26,9 +26,9 @@ class Questionnaire:
                 print(res.json())
         elif (arg.format == 'csv' and res.status_code == 200):
             #write location of csv file changed for tests so we can test its contents
-            f = open(f"./QQ000.csv", 'w+', encoding="utf-8") 
+            f = open(f"QQ000.csv", 'w+', encoding="utf-8") 
             f.truncate(0)
-            f.write(res.text)
+            f.write(res.text())
             f.seek(0)
             f.close()
             #print(res.status_code)
@@ -55,7 +55,7 @@ def mocked_requests_get(*args, **kwargs):
             return self.text_data
     if args[0] == 'http://localhost:9103/intelliq_api/questionnaire/QQ000':
         return MockResponse(response_json, 200)
-    if args[0] == 'http://localhost:9103/intelliq_api/questionnaire/QQ000/?format=csv':
+    if args[0] == 'http://localhost:9103/intelliq_api/questionnaire/QQ000?format=csv':
         return MockResponseCsv(response_csv, 200)    
     return MockResponse(None, 404)
 
@@ -74,12 +74,11 @@ class TestQuestionnaire(unittest.TestCase):
         self.assertIn("200", output)
 
         #Testing csv format call
-        
         self.args = argparse.Namespace(questionnaire_id = "QQ000", format = "csv") 
         temp_stdout2 = StringIO()
         with contextlib.redirect_stdout(temp_stdout2):
             temp.questionnaire(self.args)
-        with open('QQ000.csv', 'r', encoding="utf-8") as f1, open('./model_csv_files/QQ000.csv', 'r', encoding="utf-8") as f2:
+        with open('QQ000.csv', 'r', encoding="utf-8") as f1, open(f'./model_csv_files/QQ000.csv', 'r', encoding="utf-8") as f2:
             fileone = f1.readlines()
             filetwo = f2.readlines()
         #Check that the csv that is returned is identical to the model one 
