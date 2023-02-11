@@ -1,0 +1,1 @@
+# intelliQ Visual Paradigm files
