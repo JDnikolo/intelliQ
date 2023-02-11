@@ -10,7 +10,7 @@ scripts=(
 "./login.py --username andreane82 --passw e00f8e21a864de304a6c" 
 "./healthcheck.py --format json" 
 "./questionnaire.py --questionnaire_id QQ000 --format json"  
-"./doAnswer.py --questionnaire_id QQ000 --question_id P01 --session_id 1234 --option_id P01A1 --format json"  
+"./doanswer.py --questionnaire_id QQ000 --question_id P01 --session_id 1234 --option_id P01A1 --format json"  
 "./getquestionanswers.py --questionnaire_id QQ000 --question_id P01 --format json"  
 "./resetall.py"  
 "./questionnaire_upd.py --source "../test/dummy_data_files/TrekkingClubQuestionnaire.json""  

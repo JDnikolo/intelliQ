@@ -1,7 +1,7 @@
 # Intelliq Api-Backend
 
 ## Requirements
-All dependencies for using the Api-Backend are contained in [venv_dependencies.txt](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/venvdependencies.txt).    
+All dependencies for using the Api-Backend are contained in [venv_dependencies.txt](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/venvdependencies.txt).  
 To install the dependencies, run the following command on a terminal:  
 `pip install -r ./venvdependencies.txt`
 ## Set up the Server
@@ -9,54 +9,69 @@ To install the dependencies, run the following command on a terminal:
 * Then open a terminal in the current directory and run the following command to start the server:  
 `python .\service.py`
 
+## Documentation
+Documentation for the Intelliq Api-Backend can be found in the postman collections included in the [test](https://github.com/ntua/SoftEng22-12/tree/main/test) directory.
 ## Components
 
-### Authorisation Endpoints:
+### Authorisation Endpoints
 
 Authorization Endpoints implementations are contained in the [Users](https://github.com/ntua/SoftEng22-12/tree/main/api-backend/Users) folder. They consist of:
-* **login** :  
-Accepts the username and the password of the user encoded in "application/x-www-form-urlencoded" format. If the authorization is successful, a json object that contains the user's access token is returned.
+* **[loginout.py](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/Users/loginout.py)** : Contains implemantations for the login and logout endpoints
 
-* **logout** :  
-Logs out the user whose access token is contained in the HTTP header X-OBSERVATORY-AUTH. On success, it returns only status code 200(empty response body).
-
-### Administrative Endpoints:
+### Administrative Endpoints
 
 Admin Endpoints implementations are contained in the [Admin](https://github.com/ntua/SoftEng22-12/tree/main/api-backend/Admin) folder and can only be accessed by users with the administrator role. They consist of:
-* **healthcheck**:  
-Confirms end-to-end connectivity between the user and the database and returns the corresponding json object.
+* **[healthcheck.py](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/Admin/healthcheck.py)**:  
+Contains implementation of healthcheck endpoint.
 
-* **questionnaire_upd**:  
-Enables the upload of a json file that contains data of a new questionnaire and then saves it in the system. The json file is labeled as a "file" field and must be encoded in multipart/form-data format.
+* **[questionnaire_upd.py](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/Admin/questionnaire_upd.py)**:  
+Contains implementation of questionnaire_upd endpoint.
 
-* **resetall**:  
-Resets all data of the system(questionnaires, answers and users). Returns corresponding json object on success and failure.
+* **[resetall.py](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/Admin/resetall.py)**:  
+Contains implementation of resetall endpoint.
 
-* **resetq/:questionnaireID** :  
-Deletes all answers of the questionnaire with the given id(questionnaireID). Returns corresponding json object on success or failure.
+* **[resetq.py](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/Admin/resetq.py)** :  
+Contains implementation of resetq endpoint.
 
-* **usermod/:username/:password** :  
-Adds a new user with the given credentials, changes the password of the user if the given username already exists.
-
-* **users/:username** :  
-Returns all information of the user with the given username. 
-
-### User Endpoints:
+* **[usermod.py](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/Admin/usermod.py)** :  
+Contains implementations of usermod and users endpoints.
+ 
+### User Endpoints
 
 User Endpoints implementations are contained in the [Users](https://github.com/ntua/SoftEng22-12/tree/main/api-backend/Users) folder. They consist of:
-* **questionnaire/:questionnaireID** :  
-Returns an object that contains the information and questions(ordered by ID) of the questionnaire with the given ID(questionnaireID).
+* **[questionnaireid.py](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/Users/questionnaireid.py)** :  
+Contains implementation of questionnaire endpoint.
 
-* **question/:questionnaireID/:questionID** :  
-Returns an object that contains all the information of the question with the requested ID(questionID) of the requested questionnaire(questionnaireID). The options of the question are ordered by their IDs.
+* **[question.py](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/Users/question.py)** :  
+Contains implementation of question endpoint.
 
-* **doanswer/:questionnaireID/:questionID/:session/:optionID** :  
-Registers the option(optionID) that was given in the current answer session(session) for the question with ID=questionID of questionnaire with ID=questionnaireID in the system. No object is returned and the session identifier consists of a string of 4 random characters.
+* **[doAnswer.py](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/Users/doAnswer.py)** :  
+Contains implementation of doanswer endpoint.
 
-* **getsessionanswers/:questionnaireID/:session** :  
-Returns an object that contains all the answers that have been submitted in the questions of questionnaire with ID=questionnaireID during the requested answer session(session). Answers are sorted by the questions' ID.
+* **[getsessionanswers.py](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/Users/getsessionanswers.py)** :  
+Contains implementation of getsessionanswers endpoint.
 
-* **getquestionanswers/:questionnaireID/:questionID** :  
-Returns an object that contains all answers that have been submitted for all answer session of the question with ID=questionID of the questionnaire with ID=questionnaireID. All answers are ordered by time of submission.
+* **[getquestionanswers.py](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/Users/getquestionanswers.py)** :  
+Contains implementation of getquestionanswers endpoint.
 
+### Frontend Endpoints
 
+* **[getallanswers.py](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/Users/getallanswers.py)** :  
+Contains implementation of getallanswers endpoint.
+
+* **[service.py](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/service.py)** :  
+Contains implementations of getQuestionnaires, getSessions and getQuestions endpoints.
+
+### Other files
+
+* **[authentication.py](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/authentication.py)** :  
+Contains authUser and authAdmin methods that are used for user authentication.
+
+* **[create_venv_windows.py](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/create_venv_windows.py)** :  
+Script that deploys a virtual environment in the directory that it's executed.
+
+* **[csvResponse.py](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/csvResponse.py)** :  
+Generates a response for returning a csv file.
+
+* **[mysqlconfig_template.py](https://github.com/ntua/SoftEng22-12/blob/main/api-backend/mysqlconfig_template.py)** :  
+Contains a template for configuring the database connection.
