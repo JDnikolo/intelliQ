@@ -176,7 +176,7 @@ export default {
                 }))
     },
     beforeRouteLeave(to, from) {
-        if (this.answers != [] && !this.completed) {
+        if (this.answers != [] && !this.error && !this.sent) {
             const leave = confirm("Are you sure you want to leave?\nYour answers will be lost!")
             if (!leave) return false
             else return true
