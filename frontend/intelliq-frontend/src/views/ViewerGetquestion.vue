@@ -20,6 +20,7 @@ export default {
                 }
             },
             selected: null,
+			status_code: Number,
         }
     },
     props: {
@@ -63,6 +64,7 @@ export default {
                 { headers: { "X-OBSERVATORY-AUTH": token } }).then(
                     (response) => {
                         this.qanswers = response.data;
+						this.status_code = response.status;
                     }).catch((error) => {
                         if (error.response) {
                             if (error.response.status == 401) {
@@ -71,6 +73,7 @@ export default {
                                 this.$router.replace("/viewer")
                             }
                         } else {
+							this.status_code = error.response.status;
                             console.log(error)
                         }
                     })
@@ -103,13 +106,14 @@ export default {
             Question answers:
         </button>
 
-        <table style="border: 1px solid black; border-collapse: collapse;">
+        <table style="border: 1px solid black; border-collapse: collapse;" v-if="status_code === 200">
             <th>Answers of question:</th>
             <tr v-for="i in qanswers.answers.length">
                 <td style="border: 1px solid black;"> {{ qanswers.answers[i - 1].session }} </td>
                 <td style="border: 1px solid black;"> {{ qanswers.answers[i - 1].ans }} </td>
             </tr>
         </table>
+		<p v-else-if="status_code === 402"><i> This question has no answers yet! </i></p>
     </div>
 </template>
 

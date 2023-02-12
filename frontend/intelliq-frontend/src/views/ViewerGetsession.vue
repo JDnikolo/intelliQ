@@ -83,7 +83,7 @@ export default {
 }
 </script>
 <template>
-    <div style="background-color:#93CAED">
+    <div style="background-color:#93CAED" v-if="sessions.length > 0">
         <p><u>Available sessions for {{ this.qnrID }}:</u></p>
         <!-- <table>
             <tr v-for="s in sessions" @click="setSelected(s)">
@@ -112,6 +112,9 @@ export default {
             </tr>
         </table>
     </div>
+	<div v-else>
+		<p><i> The questionnaire has no answers! </i></p>
+	</div>
 </template>
 
 <style scoped>
