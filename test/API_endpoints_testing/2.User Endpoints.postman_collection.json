@@ -1,12 +1,296 @@
 {
 	"info": {
 		"_postman_id": "328fcfa2-a77d-41af-9cc7-9a292030890d",
-		"name": "User Endpoints",
+		"name": "2.User Endpoints",
 		"description": "## Folder contains Testing script for the endpoints of Users\n\n### Show Available Questionnaires\n\n#### GET /questionnaire/:questionnaireID\n\nhttp GET request that returns an object containing the general elements and questions of the questionnaire with identifier questionnaireID, sorted by question ID.\n\n### Show Question\n\n#### GET /question/:questionnaireID/:questionID\n\nhttp GET request that returns an object containing the full details of the questionID of the questionnaireID. The question options (answers) are sorted by answer ID.\n\n### Answer a Question\n\n#### POST /doanswer/:questionnaireID/:questionID/:session/:optionID\n\nhttp POST request that registers the optionID response given in the session response event to the questionID question of the questionnaireID. It does not return an object. The session identifier is a string of 4 random characters that correspond to the event of the questionnaire (note: not the question) being answered by a user.\n\n### Answers of single Session\n\n#### /getsessionanswers/:questionnaireID/:session\n\nhttp GET request that returns an object containing the responses given to all questionnaire during the session response event. Answers are sorted by question ID.\n\n### Answers of single Question\n\n#### /getquestionanswers/:questionnaireID/:questionID\n\nhttp GET request that returns an object containing the answers given to all the answer events in the question questionID. Answers are sorted by the order in which they were given.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "16293360"
 	},
 	"item": [
+		{
+			"name": "Answer a question",
+			"item": [
+				{
+					"name": "Upload Trekking Club Questionnaire",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"description": "Json file that contains the new questionnaire's information.",
+									"type": "file",
+									"src": "TrekkingClubQuestionnaire.json"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}admin/questionnaire_upd",
+							"host": [
+								"{{baseUrl}}admin"
+							],
+							"path": [
+								"questionnaire_upd"
+							]
+						},
+						"description": "### Upload questionnaire successfully\n\nAn admin uploads a questionnaire successfully. The questionnaire is a JSON object attached to the body of the request. The application responds with a 200 OK status response."
+					},
+					"response": []
+				},
+				{
+					"name": "Answer succesfully",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Normal Insertion of answer test\",function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}doanswer"
+							],
+							"path": [
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "questionID",
+									"value": "Q02"
+								},
+								{
+									"key": "sessionID",
+									"value": "ATBP"
+								},
+								{
+									"key": "optionID",
+									"value": "Q02A1"
+								}
+							]
+						},
+						"description": "### Successful Answer\n\nThis request demonstrates the successful POST-ing of an answer to the database when all request params are valid.\n\n**CAUTION**\n\nIf a question has already been answered in the same session, then both answers are logged to the database and the answer ID is actually a hash of the date and time of the answer. So, to get most recent answer lexicographically compare answers with same session ID (sessionID), option ID (ans_optionID), questionnaire ID (qnrID), and different answer ID (answerID)"
+					},
+					"response": []
+				},
+				{
+					"name": "Answer and questionnaire does not exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "WRONG"
+								},
+								{
+									"key": "questionID",
+									"value": "Q02"
+								},
+								{
+									"key": "sessionID",
+									"value": "ATBP"
+								},
+								{
+									"key": "optionID",
+									"value": "Q02A1"
+								}
+							]
+						},
+						"description": "### Bad Questionnaire Request\n\nThis request demonstrates the failure of POST-ing of an answer to the database when questionnaire parameter is invalid (the questionnaire does not exist)."
+					},
+					"response": []
+				},
+				{
+					"name": "Answer and option does not exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "questionID",
+									"value": "Q02"
+								},
+								{
+									"key": "sessionID",
+									"value": "ATBP"
+								},
+								{
+									"key": "optionID",
+									"value": "WRONG"
+								}
+							]
+						},
+						"description": "### Bad Option Request\n\nThis request demonstrates the failure of POST-ing of an answer to the database when option parameter is invalid (question does not have this answer option)."
+					},
+					"response": []
+				},
+				{
+					"name": "Answer and Question does not exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								},
+								{
+									"key": "questionID",
+									"value": "WRONG"
+								},
+								{
+									"key": "sessionID",
+									"value": "ATBP"
+								},
+								{
+									"key": "optionID",
+									"value": "Q02A1"
+								}
+							]
+						},
+						"description": "### Bad Question ID Request\n\nThis request demonstrates the failure of POST-ing of an answer to the database when question parameter is invalid (question ID does not exist)."
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "getsessionanswers",
 			"item": [
@@ -36,7 +320,8 @@
 							{
 								"key": "X-OBSERVATORY-AUTH",
 								"value": "{{user_token}}",
-								"type": "text"
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -44,12 +329,11 @@
 							"urlencoded": []
 						},
 						"url": {
-							"raw": "{{baseUrl}}/getsessionanswers/:questionnaireID/:session?format=json",
+							"raw": "{{baseUrl}}getsessionanswers/:questionnaireID/:session?format=json",
 							"host": [
-								"{{baseUrl}}"
+								"{{baseUrl}}getsessionanswers"
 							],
 							"path": [
-								"getsessionanswers",
 								":questionnaireID",
 								":session"
 							],
@@ -97,7 +381,8 @@
 							{
 								"key": "X-OBSERVATORY-AUTH",
 								"value": "{{user_token}}",
-								"type": "text"
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -176,11 +461,11 @@
 							"variable": [
 								{
 									"key": "questionnaireID",
-									"value": null
+									"value": "QQ000"
 								},
 								{
 									"key": "session",
-									"value": null
+									"value": "ATBP"
 								}
 							]
 						},
@@ -280,7 +565,7 @@
 								},
 								{
 									"key": "session",
-									"value": "ABCD"
+									"value": "ATBP"
 								}
 							]
 						},
@@ -305,14 +590,11 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
-						"header": [
-							{
-								"key": "X-OBSERVATORY-AUTH",
-								"value": "random1234",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/getsessionanswers/:questionnaireID/:session",
 							"host": [
@@ -449,7 +731,7 @@
 								},
 								{
 									"key": "questionID",
-									"value": "Q01"
+									"value": "Q02"
 								}
 							]
 						},
@@ -506,7 +788,7 @@
 								},
 								{
 									"key": "questionID",
-									"value": "Q01"
+									"value": "Q02"
 								}
 							]
 						},
@@ -559,11 +841,11 @@
 							"variable": [
 								{
 									"key": "questionnaireID",
-									"value": null
+									"value": "QQ000"
 								},
 								{
 									"key": "question",
-									"value": null
+									"value": "ATBP"
 								}
 							]
 						},
@@ -663,7 +945,7 @@
 								},
 								{
 									"key": "questionID",
-									"value": "Q01"
+									"value": "Q02"
 								}
 							]
 						},
@@ -688,6 +970,9 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -713,7 +998,7 @@
 								},
 								{
 									"key": "questionID",
-									"value": "Q01"
+									"value": "Q02"
 								}
 							]
 						},
@@ -774,363 +1059,6 @@
 			]
 		},
 		{
-			"name": "Answer a question",
-			"item": [
-				{
-					"name": "Answer succesfully",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Normal Insertion of answer test\",function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"    pm.response.to.be.ok;\r",
-									"})"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
-							"host": [
-								"{{baseUrl}}doanswer"
-							],
-							"path": [
-								":questionnaireID",
-								":questionID",
-								":sessionID",
-								":optionID"
-							],
-							"variable": [
-								{
-									"key": "questionnaireID",
-									"value": "asper"
-								},
-								{
-									"key": "questionID",
-									"value": "ipac"
-								},
-								{
-									"key": "sessionID",
-									"value": "coke"
-								},
-								{
-									"key": "optionID",
-									"value": "aevl"
-								}
-							]
-						},
-						"description": "### Successful Answer\n\nThis request demonstrates the successful POST-ing of an answer to the database when all request params are valid.\n\n**CAUTION**\n\nIf a question has already been answered in the same session, then both answers are logged to the database and the answer ID is actually a hash of the date and time of the answer. So, to get most recent answer lexicographically compare answers with same session ID (sessionID), option ID (ans_optionID), questionnaire ID (qnrID), and different answer ID (answerID)"
-					},
-					"response": []
-				},
-				{
-					"name": "Answer and questionnaire does not exist",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"doanswer",
-								":questionnaireID",
-								":questionID",
-								":sessionID",
-								":optionID"
-							],
-							"variable": [
-								{
-									"key": "questionnaireID",
-									"value": "WRONG"
-								},
-								{
-									"key": "questionID",
-									"value": "ipac"
-								},
-								{
-									"key": "sessionID",
-									"value": "coke"
-								},
-								{
-									"key": "optionID",
-									"value": "aevl"
-								}
-							]
-						},
-						"description": "### Bad Questionnaire Request\n\nThis request demonstrates the failure of POST-ing of an answer to the database when questionnaire parameter is invalid (the questionnaire does not exist)."
-					},
-					"response": []
-				},
-				{
-					"name": "Answer and option does not exist",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"doanswer",
-								":questionnaireID",
-								":questionID",
-								":sessionID",
-								":optionID"
-							],
-							"variable": [
-								{
-									"key": "questionnaireID",
-									"value": "asper"
-								},
-								{
-									"key": "questionID",
-									"value": "ipac"
-								},
-								{
-									"key": "sessionID",
-									"value": "rm52jy73nu"
-								},
-								{
-									"key": "optionID",
-									"value": "WRONG"
-								}
-							]
-						},
-						"description": "### Bad Option Request\n\nThis request demonstrates the failure of POST-ing of an answer to the database when option parameter is invalid (question does not have this answer option)."
-					},
-					"response": []
-				},
-				{
-					"name": "Answer and Question does not exist",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"doanswer",
-								":questionnaireID",
-								":questionID",
-								":sessionID",
-								":optionID"
-							],
-							"variable": [
-								{
-									"key": "questionnaireID",
-									"value": "asper"
-								},
-								{
-									"key": "questionID",
-									"value": "WRONG"
-								},
-								{
-									"key": "sessionID",
-									"value": "rm52jy73nu"
-								},
-								{
-									"key": "optionID",
-									"value": "aevl"
-								}
-							]
-						},
-						"description": "### Bad Question ID Request\n\nThis request demonstrates the failure of POST-ing of an answer to the database when question parameter is invalid (question ID does not exist)."
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "getallanswers-Experimental",
-			"item": [
-				{
-					"name": "correct (json)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.response.to.have.status(200);\r",
-									"    pm.response.to.have.jsonBody()\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-OBSERVATORY-AUTH",
-								"value": "{{user_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": []
-						},
-						"url": {
-							"raw": "{{baseUrl}}/getallanswers/:questionnaireID?format=json",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"getallanswers",
-								":questionnaireID"
-							],
-							"query": [
-								{
-									"key": "format",
-									"value": "json"
-								}
-							],
-							"variable": [
-								{
-									"key": "questionnaireID",
-									"value": "QQ111"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "correct (csv)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-OBSERVATORY-AUTH",
-								"value": "{{user_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": []
-						},
-						"url": {
-							"raw": "{{baseUrl}}/getallanswers/:questionnaireID?format=csv",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"getallanswers",
-								":questionnaireID"
-							],
-							"query": [
-								{
-									"key": "format",
-									"value": "csv"
-								}
-							],
-							"variable": [
-								{
-									"key": "questionnaireID",
-									"value": "QQ000"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "question",
 			"item": [
 				{
@@ -1153,26 +1081,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "07e5e8465dbb4b829985fe745604ba",
-									"type": "string"
-								},
-								{
-									"key": "in",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "X-OBSERVATORY-AUTH",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -1297,26 +1205,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "07e5e8465dbb4b829985fe745604ba",
-									"type": "string"
-								},
-								{
-									"key": "in",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "X-OBSERVATORY-AUTH",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -1370,26 +1258,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "07e5e8465dbb4b829985fe745604ba",
-									"type": "string"
-								},
-								{
-									"key": "in",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "X-OBSERVATORY-AUTH",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -1439,26 +1307,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "07e5e8465dbb4b829985fe745604ba",
-									"type": "string"
-								},
-								{
-									"key": "in",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "X-OBSERVATORY-AUTH",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -1511,26 +1359,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "07e5e8465dbb4b829985fe745604ba",
-									"type": "string"
-								},
-								{
-									"key": "in",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "X-OBSERVATORY-AUTH",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -1583,26 +1411,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "07e5e8465dbb4b829985fe745604ba",
-									"type": "string"
-								},
-								{
-									"key": "in",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "X-OBSERVATORY-AUTH",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -1655,26 +1463,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "07e5e8465dbb4b829985fe745604ba",
-									"type": "string"
-								},
-								{
-									"key": "in",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "X-OBSERVATORY-AUTH",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -1730,26 +1518,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "e00f8e21a864de304a6c",
-									"type": "string"
-								},
-								{
-									"key": "in",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "X-OBSERVATORY-AUTH",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [],
 						"url": {
@@ -1764,7 +1532,7 @@
 							"variable": [
 								{
 									"key": "questionnaireID",
-									"value": null
+									"value": "QQ000"
 								}
 							]
 						},
@@ -1805,7 +1573,7 @@
 							"variable": [
 								{
 									"key": "questionnaireID",
-									"value": null
+									"value": "QQ000"
 								}
 							]
 						},
@@ -1833,26 +1601,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "e00f8e21a864de304a6c",
-									"type": "string"
-								},
-								{
-									"key": "in",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "X-OBSERVATORY-AUTH",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -1895,26 +1643,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "e00f8e21a864de304a6c",
-									"type": "string"
-								},
-								{
-									"key": "in",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "X-OBSERVATORY-AUTH",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -1962,26 +1690,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "e00f8e21a864de304a6c",
-									"type": "string"
-								},
-								{
-									"key": "in",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "X-OBSERVATORY-AUTH",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -2029,26 +1737,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "e00f8e21a864de304a6c",
-									"type": "string"
-								},
-								{
-									"key": "in",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "X-OBSERVATORY-AUTH",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -2100,26 +1788,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "e00f8e21a864de304a6c",
-									"type": "string"
-								},
-								{
-									"key": "in",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "X-OBSERVATORY-AUTH",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -2140,7 +1808,7 @@
 							"variable": [
 								{
 									"key": "questionnaireID",
-									"value": null
+									"value": "QQ000"
 								}
 							]
 						},
@@ -2168,26 +1836,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "e00f8e21a864de304a6c",
-									"type": "string"
-								},
-								{
-									"key": "in",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "X-OBSERVATORY-AUTH",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -2236,26 +1884,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "e00f8e21a864de304a6c",
-									"type": "string"
-								},
-								{
-									"key": "in",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "X-OBSERVATORY-AUTH",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {

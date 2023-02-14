@@ -1,0 +1,277 @@
+{
+	"info": {
+		"_postman_id": "34554de6-9f75-430a-a52b-8cf553a61673",
+		"name": "1.Exam Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16293360"
+	},
+	"item": [
+		{
+			"name": "Show Questionnaire",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/questionnaire/:questionnaireID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"questionnaire",
+						":questionnaireID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ000",
+							"description": "Questionnaire ID of questionnaire whose info we need."
+						}
+					]
+				},
+				"description": "### Get questionnaire's details, no query string\n\nA viewer or admin sends a GET request to retrieve a certain's questionnaire details. The admin/user has the correct credentials and authorization succeeds. The request isnot given any query string values and returns a JSON object with the questionnaire's details and a 200 status response."
+			},
+			"response": []
+		},
+		{
+			"name": "Show Question",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/question/:questionnaireID/:questionID?format=json",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question",
+						":questionnaireID",
+						":questionID"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "json"
+						}
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ000",
+							"description": "Questionnaire ID of questionnaire that the desired question belongs to."
+						},
+						{
+							"key": "questionID",
+							"value": "Q01",
+							"description": "ID of the desired question."
+						}
+					]
+				},
+				"description": "### Get a question from a questionnaire\n\nA viewer or admin sends a GET request to retrieve a question from a certain questionnaire. The admin/user has the correct credentials and authorization succeeds. The request is given the JSON value in the query string and the question details are returned in a JSON object along in a 200 status response."
+			},
+			"response": []
+		},
+		{
+			"name": "Answer succesfully",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Normal Insertion of answer test\",function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.ok;\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+					"host": [
+						"{{baseUrl}}doanswer"
+					],
+					"path": [
+						":questionnaireID",
+						":questionID",
+						":sessionID",
+						":optionID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ000"
+						},
+						{
+							"key": "questionID",
+							"value": "Q02"
+						},
+						{
+							"key": "sessionID",
+							"value": "ATBP"
+						},
+						{
+							"key": "optionID",
+							"value": "Q02A1"
+						}
+					]
+				},
+				"description": "### Successful Answer\n\nThis request demonstrates the successful POST-ing of an answer to the database when all request params are valid.\n\n**CAUTION**\n\nIf a question has already been answered in the same session, then both answers are logged to the database and the answer ID is actually a hash of the date and time of the answer. So, to get most recent answer lexicographically compare answers with same session ID (sessionID), option ID (ans_optionID), questionnaire ID (qnrID), and different answer ID (answerID)"
+			},
+			"response": []
+		},
+		{
+			"name": "correct (json)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.have.jsonBody()\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-OBSERVATORY-AUTH",
+						"value": "{{user_token}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{baseUrl}}getsessionanswers/:questionnaireID/:session?format=json",
+					"host": [
+						"{{baseUrl}}getsessionanswers"
+					],
+					"path": [
+						":questionnaireID",
+						":session"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "json"
+						}
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ000"
+						},
+						{
+							"key": "session",
+							"value": "ATBP"
+						}
+					]
+				},
+				"description": "### Get the answers of a session\n\nAn admin or viewer tries to GET the answers of a single session of a responder. The request is successful and returns a JSON object with the answers and a 200 status OK response."
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "e00f8e21a864de304a6c",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "X-OBSERVATORY-AUTH",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "user",
+			"value": "andreane82"
+		},
+		{
+			"key": "pass",
+			"value": "e00f8e21a864de304a6c"
+		},
+		{
+			"key": "user_token",
+			"value": ""
+		}
+	]
+}

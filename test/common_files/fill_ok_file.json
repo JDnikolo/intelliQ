@@ -1,0 +1,234 @@
+{
+    "questionnaireID": "QQ001",
+    "questionnaireTitle": "My first research questionnaire",
+    "keywords": [
+        "footbal",
+        "islands",
+        "timezone"
+    ],
+    "questions": [
+        {
+            "qID": "P50",
+            "qtext": "Ποιο είναι το mail σας;",
+            "required": "FALSE",
+            "type": "profile",
+            "options": [
+                {
+                    "optID": "P50TXT",
+                    "opttxt": "<open string>",
+                    "nextqID": "P51"
+                }
+            ]
+        },
+        {
+            "qID": "P51",
+            "qtext": "Ποια είναι η ηλικία σας;",
+            "required": "TRUE",
+            "type": "profile",
+            "options": [
+                {
+                    "optID": "P51A1",
+                    "opttxt": "<30",
+                    "nextqID": "Q51"
+                },
+                {
+                    "optID": "P51A2",
+                    "opttxt": "30-50",
+                    "nextqID": "Q51"
+                },
+                {
+                    "optID": "P51A3",
+                    "opttxt": "50-70",
+                    "nextqID": "Q51"
+                },
+                {
+                    "optID": "P51A4",
+                    "opttxt": ">70",
+                    "nextqID": "Q51"
+                }
+            ]
+        },
+        {
+            "qID": "Q51",
+            "qtext": "Ποιο είναι το αγαπημένο σας χρώμα;",
+            "required": "TRUE",
+            "type": "question",
+            "options": [
+                {
+                    "optID": "Q51A1",
+                    "opttxt": "Πράσινο",
+                    "nextqID": "Q52"
+                },
+                {
+                    "optID": "Q51A2",
+                    "opttxt": "Κόκκινο",
+                    "nextqID": "Q52"
+                },
+                {
+                    "optID": "Q51A3",
+                    "opttxt": "Κίτρινο",
+                    "nextqID": "Q52"
+                }
+            ]
+        },
+        {
+            "qID": "Q52",
+            "qtext": "Ασχολείστε με το ποδόσφαιρο;",
+            "required": "TRUE",
+            "type": "question",
+            "options": [
+                {
+                    "optID": "Q52A1",
+                    "opttxt": "Ναι",
+                    "nextqID": "Q53"
+                },
+                {
+                    "optID": "Q52A2",
+                    "opttxt": "Οχι",
+                    "nextqID": "Q54"
+                }
+            ]
+        },
+        {
+            "qID": "Q53",
+            "qtext": "Τι ομάδα είστε;",
+            "required": "TRUE",
+            "type": "question",
+            "options": [
+                {
+                    "optID": "Q53A1",
+                    "opttxt": "Παναθηναϊκός",
+                    "nextqID": "Q54"
+                },
+                {
+                    "optID": "Q53A2",
+                    "opttxt": "Ολυμπιακός ",
+                    "nextqID": "Q54"
+                },
+                {
+                    "optID": "Q53A3",
+                    "opttxt": "ΑΕΚ",
+                    "nextqID": "Q54"
+                }
+            ]
+        },
+        {
+            "qID": "Q54",
+            "qtext": "Έχετε ζήσει σε νησί;",
+            "required": "TRUE",
+            "type": "question",
+            "options": [
+                {
+                    "optID": "Q54A1",
+                    "opttxt": "Ναι",
+                    "nextqID": "Q55"
+                },
+                {
+                    "optID": "Q54A2",
+                    "opttxt": "Οχι",
+                    "nextqID": "Q56"
+                }
+            ]
+        },
+        {
+            "qID": "Q55",
+            "qtext": "Με δεδομένο ότι απαντήσατε [*Q04A1] στην ερώτηση [*Q04]: Ποια η σχέση σας με το θαλάσσιο σκι;",
+            "required": "TRUE",
+            "type": "question",
+            "options": [
+                {
+                    "optID": "Q55A1",
+                    "opttxt": "Καμία",
+                    "nextqID": "Q57"
+                },
+                {
+                    "optID": "Q55A2",
+                    "opttxt": "Μικρή",
+                    "nextqID": "Q57"
+                },
+                {
+                    "optID": "Q55A3",
+                    "opttxt": "Μεγάλη",
+                    "nextqID": "Q57"
+                }
+            ]
+        },
+        {
+            "qID": "Q56",
+            "qtext": "Είστε χειμερινός κολυμβητής",
+            "required": "TRUE",
+            "type": "question",
+            "options": [
+                {
+                    "optID": "Q56A1",
+                    "opttxt": "Ναι",
+                    "nextqID": "Q57"
+                },
+                {
+                    "optID": "Q56A2",
+                    "opttxt": "Οχι",
+                    "nextqID": "Q57"
+                }
+            ]
+        },
+        {
+            "qID": "Q57",
+            "qtext": "Κάνετε χειμερινό σκι;",
+            "required": "TRUE",
+            "type": "question",
+            "options": [
+                {
+                    "optID": "Q57A1",
+                    "opttxt": "Σπάνια - καθόλου",
+                    "nextqID": "Q58"
+                },
+                {
+                    "optID": "Q57A2",
+                    "opttxt": "Περιστασιακά",
+                    "nextqID": "Q58"
+                },
+                {
+                    "optID": "Q57A3",
+                    "opttxt": "Τακτικά",
+                    "nextqID": "Q58"
+                }
+            ]
+        },
+        {
+            "qID": "Q58",
+            "qtext": "Συμφωνείτε να αλλάζει η ώρα κάθε χρόνο;",
+            "required": "TRUE",
+            "type": "question",
+            "options": [
+                {
+                    "optID": "Q58A1",
+                    "opttxt": "Ναι",
+                    "nextqID": "Q59"
+                },
+                {
+                    "optID": "Q58A2",
+                    "opttxt": "Οχι",
+                    "nextqID": "-"
+                }
+            ]
+        },
+        {
+            "qID": "Q59",
+            "qtext": "Με δεδομένο ότι απαντήσατε [*Q58A2] στην ερώτηση [*Q58]: Προτιμάτε τη θερινή ή την χειμερινή ώρα;",
+            "required": "TRUE",
+            "type": "question",
+            "options": [
+                {
+                    "optID": "Q59A1",
+                    "opttxt": "Θερινή",
+                    "nextqID": "-"
+                },
+                {
+                    "optID": "Q59A2",
+                    "opttxt": "Χειμερινή",
+                    "nextqID": "-"
+                }
+            ]
+        }
+    ]
+}

@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "570ddb18-c09a-4b46-8037-eb333f7ab1e2",
-		"name": "Other",
+		"name": "5.Other",
 		"description": "## This folder contains the testing scripts for the alternative data format a user can receive the question and/or questionnaire details\n\nIntelliq provides the capability of receiving the details concerning the questions and/or questionnaires in CSV, except the standard JSON format. This functionality is tested in this folder.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "16293360"
@@ -62,7 +62,7 @@
 					"variable": [
 						{
 							"key": "questionnaireID",
-							"value": "QQ010"
+							"value": "QQ000"
 						}
 					]
 				},
@@ -131,18 +131,23 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/questionnaire/QQ000?format=csv",
+					"raw": "{{baseUrl}}questionnaire/:questionnaire?format=csv",
 					"host": [
-						"{{baseUrl}}"
+						"{{baseUrl}}questionnaire"
 					],
 					"path": [
-						"questionnaire",
-						"QQ000"
+						":questionnaire"
 					],
 					"query": [
 						{
 							"key": "format",
 							"value": "csv"
+						}
+					],
+					"variable": [
+						{
+							"key": "questionnaire",
+							"value": "QQ000"
 						}
 					]
 				},
@@ -171,19 +176,29 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/question/QQ000/Q01?format=csv",
+					"raw": "{{baseUrl}}/question/:questionnaire/:question?format=csv",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
 						"question",
-						"QQ000",
-						"Q01"
+						":questionnaire",
+						":question"
 					],
 					"query": [
 						{
 							"key": "format",
 							"value": "csv"
+						}
+					],
+					"variable": [
+						{
+							"key": "questionnaire",
+							"value": "QQ000"
+						},
+						{
+							"key": "question",
+							"value": "Q01"
 						}
 					]
 				},
@@ -215,9 +230,9 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "a",
+							"key": "file",
 							"type": "file",
-							"src": "TrekkingClubTest.json"
+							"src": "TrekkingClubQuestionnaire.json"
 						}
 					]
 				},

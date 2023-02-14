@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "22f8d513-9f78-4598-9683-5a76b9769caa",
-		"name": "Frontend-only endpoints",
+		"name": "3.Frontend-only endpoints",
 		"description": "## This folder contains Testing scripts for trivial endpoints created for the Front-end\n\nThe intelliq API has implemented some endpoints only for the front-end functionalities. These trivial endpoints have been tested for vulnerabilities and expected behaviour.\n\n### Fetch questionnaires from server\n\n#### GET /getQuestionnaires\n\nIt supports the GET method and fetches the available questionnaires to the front-end user, if the user is authorized to see them.\n\n## Fetch sessions\n\n#### GET /getSessions\n\nIt supports http GET method to fetch all answering sessions logged into the database and in turn showcase them to the front-end user, if authorized.\n\n## Fetch questions\n\n#### GET /getQuestions\n\nIt supports http GET method to fetch all questions available for a questionnaire from the database and showcase them to the front-end user, if authorized.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "16293360"
@@ -190,7 +190,7 @@
 							"variable": [
 								{
 									"key": "questionnaireID",
-									"value": "QQ11"
+									"value": "WRONG"
 								}
 							]
 						},
@@ -234,7 +234,7 @@
 							"variable": [
 								{
 									"key": "questionnaireID",
-									"value": "QQ111"
+									"value": "QQ000"
 								}
 							]
 						},
@@ -273,7 +273,7 @@
 							"variable": [
 								{
 									"key": "questionnaireID",
-									"value": "QQ11"
+									"value": "WRONG"
 								}
 							]
 						},
@@ -282,6 +282,201 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "getallanswers",
+			"item": [
+				{
+					"name": "correct (json)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getallanswers/:questionnaireID?format=json",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getallanswers",
+								":questionnaireID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "json"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								}
+							]
+						},
+						"description": "### Admin gets all answers for questionnaire (JSON)\n\nThis endpoint is only used by admins and whilst being on the front-end application. The GET request fetches all answers from all sessions for a single questionnaire and returns a JSON object along with a 200 status response"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all answers success(csv)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{baseUrl}}/getallanswers/:questionnaireID?format=csv",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getallanswers",
+								":questionnaireID"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "csv"
+								}
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								}
+							]
+						},
+						"description": "### Admin gets all answers for questionnaire (CSV)\n\nThis endpoint is only used by admins and whilst being on the front-end application. The GET request fetches all answers from all sessions for a single questionnaire and returns a CSV object along with a 200 status response"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/getQuestionsInfo",
+			"item": [
+				{
+					"name": "Get question information success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-OBSERVATORY-AUTH",
+								"value": "{{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:9103/getQuestionsInfo/:questionnaireID",
+							"host": [
+								"localhost"
+							],
+							"port": "9103",
+							"path": [
+								"getQuestionsInfo",
+								":questionnaireID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "QQ000"
+								}
+							]
+						},
+						"description": "### Admin gets all question information on front-end\n\nThe admin sends a GET request to visualise all available questions, options, proposed questions in case of certain answer etc on the frontend. This API endpoint refers solely on the frontend and is not implemented in the CLI."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "e00f8e21a864de304a6c",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "X-OBSERVATORY-AUTH",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

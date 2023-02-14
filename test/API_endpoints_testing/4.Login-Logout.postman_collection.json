@@ -1,8 +1,8 @@
 {
 	"info": {
 		"_postman_id": "4cd6536c-7900-4431-a73e-28ae0bfb2eef",
-		"name": "Login/Logout",
-		"description": "## This folder contains the testing scripts for the login functionality of the admins/viewers\n\nIntelliq provides the capability of registring users (i.e. admins and viewers). To get augmented rights and functionalities while using the web application or the cli, the user must be registered in the database. To allow access to the registered user enhanced rights through the front-end and the cli, the login functionality is implemented and tested in this folder.\n\n### Login\n\n#### POST /login\n\nIt supports the http POST method for sending data to the server. A JSON object is forwarded whose body consists of two key-value pairs, one for the username and one for the password. If the user is registered in the database or the user is already logged in the request returns as successful, it fails otherwise.",
+		"name": "4.Login/Logout",
+		"description": "## This folder contains the testing scripts for the login functionality of the admins/viewers\n\nIntelliq provides the capability of registring users (i.e. admins and viewers). To get augmented rights and functionalities while using the web application or the cli, the user must be registered in the database. To allow access to the registered user enhanced rights through the front-end and the cli, the login functionality is implemented and tested in this folder.\n\n### **WARNING: The test cases take as granted that the user does not previously exist in the database**\n\n### Login\n\n#### POST /login\n\nIt supports the http POST method for sending data to the server. A JSON object is forwarded whose body consists of two key-value pairs, one for the username and one for the password. If the user is registered in the database or the user is already logged in the request returns as successful, it fails otherwise.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "16293360"
 	},
@@ -11,13 +11,7 @@
 			"name": "create user before testing",
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "X-OBSERVATORY-AUTH",
-						"value": "e00f8e21a864de304a6c",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
 					"raw": "{{baseUrl}}admin/usermod/:username/:password",
 					"host": [
@@ -74,6 +68,9 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -128,8 +125,17 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "X-OBSERVATORY-AUTH",
+						"value": "9759f59b405e4b4e89bc2a6f599aaf",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "urlencoded",
 					"urlencoded": [
@@ -183,6 +189,9 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -221,7 +230,7 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Successful logout\", function () {\r",
-							"    pm.expect(pm.response.code).to.be(200);\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -229,6 +238,9 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
@@ -266,6 +278,9 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
@@ -294,6 +309,26 @@
 			"response": []
 		}
 	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "key",
+				"value": "X-OBSERVATORY-AUTH",
+				"type": "string"
+			},
+			{
+				"key": "value",
+				"value": "e00f8e21a864de304a6c",
+				"type": "string"
+			},
+			{
+				"key": "in",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
