@@ -43,7 +43,7 @@ You can now access the service using the CLI.
 * Start the Vue frontend server:  
 `cd ./frontend/intelliq-frontend`   
 `npm run dev`  
-You can now access the service via web browser on [https://localhost:5173/](https://localhost:5173/).  
+You can now access the service via web browser on [https://localhost:5173/](https://localhost:5173/) for responding to questionnaires, and [https://localhost:5173/viewer](https://localhost:5173/viewer) for accessing results.  
 
 ## Component Descriptions  
   
