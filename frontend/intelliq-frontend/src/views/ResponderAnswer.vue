@@ -56,8 +56,8 @@ export default {
             previousOptions: {},
             session: null,
             completed: false,
-            sent:false,
-            error:false,
+            sent: false,
+            error: false,
         }
     },
     computed: {
@@ -121,9 +121,9 @@ export default {
                             if (this.currentQuestion.options[0].opttxt == "<open string>") {
                                 this.currentAnswer = { "optID": this.currentQuestion.options[0].optID, "opttxt": '' }
                             }
-                        }).catch((error)=>{
+                        }).catch((error) => {
                             console.log(error);
-                            this.error=true;
+                            this.error = true;
                         })
             } else {
                 this.completed = true;
@@ -144,10 +144,11 @@ export default {
                 await axios.post(`http://127.0.0.1:9103/intelliq_api/doanswer/${ans.questionnaireID}/${ans.questionID}/${ans.session}/${ans.optionID}`,
                     form).catch((error) => {
                         console.log(error);
-                        this.error=true;
+                        this.error = true;
                     })
+                await new Promise(r => setTimeout(r, 10));
             }
-            this.sent=true;
+            this.sent = true;
         }
     },
     async created() {
@@ -170,9 +171,9 @@ export default {
                                     this.currentAnswer = { "optID": this.currentQuestion.options[0].optID, "opttxt": '' }
                                 }
                             })
-                }).catch((error=>{
+                }).catch((error => {
                     console.log(error);
-                    this.error=true;
+                    this.error = true;
                 }))
     },
     beforeRouteLeave(to, from) {
